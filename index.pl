@@ -7,7 +7,7 @@
  use DateTime::TimeZone;
  use DateTime;
 
-# Set Variables
+#Set Variables
 #######################
 
 my $cgiurl = "index.pl";  
