@@ -1,6 +1,6 @@
 #!/afs/isis/pkg/perl/bin/perl
 
-# AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
+#AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
 
  use strict;
  use warning;
