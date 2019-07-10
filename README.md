@@ -1,2 +1,2 @@
-# AuxcomMsg
+# AuxcommMsg
 Auxcomm Messaging App
