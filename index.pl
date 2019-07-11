@@ -16,9 +16,9 @@ my $cgiurl = "index.pl";
 
 my $ver = "1.0";
 
-&213;
+#&213;
 
-sub 213 {
+#sub 213 {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 
@@ -31,6 +31,11 @@ print "<input id=incident name=incident type=text><br><br>";
 
 print "<input type=submit> * <input type=reset><br><br>\n";
 print "</form>";
+
+print "</body></html>\n";
 exit;
-}
+
+
+#exit;
+#}
 
