@@ -2,10 +2,10 @@
 
 #AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
 
- use strict;
- use warning;
- use DateTime::TimeZone;
- use DateTime;
+ #use strict;
+ #use warning;
+ #use DateTime::TimeZone;
+ #use DateTime;
 
 #Set Variables
 #######################
