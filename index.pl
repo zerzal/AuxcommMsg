@@ -1,4 +1,4 @@
-#!/afs/isis/pkg/perl/bin/perl
+#!/usr/bin/env perl
 
 #AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
 
