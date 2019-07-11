@@ -52,7 +52,7 @@ print "<input id=time name=time size=10 type=text><br><br>\n";
 
 # 7
 print "<FONT SIZE = 2 color = Black>7. Message:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=body name=body size=40 type=text><br><br>\n";
+print "<textarea name=msg cols=60 rows=25></textarea><br><br>";
 
 # 8
 print "<FONT SIZE = 2 color = Black>8. Approved by: Name:</font>\&nbsp\;\&nbsp\;\n";
@@ -66,7 +66,7 @@ print "<input id=atitle name=atitle size=20 type=text><br><br>\n";
 
 # 9
 print "<FONT SIZE = 2 color = Black>9. Reply:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=reply name=reply size=40 type=text><br><br>\n";
+print "<textarea name=reply cols=60 rows=25></textarea><br><br>";
 
 # 10
 print "<FONT SIZE = 2 color = Black>10. Replied by: Name:</font>\&nbsp\;\&nbsp\;\n";
