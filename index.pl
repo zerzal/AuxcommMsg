@@ -31,6 +31,6 @@ print "<input id=incident name=incident type=text><br><br>";
 
 print "<input type=submit> * <input type=reset><br><br>\n";
 print "</form>";
-
-}
 exit;
+}
+
