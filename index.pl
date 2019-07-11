@@ -30,45 +30,45 @@ print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font>\&nbsp\;\
 print "<input id=incident name=incident size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>2. To (Name and Position):</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=to name=to size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>3. From (Name and Position):</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=from name=from size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>4. Subject:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=subject name=subject size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>5. Date:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=date name=date size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=time name=time size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>7. Message:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=body name=body size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>8. Approved by: Name:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=approved name=approved size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=asig name=asig size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=atitle name=atitle size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>10. Replied by: Name:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=rname name=rname size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=rtitle name=rtitle size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=rsig name=rsig size=40 type=text><br><br>\n";
 
-print "<FONT SIZE = 2 color = Black>ICS 213</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 4 color = Black><b>ICS 213</b></font>\&nbsp\;\&nbsp\;\n";
 
 print "<FONT SIZE = 2 color = Black>Date/Time:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+print "<input id=rdandt name=rdandt size=40 type=text><br><br>\n";
 
 
 print "<input type=submit> * <input type=reset><br><br>\n";
