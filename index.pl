@@ -48,7 +48,7 @@ print "<input id=date name=date size=10 type=text>\n";
 
 # 6
 print "<FONT SIZE = 2 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=time name=time size=10 type=text>\n";
+print "<input id=time name=time size=10 type=text><br><br>\n";
 
 # 7
 print "<FONT SIZE = 2 color = Black>7. Message:</font>\&nbsp\;\&nbsp\;\n";
