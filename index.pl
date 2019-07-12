@@ -29,7 +29,7 @@ print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 print "<body><FONT SIZE = 5><b>AUXCOMM MESSAGING SERVER</b></FONT><FONT SIZE = 2 color = red>\&nbsp\;\&nbsp\;<b>$ver</b><br><br>\n";
 
 print "<FORM ACTION=auxmsg.pl METHOD=POST>";
-print "<INPUT TYPE=radio NAME=213>VALUE=IC-213>";
+print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
 print "</form>\n";
 
 
