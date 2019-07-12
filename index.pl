@@ -85,7 +85,6 @@ print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=text VALUE=TEXT>";
 print "</form>\n";
 
-
 exit;
 }
 
@@ -114,11 +113,11 @@ print "<FONT SIZE = 2 color = Black>4. Subject:</font><br>\n";
 print "<input id=subject name=subject size=25 type=text>\n";
 
 # 5
-print "<FONT SIZE = 2 color = Black>5. Date:</font><br>\n";
+print "<br><FONT SIZE = 2 color = Black>5. Date:</font><br>\n";
 print "<input id=date name=date size=10 type=text>\n";
 
 # 6
-print "<FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
+print "<br><FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
 print "<input id=time name=time size=10 type=text><br><br>\n";
 
 # 7
