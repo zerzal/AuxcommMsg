@@ -16,6 +16,13 @@ my $cgiurl = "index.pl";
 
 my $ver = "1.0";
 
+print "<FORM ACTION=auxmsg.pl METHOD=POST>";
+print "<INPUT TYPE=radio NAME=213>VALUE=IC-213>";
+print "</form>\n";
+
+
+
+
 &twothirteen;
 
 sub twothirteen {
