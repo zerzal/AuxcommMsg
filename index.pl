@@ -53,7 +53,7 @@ if ($FORM{'rg'}) {
 &radiogram;
 }
 
-
+sub begin {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 
@@ -67,6 +67,8 @@ print "<FORM ACTION=auxmsg.pl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=rg VALUE=ARRL RADIOGRAM>";
 print "</form>\n";
 print "</body></html>\n";
+
+}
 
 sub twothirteen {
 print "Content-type: text/html\n\n";
