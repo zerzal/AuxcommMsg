@@ -16,13 +16,44 @@ my $cgiurl = "index.pl";
 
 my $ver = "1.0";
 
+# Get the input
+########################
+read(STDIN, $buffer, $ENV{'CONTENT_LENGTH'});
 
 
+#if no form data go to system start
+   if (!$buffer) { 
+         &begin;
+   }
 
+# Split the name-value pairs
+@pairs = split(/&/, $buffer);
 
+foreach $pair (@pairs) {
+   ($name, $value) = split(/=/, $pair);
+
+# Un-Webify plus signs and %-encoding
+   $value =~ tr/+/ /;
+   $value =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
+   $value =~ s/<!--(.|\n)*-->//g;
+
+   if ($allow_html != 1) {
+      $value =~ s/<([^>]|\n)*>//g;
+   }
+
+   $FORM{$name} = $value;
+  
+}
+ 
+if ($FORM{'213'}) {
 &twothirteen;
+}
 
-sub twothirteen {
+if ($FORM{'rg'}) {
+&radiogram;
+}
+
+
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 
@@ -30,9 +61,17 @@ print "<body><FONT SIZE = 5><b>AUXCOMM MESSAGING SERVER</b></FONT><FONT SIZE = 2
 
 print "<FORM ACTION=auxmsg.pl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
+print "</form>\BR><BR>\n";
+
+print "<FORM ACTION=auxmsg.pl METHOD=POST>";
+print "<INPUT TYPE=submit NAME=rg VALUE=ARRL RADIOGRAM>";
 print "</form>\n";
+print "</body></html>\n";
 
-
+sub twothirteen {
+print "Content-type: text/html\n\n";
+print "<html><head><title>FORM IC-213</title></head>\n";
+print "<body><FONT SIZE = 5><b>FORM IC-213</b></FONT><br><br>\n";
 
 print "* </font><i> = Required fields</i><br><br>\n";
 print "<form method=POST action= $cgiurl>\n";
@@ -104,12 +143,11 @@ print "</form>\n";
 
 print "</body></html>\n";
 
-
-
-
 exit;
-
-
 
 }
 
+sub radiogram {
+print "RADIOGRAM FORM GOES HERE";
+exit;
+}
