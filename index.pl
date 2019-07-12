@@ -67,7 +67,7 @@ print "<FORM ACTION=auxmsg.pl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=rg VALUE=ARRL RADIOGRAM>";
 print "</form>\n";
 print "</body></html>\n";
-
+exit;
 }
 
 sub twothirteen {
