@@ -62,7 +62,7 @@ print "<body><FONT SIZE = 5><b>AUXCOMM<br>MESSAGING<br>SERVER</b></FONT><FONT SI
 
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
-print "</form>\&nbsp\;\&nbsp\;\n";
+print "</form>\n";
 
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
