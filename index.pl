@@ -10,7 +10,7 @@
 # Set Variables
 #######################
 
-my $cgiurl = "index.pl";  
+my $cgiurl = "auxmsg.pl";  
 
 #my $tmptxt = "tempinfo.txt"; 
 
@@ -61,7 +61,7 @@ print "<body><FONT SIZE = 5><b>AUXCOMM MESSAGING SERVER</b></FONT><FONT SIZE = 2
 
 print "<FORM ACTION=auxmsg.pl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
-print "</form>\BR><BR>\n";
+print "</form><BR><BR>\n";
 
 print "<FORM ACTION=auxmsg.pl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=rg VALUE=ARRL RADIOGRAM>";
@@ -150,6 +150,10 @@ exit;
 }
 
 sub radiogram {
-print "RADIOGRAM FORM GOES HERE";
+print "Content-type: text/html\n\n";
+print "<html><head><title>FORM ARRL RADIOGRAM</title></head>\n";
+print "<body><FONT SIZE = 5><b>FORM ARRL RADIOGRAM</b></FONT><br><br>\n";
+print "<FONT SIZE = 2 color = Black>ARRL RADIOGRAM GOES HERE</font>\&nbsp\;\&nbsp\;\n";
+print "</body></html>\n";
 exit;
 }
