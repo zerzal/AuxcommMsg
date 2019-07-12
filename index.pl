@@ -16,9 +16,9 @@ my $cgiurl = "index.pl";
 
 my $ver = "1.0";
 
-&213;
+&twothirteen;
 
-sub 213 {
+sub twothirteen {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 
