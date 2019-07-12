@@ -122,33 +122,31 @@ print "<input id=time name=time size=10 type=text><br><br>\n";
 
 # 7
 print "<FONT SIZE = 2 color = Black>7. Message:</font><br><br>\n";
-print "<textarea name=msg cols=60 rows=15></textarea><br><br>";
+print "<textarea name=msg cols=40 rows=10></textarea><br><br>";
 
 # 8
 print "<FONT SIZE = 2 color = Black>8. Approved by: Name:</font><br>\n";
-print "<input id=approved name=approved size=20 type=text>\n";
+print "<input id=approved name=approved size=20 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
-print "<input id=asig name=asig size=20 type=text>\n";
+print "<input id=asig name=asig size=20 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
 print "<input id=atitle name=atitle size=20 type=text><br><br>\n";
 
 # 9
 print "<FONT SIZE = 2 color = Black>9. Reply:</font><br><br>\n";
-print "<textarea name=reply cols=60 rows=15></textarea><br><br>";
+print "<textarea name=reply cols=40 rows=10></textarea><br><br>";
 
 # 10
 print "<FONT SIZE = 2 color = Black>10. Replied by: Name:</font><br>\n";
-print "<input id=rname name=rname size=20 type=text>\n";
+print "<input id=rname name=rname size=20 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
-print "<input id=rtitle name=rtitle size=20 type=text>\n";
+print "<input id=rtitle name=rtitle size=20 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=rsig name=rsig size=20 type=text><br><br>\n";
-
-print "<FONT SIZE = 4 color = Black><b>ICS 213</b></font><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
 print "<input id=rdandt name=rdandt size=40 type=text><br><br>\n";
