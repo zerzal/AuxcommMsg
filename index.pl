@@ -10,8 +10,8 @@
 # Set Variables
 #######################
 
-# my $cgiurl = "auxmsg.pl"; # LOCAL
-my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
+my $cgiurl = "auxmsg.pl"; # LOCAL
+#my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 
 #my $tmptxt = "tempinfo.txt"; 
 
@@ -98,27 +98,27 @@ print "* </font><i> = Required fields</i><br><br>\n";
 print "<form method=POST action= $cgiurl>\n";
 
 # 1
-print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
 print "<input id=incident name=incident size=40 type=text><br><br>\n";
 
 # 2
-print "<FONT SIZE = 2 color = Black>2. To (Name and Position):</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>2. To (Name and Position):</font><br>\n";
 print "<input id=to name=to size=40 type=text><br><br>\n";
 
 # 3
-print "<FONT SIZE = 2 color = Black>3. From (Name and Position):</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>3. From (Name and Position):</font><br>\n";
 print "<input id=from name=from size=40 type=text><br><br>\n";
 
 # 4
-print "<FONT SIZE = 2 color = Black>4. Subject:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>4. Subject:</font><br>\n";
 print "<input id=subject name=subject size=25 type=text>\n";
 
 # 5
-print "<FONT SIZE = 2 color = Black>5. Date:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>5. Date:</font><br>\n";
 print "<input id=date name=date size=10 type=text>\n";
 
 # 6
-print "<FONT SIZE = 2 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
 print "<input id=time name=time size=10 type=text><br><br>\n";
 
 # 7
@@ -126,13 +126,13 @@ print "<FONT SIZE = 2 color = Black>7. Message:</font><br><br>\n";
 print "<textarea name=msg cols=60 rows=15></textarea><br><br>";
 
 # 8
-print "<FONT SIZE = 2 color = Black>8. Approved by: Name:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>8. Approved by: Name:</font><br>\n";
 print "<input id=approved name=approved size=20 type=text>\n";
 
-print "<FONT SIZE = 2 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=asig name=asig size=20 type=text>\n";
 
-print "<FONT SIZE = 2 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
 print "<input id=atitle name=atitle size=20 type=text><br><br>\n";
 
 # 9
@@ -140,18 +140,18 @@ print "<FONT SIZE = 2 color = Black>9. Reply:</font><br><br>\n";
 print "<textarea name=reply cols=60 rows=15></textarea><br><br>";
 
 # 10
-print "<FONT SIZE = 2 color = Black>10. Replied by: Name:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>10. Replied by: Name:</font><br>\n";
 print "<input id=rname name=rname size=20 type=text>\n";
 
-print "<FONT SIZE = 2 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
 print "<input id=rtitle name=rtitle size=20 type=text>\n";
 
-print "<FONT SIZE = 2 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=rsig name=rsig size=20 type=text><br><br>\n";
 
-print "<FONT SIZE = 4 color = Black><b>ICS 213</b></font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 4 color = Black><b>ICS 213</b></font><br>\n";
 
-print "<FONT SIZE = 2 color = Black>Date/Time:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
 print "<input id=rdandt name=rdandt size=40 type=text><br><br>\n";
 
 
