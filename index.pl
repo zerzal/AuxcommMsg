@@ -54,6 +54,14 @@ if ($FORM{'rg'}) {
 &radiogram;
 }
 
+if ($FORM{'email'}) {
+&email;
+}
+
+if ($FORM{'text'}) {
+&text;
+}
+
 sub begin {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
@@ -68,6 +76,16 @@ print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
 print "</form>\n";
 print "</body></html>\n";
+
+print "<FORM ACTION=$cgiurl METHOD=POST>";
+print "<INPUT TYPE=submit NAME=email VALUE=EMAIL>";
+print "</form>\n";
+
+print "<FORM ACTION=$cgiurl METHOD=POST>";
+print "<INPUT TYPE=submit NAME=text VALUE=TEXT>";
+print "</form>\n";
+
+
 exit;
 }
 
@@ -155,6 +173,24 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>FORM ARRL RADIOGRAM</title></head>\n";
 print "<body><FONT SIZE = 5><b>FORM ARRL RADIOGRAM</b></FONT><br><br>\n";
 print "<FONT SIZE = 2 color = Black>ARRL RADIOGRAM GOES HERE</font>\&nbsp\;\&nbsp\;\n";
+print "</body></html>\n";
+exit;
+}
+
+sub email {
+print "Content-type: text/html\n\n";
+print "<html><head><title>SIMPLE EMAIL</title></head>\n";
+print "<body><FONT SIZE = 5><b>SIMPLE EMAIL</b></FONT><br><br>\n";
+print "<FONT SIZE = 2 color = Black>SIMPLE EMAIL GOES HERE</font>\&nbsp\;\&nbsp\;\n";
+print "</body></html>\n";
+exit;
+}
+
+sub text {
+print "Content-type: text/html\n\n";
+print "<html><head><title>TEXT MESSAGE</title></head>\n";
+print "<body><FONT SIZE = 5><b>TEXT MESSAGE</b></FONT><br><br>\n";
+print "<FONT SIZE = 2 color = Black>TEXT MESSAGE GOES HERE</font>\&nbsp\;\&nbsp\;\n";
 print "</body></html>\n";
 exit;
 }
