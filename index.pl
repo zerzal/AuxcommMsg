@@ -121,7 +121,7 @@ print "<br><FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
 print "<input id=time name=time size=10 type=text><br><br>\n";
 
 # 7
-print "<FONT SIZE = 2 color = Black>7. Message:</font><br><br>\n";
+print "<FONT SIZE = 2 color = Black>7. Message:</font><br>\n";
 print "<textarea name=msg cols=40 rows=10></textarea><br><br>";
 
 # 8
@@ -135,7 +135,7 @@ print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
 print "<input id=atitle name=atitle size=40 type=text><br><br>\n";
 
 # 9
-print "<FONT SIZE = 2 color = Black>9. Reply:</font><br><br>\n";
+print "<FONT SIZE = 2 color = Black>9. Reply:</font><br>\n";
 print "<textarea name=reply cols=40 rows=10></textarea><br><br>";
 
 # 10
@@ -149,7 +149,7 @@ print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=rsig name=rsig size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
-print "<input id=rdandt name=rdandt size=20 type=text><br><br>\<br><br>n";
+print "<input id=rdandt name=rdandt size=20 type=text><br><br><br>\n";
 
 
 print "<input type=submit value=SEND> * <input type=reset><br><br>\n";
