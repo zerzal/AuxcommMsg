@@ -68,20 +68,20 @@ print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 
 print "<body><FONT SIZE = 5><b>AUXCOMM<br>MESSAGING<br>SERVER</b></FONT><FONT SIZE = 2 color = red>\&nbsp\;\&nbsp\;<b>$ver</b><br><br>\n";
 
-print "<FORM ACTION=$cgiurl METHOD=POST>";
+print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
 print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
 print "</form>\n";
 
-print "<FORM ACTION=$cgiurl METHOD=POST>";
+print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
 print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
 print "</form>\n";
 print "</body></html>\n";
 
-print "<FORM ACTION=$cgiurl METHOD=POST>";
+print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
 print "<INPUT TYPE=submit NAME=email VALUE=EMAIL>";
 print "</form>\n";
 
-print "<FORM ACTION=$cgiurl METHOD=POST>";
+print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
 print "<INPUT TYPE=submit NAME=text VALUE=TEXT>";
 print "</form>\n";
 
@@ -93,7 +93,7 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213</title></head>\n";
 print "<body><FONT SIZE = 5><b>FORM IC-213</b></FONT><br><br>\n";
 
-print "* </font><i> = Required fields</i><br><br>\n";
+#print "* </font><i> = Required fields</i><br><br>\n";
 print "<form method=POST action= $cgiurl>\n";
 
 # 1
@@ -110,7 +110,7 @@ print "<input id=from name=from size=40 type=text><br><br>\n";
 
 # 4
 print "<FONT SIZE = 2 color = Black>4. Subject:</font><br>\n";
-print "<input id=subject name=subject size=25 type=text>\n";
+print "<input id=subject name=subject size=40 type=text>\n";
 
 # 5
 print "<br><FONT SIZE = 2 color = Black>5. Date:</font><br>\n";
@@ -126,13 +126,13 @@ print "<textarea name=msg cols=40 rows=10></textarea><br><br>";
 
 # 8
 print "<FONT SIZE = 2 color = Black>8. Approved by: Name:</font><br>\n";
-print "<input id=approved name=approved size=20 type=text><br>\n";
+print "<input id=approved name=approved size=40 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
-print "<input id=asig name=asig size=20 type=text><br>\n";
+print "<input id=asig name=asig size=40 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
-print "<input id=atitle name=atitle size=20 type=text><br><br>\n";
+print "<input id=atitle name=atitle size=40 type=text><br><br>\n";
 
 # 9
 print "<FONT SIZE = 2 color = Black>9. Reply:</font><br><br>\n";
@@ -140,19 +140,19 @@ print "<textarea name=reply cols=40 rows=10></textarea><br><br>";
 
 # 10
 print "<FONT SIZE = 2 color = Black>10. Replied by: Name:</font><br>\n";
-print "<input id=rname name=rname size=20 type=text><br>\n";
+print "<input id=rname name=rname size=40 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
-print "<input id=rtitle name=rtitle size=20 type=text><br>\n";
+print "<input id=rtitle name=rtitle size=40 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
-print "<input id=rsig name=rsig size=20 type=text><br><br>\n";
+print "<input id=rsig name=rsig size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
-print "<input id=rdandt name=rdandt size=40 type=text><br><br>\n";
+print "<input id=rdandt name=rdandt size=10 type=text><br><br>\n";
 
 
-print "<input type=submit> * <input type=reset><br><br>\n";
+print "<input type=submit value=SEND> * <input type=reset><br><br>\n";
 print "</form>\n";
 
 
