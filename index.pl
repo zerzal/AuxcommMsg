@@ -149,11 +149,11 @@ print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=rsig name=rsig size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
-print "<input id=rdandt name=rdandt size=10 type=text><br><br>\n";
+print "<input id=rdandt name=rdandt size=20 type=text><br><br>\<br><br>n";
 
 
 print "<input type=submit value=SEND> * <input type=reset><br><br>\n";
-print "</form>\n";
+print "</form><br><br><br><br>\n";
 
 
 #INCLUDE LINK TO PDF INSTRUCTIONS
