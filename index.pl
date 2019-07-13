@@ -2,8 +2,8 @@
 
 #AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
 
- use strict;
- use warning;
+ #use strict;
+ #use warning;
  #use DateTime::TimeZone;
  #use DateTime;
 
@@ -100,7 +100,7 @@ print "<body><FONT SIZE = 5><b>FORM IC-213</b></FONT><br><br>\n";
 #print "* </font><i> = Required fields</i><br><br>\n";
 print "<form method=POST action=$cgiurl>\n";
 
-print "<input type=hidden id=ic213 name=ic213>\n";
+#print "<input type=hidden id=ic213 name=ic213>\n";
 
 # 1
 print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
