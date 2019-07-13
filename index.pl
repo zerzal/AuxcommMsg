@@ -52,8 +52,8 @@ open TMP, ">$tmptxt";
 print TMP "$FORM{'incident'}\n";
 print TMP "$FORM{'to'}\n";
 print TMP "$FORM{'from'}\n";
-close TMP;
-&begin
+$close TMP;
+&begin;
 }
  
  
