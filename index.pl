@@ -46,7 +46,15 @@ foreach $pair (@pairs) {
   
 }
 
+if ($FORM{'ic213'}) {
 
+print "Content-type: text/html\n\n";
+print "<html><head><title>free</title></head>\n";
+print "<body><FONT SIZE = 5>free</FONT>\n";
+print "</body></html>\n";
+
+exit;
+}
 
  
  
