@@ -14,7 +14,7 @@ my $cgiurl = "auxmsg.pl"; # LOCAL
 #my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 
 
-my $temppl = "temp.pl"; # LOCAL
+# my $temppl = "temp.pl"; # LOCAL
 
 
 my $tmptxt = "tempinfo.txt"; 
@@ -110,9 +110,9 @@ print "<html><head><title>FORM IC-213</title></head>\n";
 print "<body><FONT SIZE = 5><b>FORM IC-213</b></FONT><br><br>\n";
 
 #print "* </font><i> = Required fields</i><br><br>\n";
-print "<form method=POST action=$temppl>\n";
+print "<form method=POST action=$cgiurl>\n";
 
-print "<input type=hidden id=ic213 name=ic213>\n";
+#print "<input type=hidden id=ic213 name=ic213>\n";
 
 # 1
 print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
