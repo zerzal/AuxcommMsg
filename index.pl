@@ -166,7 +166,7 @@ print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
 print "<input id=rdandt name=rdandt size=20 type=text><br><br><br>\n";
 
 
-print "<input type=submit value=SEND> * <input type=reset><br><br>\n";
+print "<input type=submit> * <input type=reset><br><br>\n";
 print "</form><br><br><br><br>\n";
 
 
