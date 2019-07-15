@@ -51,7 +51,7 @@ foreach $pair (@pairs) {
 }
 
 
-if ($FORM{'rgram'} = "radiogram") {
+if ($FORM{'rgram'}) {
 
 my $first = $FORM{'firstname'};
 print "Content-type: text/html\n\n";
@@ -94,7 +94,7 @@ print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
 print "</form>\n";
 
 print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
-print "<INPUT TYPE=submit NAME=rg VALUE=radgrm>";
+print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
 print "</form>\n";
 print "</body></html>\n";
 
