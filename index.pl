@@ -51,6 +51,7 @@ foreach $pair (@pairs) {
 }
 
 if ($FORM{'tt'}) {
+ if ($FORM{'msg'}) {
 
 my $incident = $FORM{'incident'};
 print "Content-type: text/html\n\n";
@@ -60,6 +61,10 @@ print "<body><FONT SIZE = 5>$incident</FONT><br><br>\n";
 print "<FONT SIZE = 10>OUTPUT OF FORM IC-213</FONT>\n";
 
 print "</body></html>\n";
+ }
+  else {
+        &begin;
+       }
 
 exit;
 }
