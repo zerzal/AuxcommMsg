@@ -50,16 +50,33 @@ foreach $pair (@pairs) {
   
 }
 
+
+
+
+#OUTPUT FOR FORM IC-213
 if ($FORM{'tt'}) {
  if ($FORM{'msg'}) {
 
 my $incident = $FORM{'incident'};
+my $to = $FORM{'to'};
+my $from = $FORM{'from'};
+my $subject = $FORM{'subject'};
+my $date = $FORM{'date'};
+my $time = $FORM{'time'};
+my $msg = $FORM{'msg'};
+my $approved = $FORM{'approved'};
+my $asig = $FORM{'asig'};
+my $atitle = $FORM{'atitle'};
+my $reply = $FORM{'reply'};
+my $rname = $FORM{'rname'};
+my $rtitle = $FORM{'rsig'};
+my $rdandt = $FORM{'rdandt'};
+
+
+
 print "Content-type: text/html\n\n";
-print "<html><head><title>$incident</title></head>\n";
-print "<body><FONT SIZE = 5>$incident</FONT><br><br>\n";
-
-print "<FONT SIZE = 10>OUTPUT OF FORM IC-213</FONT>\n";
-
+print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
+print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to $to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.</FONT><br><br>\n";
 print "</body></html>\n";
  }
   else {
@@ -69,7 +86,7 @@ print "</body></html>\n";
 exit;
 }
 
-
+#OUTPUT FOR FORM RADIOGRAM
 if ($FORM{'rgram'}) {
 
 my $first = $FORM{'firstname'};
@@ -85,7 +102,7 @@ exit;
 }
 
  
- 
+#FROM AUXCOMM MSG MENU TAKES TO CORRECT FORM
 if ($FORM{'213'}) {
 &twothirteen;
 }
@@ -128,6 +145,8 @@ print "</form>\n";
 exit;
 }
 
+
+#FORM IC-213
 sub twothirteen {
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213</title></head>\n";
@@ -208,6 +227,8 @@ exit;
 
 }
 
+
+#FORM RADIOGRAM
 sub radiogram {
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM ARRL RADIOGRAM</title></head>\n";
@@ -229,6 +250,7 @@ print "</body></html>\n";
 exit;
 }
 
+#FORM EMAIL
 sub email {
 print "Content-type: text/html\n\n";
 print "<html><head><title>SIMPLE EMAIL</title></head>\n";
@@ -238,6 +260,8 @@ print "</body></html>\n";
 exit;
 }
 
+
+#FORM TEXT
 sub text {
 print "Content-type: text/html\n\n";
 print "<html><head><title>TEXT MESSAGE</title></head>\n";
