@@ -13,6 +13,8 @@
 #my $cgiurl = "auxmsg.pl"; # LOCAL
 my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 my $dt = DateTime->now;
+my $hms = $dt->hms;           # 14:02:29
+my $ymd = $dt->ymd;           # 2002-12-06
 
 #my $temppl = "temp.pl"; # LOCAL
 
@@ -175,11 +177,11 @@ print "<input id=subject name=subject size=40 type=text>\n";
 
 # 5
 print "<br><FONT SIZE = 2 color = Black>5. Date:</font><br>\n";
-print "<input id=date name=date size=10 type=text>\n";
+print "<input id=date name=date value=$ymd size=10 type=text>\n";
 
 # 6
 print "<br><FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
-print "<input id=time name=time size=10 type=text><br><br>\n";
+print "<input id=time name=time value=$hms size=10 type=text><br><br>\n";
 
 # 7
 print "<FONT SIZE = 2 color = Black>7. Message:</font><br>\n";
