@@ -23,7 +23,7 @@ my $ver = "1.0";
 
 # Get the input
 ########################
-read(STDIN, $buffer, $ENV{'CONTENT_LENGTH'});
+read(STDIN, my $buffer, $ENV{'CONTENT_LENGTH'});
 
 
 #if no form data go to system start
