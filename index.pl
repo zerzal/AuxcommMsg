@@ -71,7 +71,7 @@ if ($FORM{'213'}) {
 &twothirteen;
 }
 
-if ($FORM{'rg'}) {
+if ($FORM{'radgrm'}) {
 &radiogram;
 }
 
@@ -94,7 +94,7 @@ print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
 print "</form>\n";
 
 print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
-print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
+print "<INPUT TYPE=submit NAME=rg VALUE=radgrm>";
 print "</form>\n";
 print "</body></html>\n";
 
@@ -117,7 +117,7 @@ print "<body><FONT SIZE = 5><b>FORM IC-213</b></FONT><br><br>\n";
 #print "* </font><i> = Required fields</i><br><br>\n";
 print "<form method=POST action=$cgiurl>\n";
 
-print "<input type=hidden id=ic213 name=ic213>\n";
+print "<input id=tt name=tt type=hidden value=two13>\n";
 
 # 1
 print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
@@ -177,7 +177,7 @@ print "<input id=rdandt name=rdandt size=20 type=text><br><br><br>\n";
  
 
 print "<input type=submit> \* <input type=reset><br><br>\n";
-print "</form><br><br><br><br>\n";
+print "</form>;
 
 
 #INCLUDE LINK TO PDF INSTRUCTIONS
