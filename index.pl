@@ -14,7 +14,7 @@ my $cgiurl = "auxmsg.pl"; # LOCAL
 #my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 
 
-# my $temppl = "temp.pl"; # LOCAL
+#my $temppl = "temp.pl"; # LOCAL
 
 
 my $tmptxt = "tempinfo.txt"; 
@@ -42,19 +42,21 @@ foreach $pair (@pairs) {
    $value =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
    $value =~ s/<!--(.|\n)*-->//g;
 
-   # if ($allow_html != 1) {
-      $value =~ s/<([^>]|\n)*>//g;
-  # }
+  # if ($allow_html != 1) {
+     # $value =~ s/<([^>]|\n)*>//g;
+   #}
 
    $FORM{$name} = $value;
   
 }
 
-if ($FORM{'ic213'}) {
 
+if ($FORM{'radiogram'}) {
+
+my $first = $FORM{'firstname'};
 print "Content-type: text/html\n\n";
-print "<html><head><title>free</title></head>\n";
-print "<body><FONT SIZE = 5>free</FONT>\n";
+print "<html><head><title>$first</title></head>\n";
+print "<body><FONT SIZE = 5>$first</FONT>\n";
 print "</body></html>\n";
 
 exit;
@@ -112,7 +114,7 @@ print "<body><FONT SIZE = 5><b>FORM IC-213</b></FONT><br><br>\n";
 #print "* </font><i> = Required fields</i><br><br>\n";
 print "<form method=POST action=$cgiurl>\n";
 
-#print "<input type=hidden id=ic213 name=ic213>\n";
+print "<input type=hidden id=ic213 name=ic213>\n";
 
 # 1
 print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
@@ -169,6 +171,7 @@ print "<input id=rsig name=rsig size=40 type=text><br><br>\n";
 print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
 print "<input id=rdandt name=rdandt size=20 type=text><br><br><br>\n";
 
+ 
 
 print "<input type=submit> \* <input type=reset><br><br>\n";
 print "</form><br><br><br><br>\n";
@@ -188,6 +191,18 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>FORM ARRL RADIOGRAM</title></head>\n";
 print "<body><FONT SIZE = 5><b>FORM ARRL RADIOGRAM</b></FONT><br><br>\n";
 print "<FONT SIZE = 2 color = Black>ARRL RADIOGRAM GOES HERE</font>\&nbsp\;\&nbsp\;\n";
+
+print "<form method=POST action=$cgiurl>\n";
+
+print "<input type=hidden id=radiogram name=radiogram>\n";
+print "First name:<br><input type=text name=firstname><br>";
+
+
+print "<input type=submit> \* <input type=reset><br><br>\n";
+print "</form><br><br><br><br>\n";
+
+
+
 print "</body></html>\n";
 exit;
 }
