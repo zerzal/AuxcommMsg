@@ -10,8 +10,8 @@
 # Set Variables
 #######################
 
-my $cgiurl = "auxmsg.pl"; # LOCAL
-#my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
+#my $cgiurl = "auxmsg.pl"; # LOCAL
+my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 
 
 #my $temppl = "temp.pl"; # LOCAL
