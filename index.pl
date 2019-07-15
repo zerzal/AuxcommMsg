@@ -71,7 +71,7 @@ if ($FORM{'213'}) {
 &twothirteen;
 }
 
-if ($FORM{'radgrm'}) {
+if ($FORM{'rg'}) {
 &radiogram;
 }
 
@@ -177,7 +177,7 @@ print "<input id=rdandt name=rdandt size=20 type=text><br><br><br>\n";
  
 
 print "<input type=submit> \* <input type=reset><br><br>\n";
-print "</form>;
+print "</form>";
 
 
 #INCLUDE LINK TO PDF INSTRUCTIONS
