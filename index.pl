@@ -76,7 +76,7 @@ my $rdandt = $FORM{'rdandt'};
 
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
-print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to $to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.</FONT><br><br>\n";
+print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.</FONT><br><br>\n";
 print "</body></html>\n";
  }
   else {
