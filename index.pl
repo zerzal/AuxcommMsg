@@ -5,14 +5,14 @@
  #use strict;
  #use warning;
  #use DateTime::TimeZone;
- use DateTime;
+ #use DateTime;
 
 # Set Variables
 #######################
 
 #my $cgiurl = "auxmsg.pl"; # LOCAL
 my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
-my $dt = DateTime->now;
+#my $dt = DateTime->now;
 
 #my $temppl = "temp.pl"; # LOCAL
 
