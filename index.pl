@@ -50,15 +50,29 @@ foreach $pair (@pairs) {
   
 }
 
+if ($FORM{'tt'}) {
+
+my $incident = $FORM{'incident'};
+print "Content-type: text/html\n\n";
+print "<html><head><title>$incident</title></head>\n";
+print "<body><FONT SIZE = 5>$incident</FONT><br><br>\n";
+
+print "<FONT SIZE = 10>OUTPUT OF FORM IC-213</FONT>\n";
+
+print "</body></html>\n";
+
+exit;
+}
+
 
 if ($FORM{'rgram'}) {
 
 my $first = $FORM{'firstname'};
 print "Content-type: text/html\n\n";
 print "<html><head><title>$first</title></head>\n";
-print "<body><FONT SIZE = 5>$first</FONT>\n";
+print "<body><FONT SIZE = 5>$first</FONT><br><br>\n";
 
-print "<FONT SIZE = 10>MADE IT TO LINE 54!</FONT>\n";
+print "<FONT SIZE = 10>OUTPUT OF FORM RADIOGRAM</FONT>\n";
 
 print "</body></html>\n";
 
