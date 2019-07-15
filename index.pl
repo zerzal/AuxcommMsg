@@ -4,15 +4,15 @@
 
  #use strict;
  #use warning;
- #use DateTime::TimeZone;
- #use DateTime;
+ use DateTime::TimeZone;
+ use DateTime;
 
 # Set Variables
 #######################
 
 #my $cgiurl = "auxmsg.pl"; # LOCAL
 my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
-
+my $dt = DateTime->now;
 
 #my $temppl = "temp.pl"; # LOCAL
 
@@ -210,9 +210,7 @@ print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=rsig name=rsig size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
-print "<input id=rdandt name=rdandt size=20 type=text><br><br><br>\n";
-
- 
+print "<input id=rdandt name=rdandt value=$dt size=20 type=text><br><br><br>\n";
 
 print "<input type=submit> \* <input type=reset><br><br>\n";
 print "</form>";
