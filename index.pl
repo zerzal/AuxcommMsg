@@ -59,6 +59,7 @@ foreach $pair (@pairs) {
 
 
 #OUTPUT FOR FORM IC-213
+#######################
 if ($FORM{'tt'}) {
  if ($FORM{'msg'}) {
 
@@ -77,20 +78,20 @@ my $rname = $FORM{'rname'};
 my $rtitle = $FORM{'rsig'};
 my $rdandt = $FORM{'rdandt'};
 
-
+#File name generator
 my @chars = ("A".."Z", "0".."9");
-my $string;
-$string .= $chars[rand @chars] for 1..12;
+my $mid;
+$mid .= $chars[rand @chars] for 1..12;
 
+my $body = 
 
-
-
+$filename = $mid.'.b2f';
 
 
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
-print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the WinLink system.<br>\n";
-print "Your email messagee number is $string.</FONT><br><br>\n";
+print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.<br>\n";
+print "Your email message name is $filename.</FONT><br><br>\n";
 print "</body></html>\n";
  }
   else {
@@ -101,6 +102,7 @@ exit;
 }
 
 #OUTPUT FOR FORM RADIOGRAM
+###########################
 if ($FORM{'rgram'}) {
 
 my $first = $FORM{'firstname'};
@@ -116,7 +118,8 @@ exit;
 }
 
  
-#FROM AUXCOMM MSG MENU TAKES TO CORRECT FORM
+#MAIN PAGE MENU (FORMS)
+#######################
 if ($FORM{'213'}) {
 &twothirteen;
 }
@@ -133,6 +136,10 @@ if ($FORM{'text'}) {
 &text;
 }
 
+
+#SUBROUTINES
+#######################
+#Main Page
 sub begin {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
