@@ -26,7 +26,7 @@ my $tmptxt = "tempinfo.txt";
 
 my $ver = "1.0";
 
-# Get the input
+# PROCESS FORM DATA
 ########################
 read(STDIN, my $buffer, $ENV{'CONTENT_LENGTH'});
 
@@ -78,10 +78,19 @@ my $rtitle = $FORM{'rsig'};
 my $rdandt = $FORM{'rdandt'};
 
 
+my @chars = ("A".."Z", "0".."9");
+my $string;
+$string .= $chars[rand @chars] for 1..10;
+
+
+
+
+
 
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
-print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.</FONT><br><br>\n";
+print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the WinLink system.<br>\n";
+print "Your email messagee number is $string.</FONT><br><br>\n";
 print "</body></html>\n";
  }
   else {
