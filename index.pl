@@ -170,7 +170,7 @@ exit;
 sub twothirteen {
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213</title>";
-print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 40px; height: 40px; } </style>";
+print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 80px; height: 80px; } </style>";
 print "</head>\n";
 print "<body><FONT SIZE = 5><b>FORM IC-213</b></FONT><br><br>\n";
 
@@ -218,8 +218,9 @@ print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
 print "<input id=atitle name=atitle size=40 type=text><br><br>\n";
 
 # 9
-print "<FONT SIZE = 3 color = Black><b>9. This is a Reply:\&nbsp\;\&nbsp\;</b></font>\n";
-print "<input id=reply name=reply type=checkbox><br><br>\n";
+print "<FONT SIZE = 3 color = Black><b>9. This is a Reply:\&nbsp\;\&nbsp\;</b>\n";
+print "<input id=reply name=reply type=checkbox>\n";
+print "(use 7. Message above for reply)</font><br><br>";
 #print "<textarea name=reply cols=40 rows=10></textarea><br><br>";
 
 # 10
