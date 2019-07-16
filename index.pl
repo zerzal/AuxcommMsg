@@ -1,23 +1,26 @@
-#!/usr/bin/env perl
+#!/usr/bin/perl
+##!/usr/bin/env perl
 
 #AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
 
  #use strict;
  #use warning;
  #use DateTime::TimeZone;
- use DateTime;
+ #use DateTime;
+ #use Date::Format;
 
 # Set Variables
 #######################
 
-#my $cgiurl = "auxmsg.pl"; # LOCAL
-my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
-my $dt = DateTime->now;
-my $hms = $dt->hms;           # 14:02:29
-my $ymd = $dt->ymd;           # 2002-12-06
+my $cgiurl = "auxmsg.pl"; # LOCAL
+#my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
+#my $dt = DateTime->now;
+#my $hms = $dt->hms;           # 14:02:29
+#my $ymd = $dt->ymd;           # 2002-12-06
 
 #my $temppl = "temp.pl"; # LOCAL
 
+#my $date2 = localtime(time);
 
 my $tmptxt = "tempinfo.txt"; 
 
@@ -177,11 +180,11 @@ print "<input id=subject name=subject size=40 type=text>\n";
 
 # 5
 print "<br><FONT SIZE = 2 color = Black>5. Date:</font><br>\n";
-print "<input id=date name=date value=$ymd size=10 type=text>\n";
+print "<input id=date name=date size=10 type=date>\n";
 
 # 6
 print "<br><FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
-print "<input id=time name=time value=$hms size=10 type=text><br><br>\n";
+print "<input id=time name=time size=10 type=time><br><br>\n";
 
 # 7
 print "<FONT SIZE = 2 color = Black>7. Message:</font><br>\n";
@@ -212,7 +215,7 @@ print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=rsig name=rsig size=40 type=text><br><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
-print "<input id=rdandt name=rdandt value=$dt size=20 type=text><br><br><br>\n";
+print "<input id=rdandt name=rdandt size=20 type=datetime-local><br><br><br>\n";
 
 print "<input type=submit> \* <input type=reset><br><br>\n";
 print "</form>";
