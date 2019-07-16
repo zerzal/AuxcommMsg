@@ -170,7 +170,7 @@ exit;
 sub twothirteen {
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213</title>";
-print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 80px; height: 80px; } </style>";
+print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 40px; height: 40px; } </style>";
 print "</head>\n";
 print "<body><FONT SIZE = 5><b>FORM IC-213</b></FONT><br><br>\n";
 
