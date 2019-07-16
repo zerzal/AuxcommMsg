@@ -218,7 +218,7 @@ print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
 print "<input id=atitle name=atitle size=40 type=text><br><br>\n";
 
 # 9
-print "<FONT SIZE = 3 color = Black><b>9. Check Here If Reply:</font>\&nbsp\;</b>\n";
+print "<FONT SIZE = 3 color = Black><b>9. CHECK HERE IF REPLY - </font>\&nbsp\;</b>\n";
 print "<input id=reply name=reply type=checkbox class=largerCheckbox>\n";
 print "<FONT SIZE = 2 color = Black>(use 7. Message above for reply)</font><br><br>";
 #print "<textarea name=reply cols=40 rows=10></textarea><br><br>";
