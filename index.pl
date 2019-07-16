@@ -80,7 +80,7 @@ my $rdandt = $FORM{'rdandt'};
 
 my @chars = ("A".."Z", "0".."9");
 my $string;
-$string .= $chars[rand @chars] for 1..10;
+$string .= $chars[rand @chars] for 1..12;
 
 
 
