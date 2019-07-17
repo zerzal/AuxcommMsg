@@ -83,7 +83,7 @@ my @chars = ("A".."Z", "0".."9");
 my $mid;
 $mid .= $chars[rand @chars] for 1..12;
 
-my $body = 
+my $body = "GENERAL MESSAGE (ICS 213)\n 1. Incident Name (Optional): $incident";
 
 $filename = $mid.'.b2f';
 
@@ -92,6 +92,9 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
 print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.<br>\n";
 print "Your email message name is <br>$filename<br>$reply</FONT><br><br>\n";
+
+print "Your message body says:<br>$body<br>$reply</FONT><br><br>\n";
+
 print "</body></html>\n";
  }
   else {
