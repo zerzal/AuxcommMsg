@@ -93,7 +93,7 @@ $mid .= $chars[rand @chars] for 1..12;
 	   $msg = "";
 	}
 
-my $body = "GENERAL MESSAGE (ICS 213)\r\r
+my $body = "GENERAL MESSAGE (ICS 213)0x0D, \r 0x0A, \n
 	   1. Incident Name (Optional): $incident<br><br>
 	   2. To (Name and Position): $to<br><br>
 	   3. From (Name and Position): $from<br><br>
