@@ -93,7 +93,7 @@ $mid .= $chars[rand @chars] for 1..12;
 	   $msg = "";
 	}
 
-my $body = "GENERAL MESSAGE (ICS 213)<br><br>
+my $body = "GENERAL MESSAGE (ICS 213)\r\r
 	   1. Incident Name (Optional): $incident<br><br>
 	   2. To (Name and Position): $to<br><br>
 	   3. From (Name and Position): $from<br><br>
@@ -203,6 +203,7 @@ print "<input id=tt name=tt type=hidden value=two13>\n";
 
 # 1
 print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
+#print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
 print "<input id=incident name=incident size=40 type=text><br><br>\n";
 
 # 2
