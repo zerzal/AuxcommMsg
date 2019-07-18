@@ -12,8 +12,8 @@
 # Set Variables
 #######################
 
-#my $cgiurl = "auxmsg.pl"; # LOCAL
-my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
+my $cgiurl = "auxmsg.pl"; # LOCAL
+#my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 #my $dt = DateTime->now;
 #my $hms = $dt->hms;           # 14:02:29
 #my $ymd = $dt->ymd;           # 2002-12-06
@@ -75,7 +75,8 @@ my $asig = $FORM{'asig'};
 my $atitle = $FORM{'atitle'};
 my $reply = $FORM{'reply'};
 my $rname = $FORM{'rname'};
-my $rtitle = $FORM{'rsig'};
+my $rtitle = $FORM{'rtitle'};
+my $rsig = $FORM{'rsig'};
 my $rdandt = $FORM{'rdandt'};
 
 #File name generator
@@ -83,17 +84,35 @@ my @chars = ("A".."Z", "0".."9");
 my $mid;
 $mid .= $chars[rand @chars] for 1..12;
 
-my $body = "GENERAL MESSAGE (ICS 213)\n 1. Incident Name (Optional): $incident";
+#Build body of email file
 
-$filename = $mid.'.b2f';
+    $filename = $mid.'.b2f';
+	
+	if ($reply = "on") {
+	   $rmsg = $msg;
+	   $msg = "";
+	}
 
+my $body = "GENERAL MESSAGE (ICS 213)<br><br>
+	   1. Incident Name (Optional): $incident<br><br>
+	   2. To (Name and Position): $to<br><br>
+	   3. From (Name and Position): $from<br><br>
+	   4. Subject: $subject<br><br>
+	   5. Date: $date<br><br>
+	   6. Time: $time<br><br>
+	   7. Message: $msg<br><br>
+	   8. Approved by:  Name: $approved Signature: $asig<br>Position/Title: $atitle<br><br>
+	   9. Reply: $rmsg<br><br>
+	  10. Replied by:  Name: $rname Position/Title: $rtitle<br>Signature: $rsig<br><br>
+	      $rdandt";
+ 
 
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
 print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.<br>\n";
 print "Your email message name is <br>$filename<br>$reply</FONT><br><br>\n";
 
-print "Your message body says:<br>$body<br>$reply</FONT><br><br>\n";
+print "$body</FONT>";
 
 print "</body></html>\n";
  }
