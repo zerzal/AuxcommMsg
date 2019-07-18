@@ -12,8 +12,8 @@
 # Set Variables
 #######################
 
-my $cgiurl = "auxmsg.pl"; # LOCAL
-#my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
+#my $cgiurl = "auxmsg.pl"; # LOCAL
+$cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 #my $dt = DateTime->now;
 #my $hms = $dt->hms;           # 14:02:29
 #my $ymd = $dt->ymd;           # 2002-12-06
