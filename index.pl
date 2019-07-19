@@ -12,17 +12,19 @@
 # Set Variables
 #######################
 
-#my $cgiurl = "auxmsg.pl"; # LOCAL
-$cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
-#my $dt = DateTime->now;
-#my $hms = $dt->hms;           # 14:02:29
-#my $ymd = $dt->ymd;           # 2002-12-06
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+my @abbr = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+$year += 1900;
+$mon += 1;
 
-#my $temppl = "temp.pl"; # LOCAL
+if ($min < "10") {
+  $min = "0" .$min;
+ }
 
-#my $date2 = localtime(time);
 
-my $tmptxt = "tempinfo.txt"; 
+my $cgiurl = "auxmsg.pl"; # LOCAL
+#my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
+
 
 my $ver = "1.0";
 
@@ -90,38 +92,84 @@ $mid .= $chars[rand @chars] for 1..12;
 	
 	if ($reply = "on") {
 	   $rmsg = $msg;
-	   $msg = "";
+	   $msg = "THIS IS A REPLY";
 	}
 
-my $body = "GENERAL MESSAGE (ICS 213)0x0D, \r 0x0A, \n
-	   1. Incident Name (Optional): $incident<br><br>
-	   2. To (Name and Position): $to<br><br>
-	   3. From (Name and Position): $from<br><br>
-	   4. Subject: $subject<br><br>
-	   5. Date: $date<br><br>
-	   6. Time: $time<br><br>
-	   7. Message: $msg<br><br>
-	   8. Approved by:  Name: $approved Signature: $asig<br>Position/Title: $atitle<br><br>
-	   9. Reply: $rmsg<br><br>
-	  10. Replied by:  Name: $rname Position/Title: $rtitle<br>Signature: $rsig<br><br>
-	      $rdandt";
- 
+my $body0 = "GENERAL MESSAGE (ICS 213)\n";
+my $body1 = "1. Incident Name (Optional): $incident\n";
+my $body2 = "2. To (Name and Position): $to\n";
+my $body3 = "3. From (Name and Position): $from\n";
+my $body4 = "4. Subject: $subject\n";
+my $body5 = "5. Date: $date\n";
+my $body6 = "6. Time: $time\n";
+my $body7 = "7. Message: $msg\n";
+my $body8 = "8. Approved by:  Name: $approved Signature: $asig\n";
+my $body8a = "Position/Title: $atitle\n";
+my $body9 = "9. Reply: $rmsg\n";
+my $body10 = "10. Replied by:  Name: $rname Position/Title: $rtitle\n";
+my $body10a = "Signature: $rsig\n";
+my $body11 = "$rdandt\n";
+
+#$count =  strlen($newbody); $newbody is body plus the reply
+#$count = $count+2;
 
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
 print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.<br>\n";
-print "Your email message name is <br>$filename<br>$reply</FONT><br><br>\n";
-
-print "$body</FONT>";
-
+print "Your email message name is <br>$filename</FONT><br><br>\n";
 print "</body></html>\n";
- }
+
+open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";
+
+print TMP "Mid: $mid\n";
+print TMP "Body: 443\n";
+print TMP "Content-Transfer-Encoding: 8bit\n";
+print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
+print TMP "Date: $year\/$mon\/$mday $hour\:$min\n";      #2019/07/19 12:37
+#print TMP "$abbr[$mon] $mday\n";
+print TMP "From: N4MIO\n";
+print TMP "Mbo: N4MIO\n";
+print TMP "Subject: 2019 FD Photos\n";
+print TMP "To: SMTP:dwayne\@n4mio.com\n";
+print TMP "Type: Private\n\n";
+print TMP " Begin Message\n"; 
+print TMP "=================================\n";
+	
+print TMP "$body0\n";
+print TMP "$body1\n";
+print TMP "$body2\n";
+print TMP "$body3\n";
+print TMP "$body4\n";
+print TMP "$body5\n";
+print TMP "$body6\n";
+print TMP "$body7\n";
+print TMP "$body8\n";
+print TMP "$body8a\n";
+print TMP "$body9\n";
+print TMP "$body10\n";
+print TMP "$body10a\n";
+print TMP "$body11\n";
+
+print TMP "=================================\n";
+print TMP " End Message\n\n";
+
+print TMP "Notice: This email was sent using amateur radio.Do not add attachments to replies. The system will not deliver replies with attachments. Also, this is not a private system. While we try to keep the replies private, it is possible that it could be viewed publicaly.\n";
+
+close TMP;
+
+}
+
+
+
   else {
         &begin;
        }
 
 exit;
 }
+
+
+
 
 #OUTPUT FOR FORM RADIOGRAM
 ###########################
@@ -139,7 +187,7 @@ print "</body></html>\n";
 exit;
 }
 
- 
+
 #MAIN PAGE MENU (FORMS)
 #######################
 if ($FORM{'213'}) {
