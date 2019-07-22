@@ -5,10 +5,7 @@
 
  #use strict;
  #use warning;
- #use DateTime::TimeZone;
- #use DateTime;
- #use Date::Format;
-
+ 
 # SET VARIABLES
 #######################
 
@@ -126,15 +123,10 @@ my ($fbody) = ($body0 . $body1 . $body2 . $body3 . $body4 . $body5 . $body6 . $b
 
 my $fbody_len = length($fbody);
 
-#$count =  strlen($newbody); $newbody is body plus the reply
-#$count = $count+2;
-
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
-print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.<br>\n";
-print "Your email message:<br><br>$fbody</FONT><br><br>\n";
-print "Your Month Day is: $mday</FONT><br><br>\n";
-print "Your Hour is: $hour</FONT><br><br>\n";
+print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message below<br>has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.<br>\n";
+print "Your email message:<br><br>$body0<br><br>$body1<br><br>$body2<br><br>$body3<br><br>$body4<br><br>$body5<br><br>$body6<br><br>$body7<br><br>$body8<br><br>$body8a<br><br>$body9<br><br>$body10<br><br>$body10a<br><br>$body11</FONT><br><br>\n";
 print "</body></html>\n";
 
 open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";
