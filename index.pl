@@ -9,21 +9,32 @@
  #use DateTime;
  #use Date::Format;
 
-# Set Variables
+# SET VARIABLES
 #######################
 
-my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-my @abbr = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+#Set up time variables
+my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time);
+#my @abbr = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
 $year += 1900;
 $mon += 1;
+#$mday += 1;
+#my $gdate = gmdate('Y/m/d h:i',time());
+
 
 if ($min < "10") {
   $min = "0" .$min;
  }
 
+if ($hour < "10") {
+  $hour = "0" .$hour;
+ }
 
-my $cgiurl = "auxmsg.pl"; # LOCAL
-#my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
+if ($mon < "10") {
+  $mon = "0" .$mon;
+ }
+
+#my $cgiurl = "auxmsg.pl"; # LOCAL
+my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 
 
 my $ver = "1.0";
@@ -90,25 +101,30 @@ $mid .= $chars[rand @chars] for 1..12;
 
     $filename = $mid.'.b2f';
 	
-	if ($reply = "on") {
+	if ($reply) {
 	   $rmsg = $msg;
 	   $msg = "THIS IS A REPLY";
+	   
 	}
 
-my $body0 = "GENERAL MESSAGE (ICS 213)\n";
-my $body1 = "1. Incident Name (Optional): $incident\n";
-my $body2 = "2. To (Name and Position): $to\n";
-my $body3 = "3. From (Name and Position): $from\n";
-my $body4 = "4. Subject: $subject\n";
-my $body5 = "5. Date: $date\n";
-my $body6 = "6. Time: $time\n";
-my $body7 = "7. Message: $msg\n";
-my $body8 = "8. Approved by:  Name: $approved Signature: $asig\n";
-my $body8a = "Position/Title: $atitle\n";
-my $body9 = "9. Reply: $rmsg\n";
-my $body10 = "10. Replied by:  Name: $rname Position/Title: $rtitle\n";
-my $body10a = "Signature: $rsig\n";
-my $body11 = "$rdandt\n";
+my $body0 = "GENERAL MESSAGE (ICS 213)\n\n";
+my $body1 = "1. Incident Name (Optional): $incident\n\n";
+my $body2 = "2. To (Name and Position): $to\n\n";
+my $body3 = "3. From (Name and Position): $from\n\n";
+my $body4 = "4. Subject: $subject\n\n";
+my $body5 = "5. Date: $date";
+my $body6 = "  6. Time: $time\n\n";
+my $body7 = "7. Message: $msg\n\n";
+my $body8 = "8. Approved by:  Name: $approved\n  Signature: $asig\n";
+my $body8a = "  Position/Title: $atitle\n\n";
+my $body9 = "9. Reply: $rmsg\n\n"; 
+my $body10 = "10. Replied by:  Name: $rname\n  Position/Title: $rtitle\n";
+my $body10a = "  Signature: $rsig\n";
+my $body11 = "  Date\/Time: $rdandt";
+
+my ($fbody) = ($body0 . $body1 . $body2 . $body3 . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body9 . $body10 . $body10a . $body11);
+
+my $fbody_len = length($fbody);
 
 #$count =  strlen($newbody); $newbody is body plus the reply
 #$count = $count+2;
@@ -116,44 +132,48 @@ my $body11 = "$rdandt\n";
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
 print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message to<br>$to has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.<br>\n";
-print "Your email message name is <br>$filename</FONT><br><br>\n";
+print "Your email message:<br><br>$fbody</FONT><br><br>\n";
+print "Your Month Day is: $mday</FONT><br><br>\n";
+print "Your Hour is: $hour</FONT><br><br>\n";
 print "</body></html>\n";
 
 open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";
 
 print TMP "Mid: $mid\n";
-print TMP "Body: 443\n";
+print TMP "Body: $fbody_len\n";
 print TMP "Content-Transfer-Encoding: 8bit\n";
 print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
+#print TMP "Date: $gdate\n";
 print TMP "Date: $year\/$mon\/$mday $hour\:$min\n";      #2019/07/19 12:37
 #print TMP "$abbr[$mon] $mday\n";
 print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
-print TMP "Subject: 2019 FD Photos\n";
+print TMP "Subject: $subject\n";
 print TMP "To: SMTP:dwayne\@n4mio.com\n";
 print TMP "Type: Private\n\n";
-print TMP " Begin Message\n"; 
-print TMP "=================================\n";
+#print TMP " Begin Message\n"; 
+#print TMP "=================================\n";
 	
-print TMP "$body0\n";
-print TMP "$body1\n";
-print TMP "$body2\n";
-print TMP "$body3\n";
-print TMP "$body4\n";
-print TMP "$body5\n";
-print TMP "$body6\n";
-print TMP "$body7\n";
-print TMP "$body8\n";
-print TMP "$body8a\n";
-print TMP "$body9\n";
-print TMP "$body10\n";
-print TMP "$body10a\n";
-print TMP "$body11\n";
+print TMP $body0;
+print TMP $body1;
+print TMP $body2;
+print TMP $body3;
+print TMP $body4;
+print TMP $body5;
+print TMP $body6;
+print TMP $body7;
+print TMP $body8;
+print TMP $body8a;
+print TMP $body9;
+print TMP $body10;
+print TMP $body10a;
+print TMP $body11;
 
-print TMP "=================================\n";
-print TMP " End Message\n\n";
 
-print TMP "Notice: This email was sent using amateur radio.Do not add attachments to replies. The system will not deliver replies with attachments. Also, this is not a private system. While we try to keep the replies private, it is possible that it could be viewed publicaly.\n";
+#print TMP "=================================\n";
+#print TMP " End Message\n\n";
+
+#print TMP "Notice: This email was sent using amateur radio.Do not add attachments to replies. The system will not deliver replies with attachments. Also, this is not a private system. While we try to keep the replies private, it is possible that it could be viewed publicaly.\n";
 
 close TMP;
 
