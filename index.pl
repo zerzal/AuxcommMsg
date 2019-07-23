@@ -284,7 +284,7 @@ print "<input id=date name=date size=10 type=date>\n";
 
 # 6
 print "<br><FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
-print "<input id=time name=time size=10 type=time><br><br>\n";
+print "<input id=time name=time size=10 type=time value=24:00:00><br><br>\n";
 
 # 7
 print "<FONT SIZE = 2 color = Black>7. Message:</font><br>\n";
