@@ -11,6 +11,7 @@
 
 #Set up time variables
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time);
+my $gmthour = $hour;
 my ($lsec,$lmin,$lhour,$lmday,$lmon,$lyear,$lwday,$lyday,$lisdst) = localtime(time);
 #my @abbr = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
 $year += 1900;
@@ -39,7 +40,7 @@ if ($min < "10") {
   $min = "0" .$min;
  }
  
-if ($lhour < "10") {
+if ($gmthour < "10") {
   $lhour = "0" .$lhour;
  }
  
@@ -96,6 +97,7 @@ if ($FORM{'tt'}) {
 
 my $incident = $FORM{'incident'};
 my $to = $FORM{'to'};
+my $email = $FORM{'email'};
 my $from = $FORM{'from'};
 my $subject = $FORM{'subject'};
 my $date = $FORM{'date'};
@@ -127,7 +129,8 @@ $mid .= $chars[rand @chars] for 1..12;
 
 my $body0 = "GENERAL MESSAGE (ICS 213)\n\n";
 my $body1 = "1. Incident Name (Optional): $incident\n\n";
-my $body2 = "2. To (Name and Position): $to\n\n";
+my $body2 = "2. To (Name and Position): $to\n";
+my $body2a = "Email: $email\n\n";
 my $body3 = "3. From (Name and Position): $from\n\n";
 my $body4 = "4. Subject: $subject\n\n";
 my $body5 = "5. Date: $date";
@@ -157,12 +160,12 @@ print TMP "Body: $fbody_len\n";
 print TMP "Content-Transfer-Encoding: 8bit\n";
 print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
 #print TMP "Date: $gdate\n";
-print TMP "Date: $year\/$mon\/$mday $hour\:$min\n";      #2019/07/19 12:37
+print TMP "Date: $year\/$mon\/$mday $gmthour\:$min\n";      #2019/07/19 12:37
 #print TMP "$abbr[$mon] $mday\n";
 print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
 print TMP "Subject: $subject\n";
-print TMP "To: SMTP:dwayne\@n4mio.com\n";
+print TMP "To: SMTP: $email\n";
 print TMP "Type: Private\n\n";
 #print TMP " Begin Message\n"; 
 #print TMP "=================================\n";
@@ -170,6 +173,7 @@ print TMP "Type: Private\n\n";
 print TMP $body0;
 print TMP $body1;
 print TMP $body2;
+print TMP $body2a;
 print TMP $body3;
 print TMP $body4;
 print TMP $body5;
@@ -290,6 +294,9 @@ print "<input id=incident name=incident size=40 type=text><br><br>\n";
 # 2
 print "<FONT SIZE = 2 color = Black>2. To (Name and Position):</font><br>\n";
 print "<input id=to name=to size=40 type=text><br><br>\n";
+
+print "<FONT SIZE = 2 color = Black>Email Address: </font><FONT SIZE = 2 color = Red>(Can be Winlink User alias)</font><br>\n";
+print "<input id=email name=email size=40 type=text><br><br>\n";
 
 # 3
 print "<FONT SIZE = 2 color = Black>3. From (Name and Position):</font><br>\n";
