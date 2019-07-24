@@ -26,7 +26,7 @@ if ($lisdst = 1) {
 	  $hour = $hour + 20;
 	}  
  }
-else if ($lisdst = 0) {
+if ($lisdst = 0) {
         if ($hour > 4) {
 	  $hour = $hour - 5;
 	}  
