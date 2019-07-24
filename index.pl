@@ -11,12 +11,19 @@
 
 #Set up time variables
 my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time);
+my ($lsec,$lmin,$lhour,$lmday,$lmon,$lyear,$lwday,$lyday,$lisdst) = localtime(time);
 #my @abbr = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
 $year += 1900;
 $mon += 1;
 #$mday += 1;
 #my $gdate = gmdate('Y/m/d h:i',time());
 
+if ($lisdst = 1) {
+  $hour = $hour - 4;
+ }
+else {
+  $hour = $hour - 5;
+ } 
 
 if ($min < "10") {
   $min = "0" .$min;
@@ -280,11 +287,11 @@ print "<input id=subject name=subject size=40 type=text>\n";
 
 # 5
 print "<br><FONT SIZE = 2 color = Black>5. Date:</font><br>\n";
-print "<input id=date name=date size=10 type=date>\n";
+print "<input id=date name=date size=10 type=text value=$mon\/$mday\/$year>\n";
 
 # 6
 print "<br><FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
-print "<input id=time name=time size=10 type=time value=24:00:00><br><br>\n";
+print "<input id=time name=time size=5 type=text value=$hour\:$min><br><br>\n";
 
 # 7
 print "<FONT SIZE = 2 color = Black>7. Message:</font><br>\n";
