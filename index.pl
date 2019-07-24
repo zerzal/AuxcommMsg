@@ -38,7 +38,11 @@ if ($lisdst = 0) {
 if ($min < "10") {
   $min = "0" .$min;
  }
-
+ 
+if ($lhour < "10") {
+  $lhour = "0" .$lhour;
+ }
+ 
 if ($hour < "10") {
   $hour = "0" .$hour;
  }
