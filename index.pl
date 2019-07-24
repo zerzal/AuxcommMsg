@@ -19,10 +19,20 @@ $mon += 1;
 #my $gdate = gmdate('Y/m/d h:i',time());
 
 if ($lisdst = 1) {
-  $hour = $hour - 4;
+	if ($hour > 3) {
+	  $hour = $hour - 4;
+	}  
+	if ($hour < 4) {
+	  $hour = $hour + 20;
+	}  
  }
-else {
-  $hour = $hour - 5;
+else if ($lisdst = 0) {
+        if ($hour > 4) {
+	  $hour = $hour - 5;
+	}  
+	if ($hour < 5) {
+	  $hour = $hour + 19;
+	}
  } 
 
 if ($min < "10") {
