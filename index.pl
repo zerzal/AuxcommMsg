@@ -38,6 +38,10 @@ if ($lmon < "10") {
   $lmon = "0" .$lmon;
  }
 
+if ($lmday < "10") {
+  $lmday = "0" .$lmday;
+ }
+
 
 if ($gmin < "10") {
   $gmin = "0" .$gmin;
@@ -49,6 +53,10 @@ if ($ghour < "10") {
 
 if ($gmon < "10") {
   $gmon = "0" .$gmon;
+ }
+
+if ($gmday < "10") {
+  $gmday = "0" .$gmday;
  }
 
 
@@ -105,6 +113,11 @@ my $incident = $FORM{'incident'};
 my $to = $FORM{'to'};
 my $tpos = $FORM{'tpos'};
 my $email = $FORM{'email'};
+
+	if ($email !~ "@") {
+	    $email = $email ."\@winlink.org";
+	}
+
 my $from = $FORM{'from'};
 my $pt = $FORM{'title'};
 my $sig = $FORM{'sig'};
@@ -142,7 +155,7 @@ my $body3 = "3. From (Name): $from\n";
 my $body3a = "\tPosition/Title: $pt\n";
 my $body3b = "\tSignature: $sig\n\n";
 my $body4 = "4. Subject: $subject\n\n";
-my $body5 = "5. Date: $date";
+my $body5 = "5. Date: $date\n";
 my $body6 = "6. Time: $time\n\n";
 my $body7 = "7. Message:\n $msg\n\n";
 my $body8 = "8. Approved by: $approved\n";
@@ -309,10 +322,10 @@ print "<input id=incident name=incident size=40 type=text><br><br>\n";
 
 # 2
 print "<FONT SIZE = 2 color = Black>2. To (Name):</font><br>\n";
-print "<input id=to name=to size=40 type=text><br><br>\n";
+print "<input id=to name=to size=40 type=text><br>\n";
 
-print "<FONT SIZE = 2 color = Black>Position:</font><br>\n";
-print "<input id=tpos name=tpos size=40 type=text><br><br>\n";
+print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
+print "<input id=tpos name=tpos size=40 type=text><br>\n";
 
 print "<FONT SIZE = 2 color = Black>Email Address: </font><FONT SIZE = 2 color = Red>(Can be Winlink User alias)</font><br>\n";
 print "<input id=email name=email size=40 type=text><br><br>\n";
@@ -344,14 +357,14 @@ print "<FONT SIZE = 2 color = Black>7. Message:</font><br>\n";
 print "<textarea name=msg cols=40 rows=10></textarea><br><br>";
 
 # 8
-print "<FONT SIZE = 2 color = Black>8. Approved by: Name:</font><br>\n";
+print "<FONT SIZE = 2 color = Black>8. Approved by (Name):</font><br>\n";
 print "<input id=approved name=approved size=40 type=text><br>\n";
 
-print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
-print "<input id=asig name=asig size=40 type=text><br>\n";
-
 print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
-print "<input id=atitle name=atitle size=40 type=text><br><br>\n";
+print "<input id=atitle name=atitle size=40 type=text><br>\n";
+
+print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
+print "<input id=asig name=asig size=40 type=text><br><br>\n";
 
 # 9
 print "<FONT SIZE = 3 color = Black><b>9. CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
@@ -372,7 +385,7 @@ print "<FONT SIZE = 2 color = Red>(use 7. Message above for reply)</font><br><br
 #print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
 #print "<input id=rdandt name=rdandt size=30 type=text value=$lmon\/$lmday\/$lyear-$lhour:$lmin><br><br><br>\n";
  
-print "<input type=submit> \* <input type=reset><br><br>\n";
+print "<input type=submit> \* <input type=reset><br><br><br><br><br><br>\n";
 print "</form>";
 
 
@@ -401,9 +414,6 @@ print "First name:<br><input type=text name=firstname><br>";
 
 print "<input type=submit> \* <input type=reset><br><br>\n";
 print "</form><br><br><br><br>\n";
-
-
-
 print "</body></html>\n";
 exit;
 }
