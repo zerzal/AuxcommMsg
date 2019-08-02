@@ -50,7 +50,7 @@ if ($gmday < "10") {
   $gmday = "0" .$gmday;
  }
 
-#my $ftime = "$lhour:$lmin\n";
+my $ftime = "$lhour:$lmin\n";
 
 my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
 
