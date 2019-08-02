@@ -198,7 +198,9 @@ print "<br><br><br><br>";
 
 print "</body></html>\n";
 
-open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";
+#open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";
+
+open TMP, '>', "$filename";
 
 print TMP "Mid: $mid\n";
 print TMP "Body: $fbody_len\n";
