@@ -52,7 +52,7 @@ if ($gmday < "10") {
 
 my $ftime = "$lhour:$lmin\n";
 
-my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
+my $cgiurl = "index.pl";
 
 my $ver = "1.0";
 
@@ -146,7 +146,7 @@ print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message below has been que
 
 print "<br>$body0<br><br>$bodyr<br><br>$body1<br><br>$body2<br><br>$body2a<br><br>$body2b<br><br>$body3<br><br>$body3a<br><br>$body3b<br><br>$body4<br><br>$body5<br><br>$body6<br><br>$body7<br><br>$body8<br><br>$body8a<br><br>$body8b</FONT><br><br>";
 
-#Add button to pring web page
+#Add button to print web page
 print "<button onclick=\"myFunction()\">Print this page</button>";
 
 print "<script>";
