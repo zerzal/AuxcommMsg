@@ -157,16 +157,16 @@ print "</script>";
 
 print "<br><br><br><br>";
 
-print "$filename\n"; ##FOR TESTING VIA OPENSHIFT
+#print "$filename\n";                                             ##FOR TESTING VIA OPENSHIFT
 
 print "</body></html>\n";
 
 
 #CREATE FILE FOR SENDING VIA WINLINK
 
-#open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##FOR PRODUCTION
+open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##FOR PRODUCTION
 
-open TMP, '>', "$filename"; ##FOR TESTING VIA OPENSHIFT
+#open TMP, '>', "$filename";                                      ##FOR TESTING VIA OPENSHIFT
 
 print TMP "Mid: $mid\n";
 print TMP "Body: $fbody_len\n";
@@ -284,9 +284,9 @@ print "<input id=tt name=tt type=hidden value=two13>\n";
 print "<FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
 print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br><br>\n";
 
+#Fields of 213 form
 # 1
 print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
-#print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
 print "<input id=incident name=incident size=40 type=text><br><br>\n";
 
 # 2
