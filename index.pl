@@ -105,10 +105,7 @@ foreach $pair (@pairs) {
 #######################
 if ($FORM{'tt'}) {
  if ($FORM{'msg'}) {
-   if ($FORM{'reply'}) {
-       my $rmsg = "THIS IS A REPLY\n";
-   }
-
+   
 my $incident = $FORM{'incident'};
 my $to = $FORM{'to'};
 my $tpos = $FORM{'tpos'};
@@ -128,7 +125,11 @@ my $msg = $FORM{'msg'};
 my $approved = $FORM{'approved'};
 my $asig = $FORM{'asig'};
 my $atitle = $FORM{'atitle'};
-#my $reply = $FORM{'reply'};
+my $reply = $FORM{'reply'};
+my $rmsg = "*** THIS IS A REPLY ***";
+
+
+
 #my $rname = $FORM{'rname'};
 #my $rtitle = $FORM{'rtitle'};
 #my $rsig = $FORM{'rsig'};
@@ -143,9 +144,11 @@ $mid .= $chars[rand @chars] for 1..12;
 
     $filename = $mid.'.b2f';
 	
-	
+my $bodyr = " ";
 
-my $bodyr = "$rmsg\n\n";
+ if ($reply) {
+     $bodyr = "$rmsg\n\n";
+    }
 my $body0 = "GENERAL MESSAGE (ICS 213 - modified)\n\n";
 my $body1 = "1. Incident Name (Optional): $incident\n\n";
 my $body2 = "2. To (Name): $to\n";
@@ -172,9 +175,27 @@ my $fbody_len = length($fbody);
 
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
-print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio<br>and the Winlink system.<br>\n";
-print "<br>$bodyr<br><br>$body0<br><br>$body1<br><br>$body2<br><br>$body2a<br><br>$body2b<br><br>$body3<br><br>$body3a<br><br>$body3b<br><br>$body4<br><br>$body5<br><br>$body6<br><br>$body7<br><br>$body8<br><br>$body8a<br><br>$body8b</FONT><br><br>\n";
-#print "<br><br>$FORM{'reply'}\n";
+print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio and the Winlink system.<br><br>";
+
+print "<br>$body0<br><br>$bodyr<br><br>$body1<br><br>$body2<br><br>$body2a<br><br>$body2b<br><br>$body3<br><br>$body3a<br><br>$body3b<br><br>$body4<br><br>$body5<br><br>$body6<br><br>$body7<br><br>$body8<br><br>$body8a<br><br>$body8b</FONT><br><br>";
+
+#print "<p>Click the button to print the current page.</p>";
+
+print "<button onclick=\"myFunction()\">Print this page</button>";
+
+print "<script>";
+print "function myFunction() {";
+print "  window.print()\;";
+print "}";
+print "</script>";
+
+print "<br><br><br><br>";
+
+
+#print "$reply\n";
+#print "$rmsg\n";
+
+
 print "</body></html>\n";
 
 open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";
@@ -194,8 +215,9 @@ print TMP "Type: Private\n\n";
 #print TMP " Begin Message\n"; 
 #print TMP "=================================\n";
 	
-print TMP $bodyr;
+
 print TMP $body0;
+print TMP $bodyr;
 print TMP $body1;
 print TMP $body2;
 print TMP $body2a;
@@ -368,7 +390,7 @@ print "<input id=asig name=asig size=40 type=text><br><br>\n";
 
 # 9
 print "<FONT SIZE = 3 color = Black><b>9. CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
-print "<input id=reply name=reply type=checkbox class=largerCheckbox><br>\n";
+print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br>\n";
 print "<FONT SIZE = 2 color = Red>(use 7. Message above for reply)</font><br><br>";
 #print "<textarea name=reply cols=40 rows=10></textarea><br><br>";
 
@@ -387,10 +409,6 @@ print "<FONT SIZE = 2 color = Red>(use 7. Message above for reply)</font><br><br
  
 print "<input type=submit> \* <input type=reset><br><br><br><br><br><br>\n";
 print "</form>";
-
-
-#INCLUDE LINK TO PDF INSTRUCTIONS
-
 
 print "</body></html>\n";
 
