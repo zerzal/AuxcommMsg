@@ -1,30 +1,21 @@
 #!/usr/bin/perl
-##!/usr/bin/env perl
-
 #AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
 
  #use strict;
  #use warning;
- 
- 
- 
+  
 # SET VARIABLES
 #######################
 
 #Set up time variables
 my ($gsec,$gmin,$ghour,$gmday,$gmon,$gyear,$gwday,$gyday,$gisdst) = gmtime(time);
-#my $gmthour = $hour + 2;
+
 my ($lsec,$lmin,$lhour,$lmday,$lmon,$lyear,$lwday,$lyday,$lisdst) = localtime(time);
-#my @abbr = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
+
 $gyear += 1900;
 $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
-#$mday += 1;
-#my $gdate = gmdate('Y/m/d h:i',time());
-
-#my $ftime = "$ghour\:$gmin";
-
 
 if ($lmin < "10") {
   $lmin = "0" .$lmin;
@@ -59,20 +50,15 @@ if ($gmday < "10") {
   $gmday = "0" .$gmday;
  }
 
+#my $ftime = "$lhour:$lmin\n";
 
-my $ftime = "$lhour:$lmin\n";
-
-
-#my $cgiurl = "auxmsg.pl"; # LOCAL
 my $cgiurl = "index.pl"; # FOR WEB VIA OPENSHIFT
-
 
 my $ver = "1.0";
 
 # PROCESS FORM DATA
 ########################
 read(STDIN, my $buffer, $ENV{'CONTENT_LENGTH'});
-
 
 #if no form data go to system start
    if (!$buffer) { 
@@ -90,16 +76,9 @@ foreach $pair (@pairs) {
    $value =~ s/%([a-fA-F0-9][a-fA-F0-9])/pack("C", hex($1))/eg;
    $value =~ s/<!--(.|\n)*-->//g;
 
-  # if ($allow_html != 1) {
-     # $value =~ s/<([^>]|\n)*>//g;
-   #}
-
    $FORM{$name} = $value;
   
 }
-
-
-
 
 #OUTPUT FOR FORM IC-213
 #######################
@@ -127,13 +106,6 @@ my $asig = $FORM{'asig'};
 my $atitle = $FORM{'atitle'};
 my $reply = $FORM{'reply'};
 my $rmsg = "*** THIS IS A REPLY ***";
-
-
-
-#my $rname = $FORM{'rname'};
-#my $rtitle = $FORM{'rtitle'};
-#my $rsig = $FORM{'rsig'};
-#my $rdandt = $FORM{'rdandt'};
 
 #File name generator
 my @chars = ("A".."Z", "0".."9");
@@ -164,23 +136,17 @@ my $body7 = "7. Message:\n $msg\n\n";
 my $body8 = "8. Approved by: $approved\n";
 my $body8a = "\tSignature: $asig\n";
 my $body8b = "\tPosition/Title: $atitle\n\n";
-#my $body9 = "9. Reply: $rmsg\n\n"; 
-#my $body10 = "10. Replied by:  Name: $rname\n  \tPosition/Title: $rtitle\n";
-#my $body10a = "\tSignature: $rsig\n";
-#my $body11 = "\tDate\/Time: $rdandt";
-
 my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body3 . $body3a . $body3b . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
-
 my $fbody_len = length($fbody);
 
+#PRINT SENT MESSAGE TO WEB PAGE
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
 print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio and the Winlink system.<br><br>";
 
 print "<br>$body0<br><br>$bodyr<br><br>$body1<br><br>$body2<br><br>$body2a<br><br>$body2b<br><br>$body3<br><br>$body3a<br><br>$body3b<br><br>$body4<br><br>$body5<br><br>$body6<br><br>$body7<br><br>$body8<br><br>$body8a<br><br>$body8b</FONT><br><br>";
 
-#print "<p>Click the button to print the current page.</p>";
-
+#Add button to pring web page
 print "<button onclick=\"myFunction()\">Print this page</button>";
 
 print "<script>";
@@ -191,33 +157,27 @@ print "</script>";
 
 print "<br><br><br><br>";
 
-
-#print "$reply\n";
-#print "$rmsg\n";
-
+print "$filename\n"; ##FOR TESTING VIA OPENSHIFT
 
 print "</body></html>\n";
 
-#open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";
 
-open TMP, '>', "$filename";
+#CREATE FILE FOR SENDING VIA WINLINK
+
+#open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##FOR PRODUCTION
+
+open TMP, '>', "$filename"; ##FOR TESTING VIA OPENSHIFT
 
 print TMP "Mid: $mid\n";
 print TMP "Body: $fbody_len\n";
 print TMP "Content-Transfer-Encoding: 8bit\n";
 print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
-#print TMP "Date: $gdate\n";
 print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
-#print TMP "$abbr[$mon] $mday\n";
 print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
 print TMP "Subject: $subject\n";
 print TMP "To: SMTP: $email\n";
 print TMP "Type: Private\n\n";
-#print TMP " Begin Message\n"; 
-#print TMP "=================================\n";
-	
-
 print TMP $body0;
 print TMP $bodyr;
 print TMP $body1;
@@ -234,22 +194,10 @@ print TMP $body7;
 print TMP $body8;
 print TMP $body8a;
 print TMP $body8b;
-#print TMP $body9;
-#print TMP $body10;
-#print TMP $body10a;
-#print TMP $body11;
-
-
-#print TMP "=================================\n";
-#print TMP " End Message\n\n";
-
-#print TMP "Notice: This email was sent using amateur radio.Do not add attachments to replies. The system will not deliver replies with attachments. Also, this is not a private system. While we try to keep the replies private, it is possible that it could be viewed publicaly.\n";
 
 close TMP;
 
 }
-
-
 
   else {
         &begin;
@@ -257,9 +205,6 @@ close TMP;
 
 exit;
 }
-
-
-
 
 #OUTPUT FOR FORM RADIOGRAM
 ###########################
@@ -276,7 +221,6 @@ print "</body></html>\n";
 
 exit;
 }
-
 
 #MAIN PAGE MENU (FORMS)
 #######################
@@ -295,7 +239,6 @@ if ($FORM{'email'}) {
 if ($FORM{'text'}) {
 &text;
 }
-
 
 #SUBROUTINES
 #######################
@@ -325,7 +268,6 @@ print "</form>\n";
 exit;
 }
 
-
 #FORM IC-213
 sub twothirteen {
 print "Content-type: text/html\n\n";
@@ -334,14 +276,13 @@ print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox {
 print "</head>\n";
 print "<body><FONT SIZE = 5><b>GENERAL MESSAGE<br>(ICS 213 - modified)</b></FONT><br><br><br>\n";
 
-#print "* </font><i> = Required fields</i><br><br>\n";
 print "<form method=POST action=$cgiurl>\n";
 
 print "<input id=tt name=tt type=hidden value=two13>\n";
 
+# Reply checkbox
 print "<FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
 print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br><br>\n";
-#print "<FONT SIZE = 2 color = Red>(use 7. Message above for reply)</font><br><br>";
 
 # 1
 print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
@@ -394,21 +335,6 @@ print "<input id=atitle name=atitle size=40 type=text><br>\n";
 print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=asig name=asig size=40 type=text><br><br>\n";
 
-#print "<textarea name=reply cols=40 rows=10></textarea><br><br>";
-
-# 10
-#print "<FONT SIZE = 2 color = Black>10. Replied by: Name:</font><br>\n";
-#print "<input id=rname name=rname size=40 type=text><br>\n";
-
-#print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
-#print "<input id=rtitle name=rtitle size=40 type=text><br>\n";
-
-#print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
-#print "<input id=rsig name=rsig size=40 type=text><br><br>\n";
-
-#print "<FONT SIZE = 2 color = Black>Date/Time:</font><br>\n";
-#print "<input id=rdandt name=rdandt size=30 type=text value=$lmon\/$lmday\/$lyear-$lhour:$lmin><br><br><br>\n";
- 
 print "<input type=submit> \* <input type=reset><br><br><br><br><br><br>\n";
 print "</form>";
 
@@ -417,7 +343,6 @@ print "</body></html>\n";
 exit;
 
 }
-
 
 #FORM RADIOGRAM
 sub radiogram {
@@ -430,7 +355,6 @@ print "<form method=POST action=$cgiurl>\n";
 
 print "<input id=rgram name=rgram type=hidden value=radiogram>\n";
 print "First name:<br><input type=text name=firstname><br>";
-
 
 print "<input type=submit> \* <input type=reset><br><br>\n";
 print "</form><br><br><br><br>\n";
@@ -447,7 +371,6 @@ print "<FONT SIZE = 2 color = Black>SIMPLE EMAIL GOES HERE</font>\&nbsp\;\&nbsp\
 print "</body></html>\n";
 exit;
 }
-
 
 #FORM TEXT
 sub text {
