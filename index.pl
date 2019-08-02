@@ -330,12 +330,16 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>GENERAL MESSAGE (ICS 213 - modified)</title>";
 print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 30px; height: 30px; } </style>";
 print "</head>\n";
-print "<body><FONT SIZE = 5><b>GENERAL MESSAGE<br>(ICS 213 - modified)</b></FONT><br><br>\n";
+print "<body><FONT SIZE = 5><b>GENERAL MESSAGE<br>(ICS 213 - modified)</b></FONT><br><br><br>\n";
 
 #print "* </font><i> = Required fields</i><br><br>\n";
 print "<form method=POST action=$cgiurl>\n";
 
 print "<input id=tt name=tt type=hidden value=two13>\n";
+
+print "<FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
+print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br><br>\n";
+#print "<FONT SIZE = 2 color = Red>(use 7. Message above for reply)</font><br><br>";
 
 # 1
 print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
@@ -349,7 +353,7 @@ print "<input id=to name=to size=40 type=text><br>\n";
 print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
 print "<input id=tpos name=tpos size=40 type=text><br>\n";
 
-print "<FONT SIZE = 2 color = Black>Email Address: </font><FONT SIZE = 2 color = Red>(Can be Winlink User alias)</font><br>\n";
+print "<FONT SIZE = 2 color = Black>Email Address: </font><FONT SIZE = 2 color = Red>(Can be Winlink user alias)</font><br>\n";
 print "<input id=email name=email size=40 type=text><br><br>\n";
 
 # 3
@@ -388,10 +392,6 @@ print "<input id=atitle name=atitle size=40 type=text><br>\n";
 print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
 print "<input id=asig name=asig size=40 type=text><br><br>\n";
 
-# 9
-print "<FONT SIZE = 3 color = Black><b>9. CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
-print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br>\n";
-print "<FONT SIZE = 2 color = Red>(use 7. Message above for reply)</font><br><br>";
 #print "<textarea name=reply cols=40 rows=10></textarea><br><br>";
 
 # 10
