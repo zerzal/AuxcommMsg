@@ -268,7 +268,7 @@ if ($FORM{'text'}) {
 
 #SUBROUTINES
 #######################
-#Main Page
+#Main Menu
 sub begin {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
@@ -280,18 +280,18 @@ print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
 print "</form>\n";
 
 print "<FORM ACTION=$cgiurl METHOD=POST>";
-print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
+print "<INPUT TYPE=submit NAME=email VALUE=EMAIL>";
 print "</form>\n";
-print "</body></html>\n";
 
 print "<FORM ACTION=$cgiurl METHOD=POST>";
-print "<INPUT TYPE=submit NAME=email VALUE=EMAIL>";
+print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
 print "</form>\n";
 
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=text VALUE=TEXT>";
 print "</form>\n";
 
+print "</body></html>\n";
 exit;
 }
 
