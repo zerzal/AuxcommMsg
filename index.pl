@@ -171,16 +171,16 @@ print "\&nbsp\;\&nbsp\;<input type=button onClick=\"location.href=\'index.pl\'\"
 
 print "<br><br><br><br>";
 
-#print "$filename\n";                                             ##FOR TESTING VIA OPENSHIFT
+print "$filename\n";                                             ##FOR TESTING VIA OPENSHIFT
 
 print "</body></html>\n";
 
 
 #CREATE FILE FOR SENDING VIA WINLINK
 
-open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##FOR PRODUCTION
+#open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##FOR PRODUCTION
 
-#open TMP, '>', "$filename";                                      ##FOR TESTING VIA OPENSHIFT
+open TMP, '>', "$filename";                                      ##FOR TESTING VIA OPENSHIFT
 
 print TMP "Mid: $mid\n";
 print TMP "Body: $fbody_len\n";
