@@ -84,7 +84,8 @@ foreach $pair (@pairs) {
 #######################
 if ($FORM{'tt'}) {
  if ($FORM{'msg'}) {
-   
+  if ($FORM{'email'}) {
+ 
 my $incident = $FORM{'incident'};
 my $to = $FORM{'to'};
 my $tpos = $FORM{'tpos'};
@@ -93,6 +94,15 @@ my $email = $FORM{'email'};
 	if ($email !~ "@") {
 	    $email = $email ."\@winlink.org";
 	}
+
+my $cc = $FORM{'cc'};
+
+   if ($cc) {     
+  
+      if ($cc !~ "@") {
+	  $cc = $cc ."\@winlink.org";
+	 }
+   }
 
 my $from = $FORM{'from'};
 my $pt = $FORM{'title'};
@@ -126,6 +136,7 @@ my $body1 = "1. Incident Name (Optional): $incident\n\n";
 my $body2 = "2. To (Name): $to\n";
 my $body2a = "\tPosition/Title: $tpos\n";
 my $body2b = "\tEmail: $email\n\n";
+my $body2c = "\tCC: $cc\n\n";
 my $body3 = "3. From (Name): $from\n";
 my $body3a = "\tPosition/Title: $pt\n";
 my $body3b = "\tSignature: $sig\n\n";
@@ -136,15 +147,16 @@ my $body7 = "7. Message:\n $msg\n\n";
 my $body8 = "8. Approved by: $approved\n";
 my $body8a = "\tSignature: $asig\n";
 my $body8b = "\tPosition/Title: $atitle\n\n";
-my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body3 . $body3a . $body3b . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
+my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body2c . $body3 . $body3a . $body3b . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
 my $fbody_len = length($fbody);
 
 #PRINT SENT MESSAGE TO WEB PAGE
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
-print "<body><FONT SIZE = 3>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio and the Winlink system.<br><br>";
+print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print "<body style=\"background-color:powderblue;\"><FONT SIZE = 3>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio and the Winlink system.<br><br>";
 
-print "<br>$body0<br><br>$bodyr<br><br>$body1<br><br>$body2<br><br>$body2a<br><br>$body2b<br><br>$body3<br><br>$body3a<br><br>$body3b<br><br>$body4<br><br>$body5<br><br>$body6<br><br>$body7<br><br>$body8<br><br>$body8a<br><br>$body8b</FONT><br><br>";
+print "<br>$body0<br><br>$bodyr<br><br>$body1<br><br>$body2<br><br>$body2a<br><br>$body2b<br><br>$body2c<br><br>$body3<br><br>$body3a<br><br>$body3b<br><br>$body4<br><br>$body5<br><br>$body6<br><br>$body7<br><br>$body8<br><br>$body8a<br><br>$body8b</FONT><br><br>";
 
 #Add button to print web page
 print "<button onclick=\"myFunction()\">Print this page</button>";
@@ -154,6 +166,8 @@ print "function myFunction() {";
 print "  window.print()\;";
 print "}";
 print "</script>";
+
+print "\&nbsp\;\&nbsp\;<input type=button onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'>";
 
 print "<br><br><br><br>";
 
@@ -177,6 +191,11 @@ print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
 print TMP "Subject: $subject\n";
 print TMP "To: SMTP: $email\n";
+
+if ($cc) {     
+   print TMP "To: SMTP: $cc\n";
+	 }
+
 print TMP "Type: Private\n\n";
 print TMP $body0;
 print TMP $bodyr;
@@ -184,6 +203,7 @@ print TMP $body1;
 print TMP $body2;
 print TMP $body2a;
 print TMP $body2b;
+print TMP $body2c;
 print TMP $body3;
 print TMP $body3a;
 print TMP $body3b;
@@ -196,6 +216,12 @@ print TMP $body8a;
 print TMP $body8b;
 
 close TMP;
+
+}
+
+else {
+        &begin;
+       }
 
 }
 
@@ -246,22 +272,23 @@ if ($FORM{'text'}) {
 sub begin {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
-print "<body><FONT SIZE = 5><b>AUXCOMM<br>MESSAGING<br>SERVER</b></FONT><FONT SIZE = 2 color = red>\&nbsp\;\&nbsp\;<b>$ver</b><br><br>\n";
+print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print "<body style=\"background-color:FF3333;\"><FONT SIZE = 5><b>AUXCOMM<br>MESSAGING<br>SERVER</b></FONT><FONT SIZE = 2 color = red>\&nbsp\;\&nbsp\;<b>$ver</b><br><br>\n";
 
-print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
+print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
 print "</form>\n";
 
-print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
+print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
 print "</form>\n";
 print "</body></html>\n";
 
-print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
+print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=email VALUE=EMAIL>";
 print "</form>\n";
 
-print "<FORM ACTION=$cgiurl METHOD=POST TARGET=_BLANK>";
+print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=text VALUE=TEXT>";
 print "</form>\n";
 
@@ -272,9 +299,10 @@ exit;
 sub twothirteen {
 print "Content-type: text/html\n\n";
 print "<html><head><title>GENERAL MESSAGE (ICS 213 - modified)</title>";
+print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
 print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 30px; height: 30px; } </style>";
 print "</head>\n";
-print "<body><FONT SIZE = 5><b>GENERAL MESSAGE<br>(ICS 213 - modified)</b></FONT><br><br><br>\n";
+print "<body style=\"background-color:FFCC33;\"><FONT SIZE = 5><b>GENERAL MESSAGE<br>(ICS 213 - modified)</b></FONT><br><br><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
@@ -296,8 +324,11 @@ print "<input id=to name=to size=40 type=text><br>\n";
 print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
 print "<input id=tpos name=tpos size=40 type=text><br>\n";
 
-print "<FONT SIZE = 2 color = Black>Email Address: </font><FONT SIZE = 2 color = Red>(Can be Winlink user alias)</font><br>\n";
-print "<input id=email name=email size=40 type=text><br><br>\n";
+print "<FONT SIZE = 2 color = Black>Email Address: <b>REQUIRED</b></font><FONT SIZE = 2 color = 0099CC><br>(Can be Winlink user alias)</font><br>\n";
+print "<input id=email name=email size=40 type=text><br>\n";
+
+print "<FONT SIZE = 2 color = Black>CC:</font><br>\n";
+print "<input id=cc name=cc size=40 type=text><br><br>\n";
 
 # 3
 print "<FONT SIZE = 2 color = Black>3. From (Name):</font><br>\n";
@@ -322,7 +353,7 @@ print "<br><FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
 print "<input id=time name=time size=7 type=text value=$ftime><br><br>\n";
 
 # 7
-print "<FONT SIZE = 2 color = Black>7. Message:</font><br>\n";
+print "<FONT SIZE = 2 color = Black>7. Message: <b>REQUIRED</b></font><br>\n";
 print "<textarea name=msg cols=40 rows=10></textarea><br><br>";
 
 # 8
