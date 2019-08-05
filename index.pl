@@ -273,7 +273,7 @@ sub begin {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
-print "<body style=\"background-color:FF3333;\"><FONT SIZE = 5><b>AUXCOMM<br>MESSAGING<br>SERVER</b></FONT><FONT SIZE = 2 color = red>\&nbsp\;\&nbsp\;<b>$ver</b><br><br>\n";
+print "<body style=\"background-color:FF3333;\"><FONT SIZE = 5><b>AUXCOMM<br>MESSAGING<br>SERVER</b></FONT><FONT SIZE = 2 color = purple>\&nbsp\;\&nbsp\;<b>$ver</b><br><br>\n";
 
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
