@@ -277,18 +277,11 @@ print "<body style=\"background-color:FF3333;\"><FONT SIZE = 5><b>AUXCOMM<br>MES
 
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>";
-print "</form>\n";
-
-print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=email VALUE=EMAIL>";
 print "</form>\n";
 
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
-print "</form>\n";
-
-print "<FORM ACTION=$cgiurl METHOD=POST>";
-print "<INPUT TYPE=submit NAME=text VALUE=TEXT>";
 print "</form>\n";
 
 print "</body></html>\n";
