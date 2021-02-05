@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 #AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
 
- #use strict;
- #use warning;
+ use strict;
+ use warnings;
   
 # SET VARIABLES
 #######################
@@ -16,6 +16,10 @@ $gyear += 1900;
 $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
+
+my (@pairs, $name, $value, %FORM, $filename, $pair);
+
+##############################################################################
 
 if ($lmin < "10") {
   $lmin = "0" .$lmin;
@@ -106,7 +110,7 @@ my $cc = $FORM{'cc'};
 
 my $from = $FORM{'from'};
 my $pt = $FORM{'title'};
-my $sig = $FORM{'sig'};
+#my $sig = $FORM{'sig'};
 my $subject = $FORM{'subject'};
 my $date = $FORM{'date'};
 my $time = $FORM{'time'};
@@ -139,7 +143,7 @@ my $body2b = "\tEmail: $email\n\n";
 my $body2c = "\tCC: $cc\n\n";
 my $body3 = "3. From (Name): $from\n";
 my $body3a = "\tPosition/Title: $pt\n";
-my $body3b = "\tSignature: $sig\n\n";
+#my $body3b = "\tSignature: $sig\n\n";
 my $body4 = "4. Subject: $subject\n\n";
 my $body5 = "5. Date: $date\n";
 my $body6 = "6. Time: $time\n\n";
@@ -147,16 +151,64 @@ my $body7 = "7. Message:\n $msg\n\n";
 my $body8 = "8. Approved by: $approved\n";
 my $body8a = "\tSignature: $asig\n";
 my $body8b = "\tPosition/Title: $atitle\n\n";
-my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body2c . $body3 . $body3a . $body3b . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
+my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body2c . $body3 . $body3a . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
 my $fbody_len = length($fbody);
 
 #PRINT SENT MESSAGE TO WEB PAGE
 print "Content-type: text/html\n\n";
-print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title></head>\n";
+print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title>";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
-print "<body style=\"background-color:powderblue;\"><FONT SIZE = 3>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio and the Winlink system.<br><br>";
+print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style></head>\n";
+print "<body style=\"background-color:powderblue;\"><FONT SIZE = 3 COLOR = BLUE><b><i>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio and the Winlink system.</i></b></font><br><br>";
+print "<center>";
+print "<br><FONT SIZE = 5><b>$body0</b></FONT>";
+print "<br><br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+print "<table style=width:100\%>";
+print "<table class=\"center\">";
 
-print "<br>$body0<br><br>$bodyr<br><br>$body1<br><br>$body2<br><br>$body2a<br><br>$body2b<br><br>$body2c<br><br>$body3<br><br>$body3a<br><br>$body3b<br><br>$body4<br><br>$body5<br><br>$body6<br><br>$body7<br><br>$body8<br><br>$body8a<br><br>$body8b</FONT><br><br>";
+# 1
+print "<tr><th style=text-align:left>\n";
+print $body1;
+print "</th></tr>\n";
+
+# 2
+print "<tr><th style=text-align:left>\n";
+print "$body2\&nbsp\;\&nbsp\;$body2a<br><br>\&nbsp\;\&nbsp\;\&nbsp\;$body2b";
+	my $body2c_len = length($body2c);
+	if ($body2c_len > 7) {
+		print "\&nbsp\;\&nbsp\;$body2c";
+	}
+print "</th></tr>\n";
+
+# 3
+print "<tr><th style=text-align:left>\n";
+print "$body3\&nbsp\;\&nbsp\;$body3a";
+print "</th></tr>\n";
+
+# 4
+print "<tr><th style=text-align:left>\n";
+print "$body4\&nbsp\;\&nbsp\;$body5\&nbsp\;\&nbsp\;$body6";
+print "</th></tr>\n";
+
+# 7
+print "<tr><th style=text-align:left>\n";
+my @body7_split = split / /, $body7;
+print "@body7_split[0..1]\<br><br>";
+print "@body7_split[2..12]<br>";
+print "@body7_split[13..22]<br>";
+print "@body7_split[23..32]<br>";
+print "@body7_split[33..42]<br>";
+print "@body7_split[43..52]<br>";
+print "@body7_split[53..62]<br>";
+print "@body7_split[63..72]<br>";
+print "</th></tr>\n";
+
+# 8
+print "<tr><th style=text-align:left>\n";
+print "$body8\&nbsp\;\&nbsp\;$body8a\&nbsp\;\&nbsp\;$body8b";
+print "</th></tr>\n";
+
+print "</table><br>";
 
 #Add button to print web page
 print "<button onclick=\"myFunction()\">Print this page</button>";
@@ -171,9 +223,9 @@ print "\&nbsp\;\&nbsp\;<input type=button onClick=\"location.href=\'index.pl\'\"
 
 print "<br><br><br><br>";
 
-print "$filename\n";                                             ##FOR TESTING VIA OPENSHIFT
+#print "$filename\n";                                             ##FOR TESTING VIA OPENSHIFT
 
-print "</body></html>\n";
+print "</center></body></html>\n";
 
 
 #CREATE FILE FOR SENDING VIA WINLINK
@@ -206,7 +258,7 @@ print TMP $body2b;
 print TMP $body2c;
 print TMP $body3;
 print TMP $body3a;
-print TMP $body3b;
+#print TMP $body3b;
 print TMP $body4;
 print TMP $body5;
 print TMP $body6;
@@ -293,9 +345,10 @@ sub twothirteen {
 print "Content-type: text/html\n\n";
 print "<html><head><title>GENERAL MESSAGE (ICS 213 - modified)</title>";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
-print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 30px; height: 30px; } </style>";
+print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
+print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
 print "</head>\n";
-print "<body style=\"background-color:FFCC33;\"><FONT SIZE = 5><b>GENERAL MESSAGE<br>(ICS 213 - modified)</b></FONT><br><br><br>\n";
+print "<body style=\"background-color:FFCC33;\"><center><FONT SIZE = 5><b>GENERAL MESSAGE(ICS 213 - modified)</b></FONT><br><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
@@ -307,60 +360,79 @@ print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br
 
 #Fields of 213 form
 # 1
-print "<FONT SIZE = 2 color = Black>1. Incident Name (Optional):</font><br>\n";
-print "<input id=incident name=incident size=40 type=text><br><br>\n";
+#print "<div data-role=\"main\" class=\"ui-content\">";
+#print "<fieldset data-role=\"collapsible\">";
+
+print "<table style=width:100\%>";
+print "<table class=\"center\">";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>1. Incident Name (Optional):</font>\&nbsp\;\&nbsp\;";
+print "<input id=incident name=incident size=60 type=text><br>\n";
+print "</th></tr>\n";
 
 # 2
-print "<FONT SIZE = 2 color = Black>2. To (Name):</font><br>\n";
-print "<input id=to name=to size=40 type=text><br>\n";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>2. To (Name):\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=to name=to size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
-print "<input id=tpos name=tpos size=40 type=text><br>\n";
+print "<FONT SIZE = 3 color = Black>Position/Title:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=tpos name=tpos size=30 type=text><br><br>\n";
 
-print "<FONT SIZE = 2 color = Black>Email Address: <b>REQUIRED</b></font><FONT SIZE = 2 color = 0099CC><br>(Can be Winlink user alias)</font><br>\n";
-print "<input id=email name=email size=40 type=text><br>\n";
+print "<FONT SIZE = 3 color = Black>Email Address\&nbsp\;<b>(Required):</b></font>\n";
+print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 2 color = Black>CC:</font><br>\n";
-print "<input id=cc name=cc size=40 type=text><br><br>\n";
+print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=cc name=cc size=30 type=text><br>\n";
+print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
+print "</th></tr>\n";
 
 # 3
-print "<FONT SIZE = 2 color = Black>3. From (Name):</font><br>\n";
-print "<input id=from name=from size=40 type=text><br>\n";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>3. From (Name):</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=from name=from size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
-print "<input id=title name=title size=40 type=text><br>\n";
+print "<FONT SIZE = 3 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=title name=title size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
-print "<input id=sig name=sig size=40 type=text><br><br>\n";
+#print "<FONT SIZE = 3 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
+#print "<input id=sig name=sig size=40 type=text><br>\n";
+print "</th></tr>\n";
 
 # 4
-print "<FONT SIZE = 2 color = Black>4. Subject:</font><br>\n";
-print "<input id=subject name=subject size=40 type=text>\n";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>4. Subject:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=subject name=subject size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
 # 5
-print "<br><br><FONT SIZE = 2 color = Black>5. Date:</font><br>\n";
-print "<input id=date name=date size=14 type=text value=$lmon\/$lmday\/$lyear>\n";
+print "<FONT SIZE = 3 color = Black>5. Date:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=date name=date size=14 type=text value=$lmon\/$lmday\/$lyear>\&nbsp\;\&nbsp\;\n";
 
 # 6
-print "<br><FONT SIZE = 2 color = Black>6. Time:</font><br>\n";
-print "<input id=time name=time size=7 type=text value=$ftime><br><br>\n";
+print "<FONT SIZE = 3 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=time name=time size=7 type=text value=$ftime><br>\n";
+print "</th></tr>\n";
 
 # 7
-print "<FONT SIZE = 2 color = Black>7. Message: <b>REQUIRED</b></font><br>\n";
-print "<textarea name=msg cols=40 rows=10></textarea><br><br>";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>7. Message: <b>(Required)</b></font><br>\n";
+print "<textarea name=msg cols=100 rows=10></textarea><br>";
+print "</th></tr>\n";
 
 # 8
-print "<FONT SIZE = 2 color = Black>8. Approved by (Name):</font><br>\n";
-print "<input id=approved name=approved size=40 type=text><br>\n";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>8. Approved by (Name):</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=approved name=approved size=15 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 2 color = Black>Position/Title:</font><br>\n";
-print "<input id=atitle name=atitle size=40 type=text><br>\n";
+print "<FONT SIZE = 2 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=atitle name=atitle size=15 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 2 color = Black>Signature:</font><br>\n";
-print "<input id=asig name=asig size=40 type=text><br><br>\n";
+print "<FONT SIZE = 2 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=asig name=asig size=15 type=text><br>\n";
+print "</th></tr>\n";
+print "</table>";
 
-print "<input type=submit> \* <input type=reset><br><br><br><br><br><br>\n";
-print "</form>";
+print "<br><input type=submit> \* <input type=reset><br><br><br><br><br><br>\n";
+print "</form></center>";
 
 print "</body></html>\n";
 
