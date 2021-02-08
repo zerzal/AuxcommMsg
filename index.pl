@@ -17,7 +17,7 @@ $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
 
-my (@pairs, $name, $value, %FORM, $filename, $pair);
+my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile);
 
 ##############################################################################
 
@@ -135,7 +135,7 @@ my $bodyr = " ";
  if ($reply) {
      $bodyr = "$rmsg\n\n";
     }
-my $body0 = "GENERAL MESSAGE (ICS 213 - modified)\n\n";
+my $body0 = "GENERAL MESSAGE (ICS 213)\n\n";
 my $body1 = "1. Incident Name (Optional): $incident\n\n";
 my $body2 = "2. To (Name): $to\n";
 my $body2a = "\tPosition/Title: $tpos\n";
@@ -159,10 +159,27 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title>";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style></head>\n";
+
+print "<script>
+		function printDiv(divName){
+			var printContents = document.getElementById(divName).innerHTML;
+			var originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+
+		}
+	</script>";
+
+
 print "<body style=\"background-color:powderblue;\"><FONT SIZE = 3 COLOR = BLUE><b><i>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio and the Winlink system.</i></b></font><br><br>";
 print "<center>";
+print "<div id='printMe'>";
 print "<br><FONT SIZE = 5><b>$body0</b></FONT>";
-print "<br><br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+print "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
 print "<table style=width:100\%>";
 print "<table class=\"center\">";
 
@@ -209,17 +226,22 @@ print "$body8\&nbsp\;\&nbsp\;$body8a\&nbsp\;\&nbsp\;$body8b";
 print "</th></tr>\n";
 
 print "</table><br>";
+#print "</center>";
+print "</div>";
 
 #Add button to print web page
-print "<button onclick=\"myFunction()\">Print this page</button>";
+#print "<center>";
+print "<b><input type=button name=print style=background-color:#C42F47 value=\"Print Form\" onClick=printDiv('printMe')>";
 
-print "<script>";
-print "function myFunction() {";
-print "  window.print()\;";
-print "}";
-print "</script>";
+#print "<button onclick=\"myFunction()\">Print this page</button>";
 
-print "\&nbsp\;\&nbsp\;<input type=button onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'>";
+#print "<script>";
+#print "function myFunction() {";
+#print "  window.print()\;";
+#print "}";
+#print "</script>";
+
+print "\&nbsp\;\&nbsp\;<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
 
 print "<br><br><br><br>";
 
@@ -227,8 +249,95 @@ print "<br><br><br><br>";
 
 print "</center></body></html>\n";
 
+#BUILD HTM FILE TO ATTACH TO EMAIL
 
-#CREATE FILE FOR SENDING VIA WINLINK
+$htmfile = $mid.'.htm';
+
+open HTM, '>', "$htmfile";  
+
+print HTM "<html><head><title>FORM IC-213 ATTACHED</title>";
+print HTM "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print HTM "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style></head>\n";
+
+print HTM "<script>
+		function printDiv(divName){
+			var printContents = document.getElementById(divName).innerHTML;
+			var originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+
+		}
+	</script>";
+
+
+print HTM "<body style=\"background-color:white;\"><br><br>";
+print HTM "<center>";
+print HTM "<div id='printMe'>";
+print HTM "<br><FONT SIZE = 5><b>$body0</b></FONT>";
+print HTM "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+print HTM "<table style=width:100\%>";
+print HTM "<table class=\"center\">";
+
+# 1
+print HTM "<tr><th style=text-align:left>\n";
+print HTM $body1;
+print HTM "</th></tr>\n";
+
+# 2
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "$body2\&nbsp\;\&nbsp\;$body2a<br><br>\&nbsp\;\&nbsp\;\&nbsp\;$body2b";
+	my $body2c_len = length($body2c);
+	if ($body2c_len > 7) {
+		print HTM "\&nbsp\;\&nbsp\;$body2c";
+	}
+print HTM "</th></tr>\n";
+
+# 3
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "$body3\&nbsp\;\&nbsp\;$body3a";
+print HTM "</th></tr>\n";
+
+# 4
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "$body4\&nbsp\;\&nbsp\;$body5\&nbsp\;\&nbsp\;$body6";
+print HTM "</th></tr>\n";
+
+# 7
+print HTM "<tr><th style=text-align:left>\n";
+#my @body7_split = split / /, $body7;
+print HTM "@body7_split[0..1]\<br><br>";
+print HTM "@body7_split[2..12]<br>";
+print HTM "@body7_split[13..22]<br>";
+print HTM "@body7_split[23..32]<br>";
+print HTM "@body7_split[33..42]<br>";
+print HTM "@body7_split[43..52]<br>";
+print HTM "@body7_split[53..62]<br>";
+print HTM "@body7_split[63..72]<br>";
+print HTM "</th></tr>\n";
+
+# 8
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "$body8\&nbsp\;\&nbsp\;$body8a\&nbsp\;\&nbsp\;$body8b";
+print HTM "</th></tr>\n";
+
+print HTM "</table><br>";
+print HTM "</div>";
+
+#Add button to print HTM web page
+
+print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"Print Form\" onClick=printDiv('printMe')>";
+
+print HTM "<br><br><br><br>";
+
+print HTM "</center></body></html>\n";
+
+close HTM;
+
+#CREATE B2F FILE FOR SENDING VIA WINLINK
 
 #open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##FOR PRODUCTION
 
@@ -343,7 +452,7 @@ exit;
 #FORM IC-213
 sub twothirteen {
 print "Content-type: text/html\n\n";
-print "<html><head><title>GENERAL MESSAGE (ICS 213 - modified)</title>";
+print "<html><head><title>GENERAL MESSAGE (ICS 213)</title>";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
 print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
