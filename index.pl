@@ -17,7 +17,7 @@ $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
 
-my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile);
+my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars);
 
 ##############################################################################
 
@@ -135,7 +135,8 @@ my $bodyr = " ";
  if ($reply) {
      $bodyr = "$rmsg\n\n";
     }
-my $body0 = "GENERAL MESSAGE (ICS 213)\n\n";
+my $body0 = "GENERAL MESSAGE (ICS 213) Attached";
+#my $body0 = "GENERAL MESSAGE (ICS 213)\n\n";
 my $body1 = "1. Incident Name (Optional): $incident\n\n";
 my $body2 = "2. To (Name): $to\n";
 my $body2a = "\tPosition/Title: $tpos\n";
@@ -151,8 +152,7 @@ my $body7 = "7. Message:\n $msg\n\n";
 my $body8 = "8. Approved by: $approved\n";
 my $body8a = "\tSignature: $asig\n";
 my $body8b = "\tPosition/Title: $atitle\n\n";
-my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body2c . $body3 . $body3a . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
-my $fbody_len = length($fbody);
+
 
 #PRINT SENT MESSAGE TO WEB PAGE
 print "Content-type: text/html\n\n";
@@ -277,7 +277,7 @@ print HTM "<script>
 print HTM "<body style=\"background-color:white;\"><br><br>";
 print HTM "<center>";
 print HTM "<div id='printMe'>";
-print HTM "<br><FONT SIZE = 5><b>$body0</b></FONT>";
+print HTM "<br><FONT SIZE = 5><b>GENERAL MESSAGE (ICS 213)</b></FONT>";
 print HTM "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
 print HTM "<table style=width:100\%>";
 print HTM "<table class=\"center\">";
@@ -290,7 +290,7 @@ print HTM "</th></tr>\n";
 # 2
 print HTM "<tr><th style=text-align:left>\n";
 print HTM "$body2\&nbsp\;\&nbsp\;$body2a<br><br>\&nbsp\;\&nbsp\;\&nbsp\;$body2b";
-	my $body2c_len = length($body2c);
+		$body2c_len = length($body2c);
 	if ($body2c_len > 7) {
 		print HTM "\&nbsp\;\&nbsp\;$body2c";
 	}
@@ -337,12 +337,26 @@ print HTM "</center></body></html>\n";
 
 close HTM;
 
+open HTM, "<$htmfile" or die "Could not open file: $!";
+	while (<HTM>) {
+		$htmchars += length($_);
+	}
+close HTM;
+
+
+#Body charater count
+my $fbody_len = length($body0) + 2;
+#my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body2c . $body3 . $body3a . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
+#my $fbody_len = length($fbody);
+
+
 #CREATE B2F FILE FOR SENDING VIA WINLINK
 
 #open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##FOR PRODUCTION
 
 open TMP, '>', "$filename";                                      ##FOR TESTING VIA OPENSHIFT
 
+#Header information
 print TMP "Mid: $mid\n";
 print TMP "Body: $fbody_len\n";
 print TMP "Content-Transfer-Encoding: 8bit\n";
@@ -356,25 +370,36 @@ print TMP "To: SMTP: $email\n";
 if ($cc) {     
    print TMP "To: SMTP: $cc\n";
 	 }
+$htmchars = $htmchars + 46;
+
+print TMP "File: $htmchars $htmfile\n";
 
 print TMP "Type: Private\n\n";
+
+#Email Body
 print TMP $body0;
-print TMP $bodyr;
-print TMP $body1;
-print TMP $body2;
-print TMP $body2a;
-print TMP $body2b;
-print TMP $body2c;
-print TMP $body3;
-print TMP $body3a;
-#print TMP $body3b;
-print TMP $body4;
-print TMP $body5;
-print TMP $body6;
-print TMP $body7;
-print TMP $body8;
-print TMP $body8a;
-print TMP $body8b;
+print TMP "\n\n";
+
+open HTM, "<$htmfile" or die "Could not open file: $!";
+	while (<HTM>) {
+		print TMP $_;
+	}
+close HTM;
+#print TMP $bodyr;
+#print TMP $body1;
+#print TMP $body2;
+#print TMP $body2a;
+#print TMP $body2b;
+#print TMP $body2c;
+#print TMP $body3;
+#print TMP $body3a;
+#print TMP $body4;
+#print TMP $body5;
+#print TMP $body6;
+#print TMP $body7;
+#print TMP $body8;
+#print TMP $body8a;
+#print TMP $body8b;
 
 close TMP;
 
@@ -457,7 +482,7 @@ print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"
 print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
 print "</head>\n";
-print "<body style=\"background-color:FFCC33;\"><center><FONT SIZE = 5><b>GENERAL MESSAGE(ICS 213 - modified)</b></FONT><br><br>\n";
+print "<body style=\"background-color:FFCC33;\"><center><FONT SIZE = 5><b>GENERAL MESSAGE(ICS 213)</b></FONT><br><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
