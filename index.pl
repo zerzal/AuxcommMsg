@@ -18,6 +18,7 @@ $lyear += 1900;
 $lmon += 1;
 
 my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars);
+my $attached = " ATTACHED";
 
 ##############################################################################
 
@@ -128,14 +129,15 @@ $mid .= $chars[rand @chars] for 1..12;
 
 #Build body of email file
 
-    $filename = $mid.'.b2f';
+$filename = "$mid.b2f";  
+	
 	
 my $bodyr = " ";
 
  if ($reply) {
      $bodyr = "$rmsg\n\n";
     }
-my $body0 = "GENERAL MESSAGE (ICS 213) Attached";
+my $body0 = "GENERAL MESSAGE (ICS 213)";
 #my $body0 = "GENERAL MESSAGE (ICS 213)\n\n";
 my $body1 = "1. Incident Name (Optional): $incident\n\n";
 my $body2 = "2. To (Name): $to\n";
@@ -230,16 +232,8 @@ print "</table><br>";
 print "</div>";
 
 #Add button to print web page
-#print "<center>";
+
 print "<b><input type=button name=print style=background-color:#C42F47 value=\"Print Form\" onClick=printDiv('printMe')>";
-
-#print "<button onclick=\"myFunction()\">Print this page</button>";
-
-#print "<script>";
-#print "function myFunction() {";
-#print "  window.print()\;";
-#print "}";
-#print "</script>";
 
 print "\&nbsp\;\&nbsp\;<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
 
@@ -253,7 +247,10 @@ print "</center></body></html>\n";
 
 $htmfile = $mid.'.htm';
 
-open HTM, '>', "$htmfile";  
+#open HTM, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$htmfile";  ##For production with Linux
+open HTM, '>', "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/$htmfile";  ##For production with Windows
+
+#open HTM, '>', "$htmfile";  ##For local testing
 
 print HTM "<html><head><title>FORM IC-213 ATTACHED</title>";
 print HTM "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
@@ -337,24 +334,24 @@ print HTM "</center></body></html>\n";
 
 close HTM;
 
-open HTM, "<$htmfile" or die "Could not open file: $!";
+open HTM, '<', "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/$htmfile" or die "Could not open file: $!";
 	while (<HTM>) {
 		$htmchars += length($_);
 	}
 close HTM;
 
-
 #Body charater count
-my $fbody_len = length($body0) + 2;
+my $fbody_len = length($body0) + length($attached) + 2;
 #my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body2c . $body3 . $body3a . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
 #my $fbody_len = length($fbody);
 
 
 #CREATE B2F FILE FOR SENDING VIA WINLINK
 
-#open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##FOR PRODUCTION
+#open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##For production with Linux
+open TMP, '>', "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/$filename" or die "Could not open file: $!";  ##For production with Windows
 
-open TMP, '>', "$filename";                                      ##FOR TESTING VIA OPENSHIFT
+#open TMP, '>', "$filename";                                      ##For testing local
 
 #Header information
 print TMP "Mid: $mid\n";
@@ -377,10 +374,10 @@ print TMP "File: $htmchars $htmfile\n";
 print TMP "Type: Private\n\n";
 
 #Email Body
-print TMP $body0;
+print TMP $body0.$attached;
 print TMP "\n\n";
 
-open HTM, "<$htmfile" or die "Could not open file: $!";
+open HTM, '<', "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/$htmfile" or die "Could not open file: $!";
 	while (<HTM>) {
 		print TMP $_;
 	}
