@@ -17,8 +17,16 @@ $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
 
-my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars);
+my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first);
 my $attached = " ATTACHED";
+
+## FOLDER TO USE ACCORDING TO MACHINE IN USE
+
+my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
+
+#my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
+
+#my $folder = "/home/dwayne/.wl2k/mailbox/N4MIO/out/";	  #using Linux
 
 ##############################################################################
 
@@ -59,7 +67,7 @@ my $ftime = "$lhour:$lmin\n";
 
 my $cgiurl = "index.pl";
 
-my $ver = "1.0";
+my $ver = "1.1";
 
 # PROCESS FORM DATA
 ########################
@@ -85,8 +93,8 @@ foreach $pair (@pairs) {
   
 }
 
-#OUTPUT FOR FORM IC-213
-#######################
+#OUTPUT FOR FORM ICS 213
+########################
 if ($FORM{'tt'}) {
  if ($FORM{'msg'}) {
   if ($FORM{'email'}) {
@@ -111,7 +119,6 @@ my $cc = $FORM{'cc'};
 
 my $from = $FORM{'from'};
 my $pt = $FORM{'title'};
-#my $sig = $FORM{'sig'};
 my $subject = $FORM{'subject'};
 my $date = $FORM{'date'};
 my $time = $FORM{'time'};
@@ -127,7 +134,7 @@ my @chars = ("A".."Z", "0".."9");
 my $mid;
 $mid .= $chars[rand @chars] for 1..12;
 
-#Build body of email file
+#Build body of message file
 
 $filename = "$mid.b2f";  
 	
@@ -138,7 +145,6 @@ my $bodyr = " ";
      $bodyr = "$rmsg\n\n";
     }
 my $body0 = "GENERAL MESSAGE (ICS 213)";
-#my $body0 = "GENERAL MESSAGE (ICS 213)\n\n";
 my $body1 = "1. Incident Name (Optional): $incident\n\n";
 my $body2 = "2. To (Name): $to\n";
 my $body2a = "\tPosition/Title: $tpos\n";
@@ -156,7 +162,7 @@ my $body8a = "\tSignature: $asig\n";
 my $body8b = "\tPosition/Title: $atitle\n\n";
 
 
-#PRINT SENT MESSAGE TO WEB PAGE
+#PRINT ICS 213 FORM TO WEB PAGE
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title>";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
@@ -226,9 +232,7 @@ print "</th></tr>\n";
 print "<tr><th style=text-align:left>\n";
 print "$body8\&nbsp\;\&nbsp\;$body8a\&nbsp\;\&nbsp\;$body8b";
 print "</th></tr>\n";
-
 print "</table><br>";
-#print "</center>";
 print "</div>";
 
 #Add button to print web page
@@ -247,10 +251,7 @@ print "</center></body></html>\n";
 
 $htmfile = $mid.'.htm';
 
-#open HTM, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$htmfile";  ##For production with Linux
-open HTM, '>', "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/$htmfile";  ##For production with Windows
-
-#open HTM, '>', "$htmfile";  ##For local testing
+open HTM, '>', $folder.$htmfile;  ##For production with Windows
 
 print HTM "<html><head><title>FORM IC-213 ATTACHED</title>";
 print HTM "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
@@ -334,7 +335,7 @@ print HTM "</center></body></html>\n";
 
 close HTM;
 
-open HTM, '<', "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/$htmfile" or die "Could not open file: $!";
+open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
 	while (<HTM>) {
 		$htmchars += length($_);
 	}
@@ -342,16 +343,10 @@ close HTM;
 
 #Body charater count
 my $fbody_len = length($body0) + length($attached) + 2;
-#my ($fbody) = ($bodyr . $body0 . $body1 . $body2 . $body2a . $body2b . $body2c . $body3 . $body3a . $body4 . $body5 . $body6 . $body7 . $body8 . $body8a . $body8b);
-#my $fbody_len = length($fbody);
 
+#CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
 
-#CREATE B2F FILE FOR SENDING VIA WINLINK
-
-#open TMP, '>', "/home/dwayne/.wl2k/mailbox/N4MIO/out/$filename";  ##For production with Linux
-open TMP, '>', "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/$filename" or die "Could not open file: $!";  ##For production with Windows
-
-#open TMP, '>', "$filename";                                      ##For testing local
+open TMP, '>', $folder.$filename or die "Could not open file: $!";  
 
 #Header information
 print TMP "Mid: $mid\n";
@@ -373,44 +368,45 @@ print TMP "File: $htmchars $htmfile\n";
 
 print TMP "Type: Private\n\n";
 
-#Email Body
+#Message Body
 print TMP $body0.$attached;
 print TMP "\n\n";
 
-open HTM, '<', "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/$htmfile" or die "Could not open file: $!";
+open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
 	while (<HTM>) {
 		print TMP $_;
 	}
 close HTM;
-#print TMP $bodyr;
-#print TMP $body1;
-#print TMP $body2;
-#print TMP $body2a;
-#print TMP $body2b;
-#print TMP $body2c;
-#print TMP $body3;
-#print TMP $body3a;
-#print TMP $body4;
-#print TMP $body5;
-#print TMP $body6;
-#print TMP $body7;
-#print TMP $body8;
-#print TMP $body8a;
-#print TMP $body8b;
 
 close TMP;
 
 }
 
 else {
-        &begin;
+        $err = "DID YOU FORGET AN EMAIL/WINLINK ADDRESS?";
+		&error;
        }
 
 }
 
   else {
-        &begin;
+        $err = "DID YOU FORGET YOUR MESSAGE BODY?";
+		&error;
        }
+
+exit;
+}
+
+#OUTPUT FOR SIMPLE MESSAGE FORM
+if ($FORM{sim}) {
+	$first = "Simple Message";
+print "Content-type: text/html\n\n";
+print "<html><head><title>$first</title></head>\n";
+print "<body><FONT SIZE = 5>$first</FONT><br><br>\n";
+
+print "<FONT SIZE = 10>OUTPUT OF FORM SIMPLE MESSAGE</FONT>\n";
+
+print "</body></html>\n";
 
 exit;
 }
@@ -419,7 +415,7 @@ exit;
 ###########################
 if ($FORM{'rgram'}) {
 
-my $first = $FORM{'firstname'};
+ $first = $FORM{'firstname'};
 print "Content-type: text/html\n\n";
 print "<html><head><title>$first</title></head>\n";
 print "<body><FONT SIZE = 5>$first</FONT><br><br>\n";
@@ -441,8 +437,8 @@ if ($FORM{'rg'}) {
 &radiogram;
 }
 
-if ($FORM{'email'}) {
-&email;
+if ($FORM{'simple'}) {
+&simple;
 }
 
 if ($FORM{'text'}) {
@@ -456,17 +452,14 @@ sub begin {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
-print "<body style=\"background-color:FF3333;\"><FONT SIZE = 5><b>AUXCOMM<br>MESSAGING<br>SERVER</b></FONT><FONT SIZE = 2 color = purple>\&nbsp\;\&nbsp\;<b>$ver</b><br>\n";
-print "<br><FONT SIZE = 4 COLOR = BLUE><I>FORMS</I></FONT><BR><BR>";
+print "<body style=\"background-color:db3033;\"><center><FONT SIZE = 6><b>AUXCOMM MESSAGING SERVER</b></FONT><FONT SIZE = 2 color = purple>\&nbsp\;\&nbsp\;<b>$ver</b><br>\n";
+print "<br><FONT SIZE = 5 COLOR = 1f1a1a><I>CREATE YOUR FORM</I></FONT><BR><BR><BR>";
 print "<FORM ACTION=$cgiurl METHOD=POST>";
-print "<INPUT TYPE=submit NAME=213 VALUE=IC-213>\&nbsp\;\&nbsp\;";
-print "<INPUT TYPE=submit NAME=email VALUE=EMAIL>";
+print "<INPUT TYPE=submit  style=\"font-size:20px; background-color:black; color:FFCC33; border: 3pt ridge grey\" NAME=213 VALUE=\"GENERAL MESSAGE (ICS 213)\"><br><br><br>";
+print "<INPUT TYPE=submit style=\"font-size:20px; background-color:black; color:53b1e0; border: 3pt ridge grey\" NAME=simple VALUE=\"SIMPLE MESSAGE\"><br><br><br>";
+print "<INPUT TYPE=submit NAME=rg VALUE=\"ARRL RADIOGRAM\" style=\"font-size:20px; background-color:f2f268; color:395935; border: 3pt ridge grey\">";
 print "</form>\n";
-
-print "<FORM ACTION=$cgiurl METHOD=POST>";
-print "<INPUT TYPE=submit NAME=rg VALUE=RADIOGRAM>";
-print "</form>\n";
-
+print "</center>";
 print "</body></html>\n";
 exit;
 }
@@ -479,7 +472,7 @@ print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"
 print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
 print "</head>\n";
-print "<body style=\"background-color:FFCC33;\"><center><FONT SIZE = 5><b>GENERAL MESSAGE(ICS 213)</b></FONT><br><br>\n";
+print "<body style=\"background-color:FFCC33;\"><center><FONT SIZE = 5><b>GENERAL MESSAGE (ICS 213)</b></FONT><br><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
@@ -491,8 +484,6 @@ print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br
 
 #Fields of 213 form
 # 1
-#print "<div data-role=\"main\" class=\"ui-content\">";
-#print "<fieldset data-role=\"collapsible\">";
 
 print "<table style=width:100\%>";
 print "<table class=\"center\">";
@@ -525,8 +516,6 @@ print "<input id=from name=from size=30 type=text>\&nbsp\;\&nbsp\;\n";
 print "<FONT SIZE = 3 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
 print "<input id=title name=title size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-#print "<FONT SIZE = 3 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
-#print "<input id=sig name=sig size=40 type=text><br>\n";
 print "</th></tr>\n";
 
 # 4
@@ -571,7 +560,7 @@ exit;
 
 }
 
-#FORM RADIOGRAM
+#FORM ARRL RADIOGRAM
 sub radiogram {
 print "Content-type: text/html\n\n";
 print "<html><head><title>FORM ARRL RADIOGRAM</title></head>\n";
@@ -589,14 +578,76 @@ print "</body></html>\n";
 exit;
 }
 
-#FORM EMAIL
-sub email {
+#FORM SIMPLE MESSAGE
+sub simple {
 print "Content-type: text/html\n\n";
-print "<html><head><title>SIMPLE EMAIL</title></head>\n";
-print "<body><FONT SIZE = 5><b>SIMPLE EMAIL</b></FONT><br><br>\n";
-print "<FONT SIZE = 2 color = Black>SIMPLE EMAIL GOES HERE</font>\&nbsp\;\&nbsp\;\n";
+print "<html><head><title>SIMPLE MESSAGE</title>";
+print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
+print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
+print "</head>\n";
+print "<body style=\"background-color:53b1e0;\"><center><FONT SIZE = 5><b>SIMPLE MESSAGE</b></FONT><br><br>\n";
+
+print "<form method=POST action=$cgiurl>\n";
+
+print "<input id=sim name=sim type=hidden value=simple>\n";
+
+# Reply checkbox
+print "<FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
+print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br><br>\n";
+
+#Fields of Simple Message form
+# table setup
+print "<table style=width:100\%>";
+print "<table class=\"center\">";
+
+# From
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>From (Name):</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=from name=from size=30 type=text>\&nbsp\;\&nbsp\;\n";
+print "</th></tr>\n";
+
+# To
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>To Email Address\&nbsp\;<b>(Required):</b></font>\n";
+print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+# CC
+print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=cc name=cc size=30 type=text><br>\n";
+print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
+print "</th></tr>\n";
+
+# Subject
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>Subject:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=subject name=subject size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+# Date
+print "<FONT SIZE = 3 color = Black>5. Date:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=date name=date size=14 type=text value=$lmon\/$lmday\/$lyear>\&nbsp\;\&nbsp\;\n";
+
+# Time
+print "<FONT SIZE = 3 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=time name=time size=7 type=text value=$ftime><br>\n";
+print "</th></tr>\n";
+
+# Message
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>Message: <b>(Required)</b></font><br>\n";
+print "<textarea name=msg cols=100 rows=10></textarea><br>";
+print "</th></tr>\n";
+
+
+print "</table>";
+
+print "<br><input type=submit> \* <input type=reset><br><br><br><br><br><br>\n";
+print "</form></center>";
+
 print "</body></html>\n";
+
 exit;
+
 }
 
 #FORM TEXT
@@ -605,6 +656,20 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>TEXT MESSAGE</title></head>\n";
 print "<body><FONT SIZE = 5><b>TEXT MESSAGE</b></FONT><br><br>\n";
 print "<FONT SIZE = 2 color = Black>TEXT MESSAGE GOES HERE</font>\&nbsp\;\&nbsp\;\n";
+print "</body></html>\n";
+exit;
+}
+
+sub error {               #Process error messages
+print "Content-type: text/html\n\n";
+print "<html><head><title>LS PURCHASING ERROR PAGE</title><script>\n";
+print "function goBack() { window.history.back()}\n";
+print "</script>\n";
+print "</head><body>\n";
+print "<FONT SIZE = 4 color = black>Error - <b>$err</b></FONT>\n";
+print  "<br><br>";
+print "<button onclick=goBack()>Go Back</button>\n";
+print  "<br><br>";
 print "</body></html>\n";
 exit;
 }
