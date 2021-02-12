@@ -237,13 +237,11 @@ print "</div>";
 
 #Add button to print web page
 
-print "<b><input type=button name=print style=background-color:#C42F47 value=\"Print Form\" onClick=printDiv('printMe')>";
+print "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
 
 print "\&nbsp\;\&nbsp\;<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
 
 print "<br><br><br><br>";
-
-#print "$filename\n";                                             ##FOR TESTING VIA OPENSHIFT
 
 print "</center></body></html>\n";
 
@@ -251,9 +249,9 @@ print "</center></body></html>\n";
 
 $htmfile = $mid.'.htm';
 
-open HTM, '>', $folder.$htmfile;  ##For production with Windows
+open HTM, '>', $folder.$htmfile;
 
-print HTM "<html><head><title>FORM IC-213 ATTACHED</title>";
+print HTM "<html><head><title>ICS 213</title>";
 print HTM "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
 print HTM "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style></head>\n";
 
@@ -306,7 +304,6 @@ print HTM "</th></tr>\n";
 
 # 7
 print HTM "<tr><th style=text-align:left>\n";
-#my @body7_split = split / /, $body7;
 print HTM "@body7_split[0..1]\<br><br>";
 print HTM "@body7_split[2..12]<br>";
 print HTM "@body7_split[13..22]<br>";
@@ -327,7 +324,7 @@ print HTM "</div>";
 
 #Add button to print HTM web page
 
-print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"Print Form\" onClick=printDiv('printMe')>";
+print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
 
 print HTM "<br><br><br><br>";
 
@@ -342,7 +339,7 @@ open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
 close HTM;
 
 #Body charater count
-my $fbody_len = length($body0) + length($attached) + 2;
+my $fbody_len = length($body0) + length($attached) + length($bodyr) + 2;
 
 #CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
 
@@ -360,7 +357,7 @@ print TMP "Subject: $subject\n";
 print TMP "To: SMTP: $email\n";
 
 if ($cc) {     
-   print TMP "To: SMTP: $cc\n";
+   print TMP "Cc: SMTP: $cc\n";
 	 }
 $htmchars = $htmchars + 46;
 
@@ -398,15 +395,267 @@ exit;
 }
 
 #OUTPUT FOR SIMPLE MESSAGE FORM
-if ($FORM{sim}) {
-	$first = "Simple Message";
+if ($FORM{'sim'}) {
+ if ($FORM{'msg'}) {
+  if ($FORM{'email'}) {
+ 
+my $email = $FORM{'email'};
+
+	if ($email !~ "@") {
+	    $email = $email ."\@winlink.org";
+	}
+
+my $cc = $FORM{'cc'};
+
+   if ($cc) {     
+  
+      if ($cc !~ "@") {
+	  $cc = $cc ."\@winlink.org";
+	 }
+   }
+
+my $from = $FORM{'from'};
+my $subject = $FORM{'subject'};
+my $date = $FORM{'date'};
+my $time = $FORM{'time'};
+my $msg = $FORM{'msg'};
+my $reply = $FORM{'reply'};
+my $rmsg = "*** THIS IS A REPLY ***";
+
+#File name generator
+my @chars = ("A".."Z", "0".."9");
+my $mid;
+$mid .= $chars[rand @chars] for 1..12;
+
+#Build body of message file
+
+$filename = "$mid.b2f";  
+	
+	
+my $bodyr = " ";
+
+ if ($reply) {
+     $bodyr = "$rmsg\n\n";
+    }
+my $body0 = "SIMPLE MESSAGE";
+my $body1 = "From (Name): $from\n";
+my $body2a = "\tTo: $email\n\n";
+my $body2b = "\tCc: $cc\n\n";
+my $body3 = "Subject: $subject\n\n";
+my $body4 = "Date: $date\n";
+my $body5 = "Time: $time\n\n";
+my $body6 = "Message:\n $msg\n\n";
+
+#PRINT SIMPLE MESSAGE FORM TO WEB PAGE
 print "Content-type: text/html\n\n";
-print "<html><head><title>$first</title></head>\n";
-print "<body><FONT SIZE = 5>$first</FONT><br><br>\n";
+print "<html><head><title>SIMPLE MESSAGE QUEUED FOR DELIVERY</title>";
+print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style></head>\n";
 
-print "<FONT SIZE = 10>OUTPUT OF FORM SIMPLE MESSAGE</FONT>\n";
+print "<script>
+		function printDiv(divName){
+			var printContents = document.getElementById(divName).innerHTML;
+			var originalContents = document.body.innerHTML;
 
-print "</body></html>\n";
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+
+		}
+	</script>";
+
+
+print "<body style=\"background-color:powderblue;\"><FONT SIZE = 3 COLOR = BLUE><b><i>Thank you!<br>Your Simple Message below has been queued<br>for delivery via Amateur Radio and the Winlink system.</i></b></font><br><br>";
+print "<center>";
+print "<div id='printMe'>";
+print "<br><FONT SIZE = 5><b>$body0</b></FONT>";
+print "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+print "<table style=width:100\%>";
+print "<table class=\"center\">";
+
+# From
+print "<tr><th style=text-align:left>\n";
+print $body1;
+print "</th></tr>\n";
+
+# Email address and CC email address
+print "<tr><th style=text-align:left>\n";
+print "$body2a";
+	my $body2b_len = length($body2b);
+	if ($body2b_len > 7) {
+		print "\&nbsp\;\&nbsp\;$body2b";
+	}
+print "</th></tr>\n";
+
+
+# Subject, date and time
+print "<tr><th style=text-align:left>\n";
+print "$body3\&nbsp\;\&nbsp\;$body4\&nbsp\;\&nbsp\;$body5";
+print "</th></tr>\n";
+
+# Message
+print "<tr><th style=text-align:left>\n";
+my @body6_split = split / /, $body6;
+print "@body6_split[0..1]\<br><br>";
+print "@body6_split[2..12]<br>";
+print "@body6_split[13..22]<br>";
+print "@body6_split[23..32]<br>";
+print "@body6_split[33..42]<br>";
+print "@body6_split[43..52]<br>";
+print "@body6_split[53..62]<br>";
+print "@body6_split[63..72]<br>";
+print "</th></tr>\n";
+
+print "</table><br>";
+print "</div>";
+
+#Add button to print web page
+
+print "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
+
+print "\&nbsp\;\&nbsp\;<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
+
+print "<br><br><br><br>";
+
+print "</center></body></html>\n";
+
+#BUILD HTM FILE TO ATTACH TO EMAIL
+
+$htmfile = $mid.'.htm';
+
+open HTM, '>', $folder.$htmfile;  
+
+print HTM "<html><head><title>SIMPLE MESSAGE</title>";
+print HTM "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print HTM "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style></head>\n";
+
+print HTM "<script>
+		function printDiv(divName){
+			var printContents = document.getElementById(divName).innerHTML;
+			var originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+
+		}
+	</script>";
+
+
+print HTM "<body style=\"background-color:white;\"><br><br>";
+print HTM "<center>";
+print HTM "<div id='printMe'>";
+print HTM "<br><FONT SIZE = 5><b>SIMPLE MESSAGE</b></FONT>";
+print HTM "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+print HTM "<table style=width:100\%>";
+print HTM "<table class=\"center\">";
+
+# From
+print HTM "<tr><th style=text-align:left>\n";
+print HTM $body1;
+print HTM "</th></tr>\n";
+
+# To email and CC
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "$body2a";
+		$body2b_len = length($body2b);
+	if ($body2b_len > 7) {
+		print HTM "\&nbsp\;\&nbsp\;$body2b";
+	}
+print HTM "</th></tr>\n";
+
+# Subject, Date and Time
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "$body3\&nbsp\;\&nbsp\;$body4\&nbsp\;\&nbsp\;$body5";
+print HTM "</th></tr>\n";
+
+# Message
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "@body6_split[0..1]\<br><br>";
+print HTM "@body6_split[2..12]<br>";
+print HTM "@body6_split[13..22]<br>";
+print HTM "@body6_split[23..32]<br>";
+print HTM "@body6_split[33..42]<br>";
+print HTM "@body6_split[43..52]<br>";
+print HTM "@body6_split[53..62]<br>";
+print HTM "@body6_split[63..72]<br>";
+print HTM "</th></tr>\n";
+
+print HTM "</table><br>";
+print HTM "</div>";
+
+#Add button to print HTM web page
+
+print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
+
+print HTM "<br><br><br><br>";
+
+print HTM "</center></body></html>\n";
+
+close HTM;
+
+open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
+	while (<HTM>) {
+		$htmchars += length($_);
+	}
+close HTM;
+
+#Body charater count
+my $fbody_len = length($body0) + length($attached) + length($bodyr) + 2;
+
+#CREATE B2F SIMPLE MESSAGE FILE FOR SENDING VIA WINLINK
+
+open TMP, '>', $folder.$filename or die "Could not open file: $!";  
+
+#Header information
+print TMP "Mid: $mid\n";
+print TMP "Body: $fbody_len\n";
+print TMP "Content-Transfer-Encoding: 8bit\n";
+print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
+print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
+print TMP "From: N4MIO\n";
+print TMP "Mbo: N4MIO\n";
+print TMP "Subject: $subject\n";
+print TMP "To: SMTP: $email\n";
+
+if ($cc) {     
+   print TMP "Cc: SMTP: $cc\n";
+	 }
+$htmchars = $htmchars + 33;
+
+print TMP "File: $htmchars $htmfile\n";
+
+print TMP "Type: Private\n\n";
+
+#Message Body
+print TMP $body0.$attached;
+print TMP "\n\n";
+
+open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
+	while (<HTM>) {
+		print TMP $_;
+	}
+close HTM;
+
+close TMP;
+
+}
+
+else {
+        $err = "DID YOU FORGET AN EMAIL/WINLINK ADDRESS?";
+		&error;
+       }
+
+}
+
+  else {
+        $err = "DID YOU FORGET YOUR MESSAGE BODY?";
+		&error;
+       }
 
 exit;
 }
@@ -472,7 +721,7 @@ print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"
 print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
 print "</head>\n";
-print "<body style=\"background-color:FFCC33;\"><center><FONT SIZE = 5><b>GENERAL MESSAGE (ICS 213)</b></FONT><br><br>\n";
+print "<body style=\"background-color:FFCC33;\"><center><FONT SIZE = 5><b><br><br>GENERAL MESSAGE (ICS 213)</b></FONT><br><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
@@ -551,10 +800,11 @@ print "<input id=asig name=asig size=15 type=text><br>\n";
 print "</th></tr>\n";
 print "</table>";
 
-print "<br><input type=submit> \* <input type=reset><br><br><br><br><br><br>\n";
+print "<br><input type=submit> \* <input type=reset><br><br>\n";
+print "<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
 print "</form></center>";
 
-print "</body></html>\n";
+print "<br><br><br><br></body></html>\n";
 
 exit;
 
@@ -586,7 +836,7 @@ print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"
 print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
 print "</head>\n";
-print "<body style=\"background-color:53b1e0;\"><center><FONT SIZE = 5><b>SIMPLE MESSAGE</b></FONT><br><br>\n";
+print "<body style=\"background-color:53b1e0;\"><center><FONT SIZE = 5><b><br><br>SIMPLE MESSAGE</b></FONT><br><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
@@ -615,7 +865,7 @@ print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
 # CC
 print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
 print "<input id=cc name=cc size=30 type=text><br>\n";
-print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
+print "<FONT SIZE = 2 color = purple>[Can be Winlink user alias]</font><br>\n";
 print "</th></tr>\n";
 
 # Subject
@@ -624,11 +874,11 @@ print "<FONT SIZE = 3 color = Black>Subject:</font>\&nbsp\;\&nbsp\;\n";
 print "<input id=subject name=subject size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
 # Date
-print "<FONT SIZE = 3 color = Black>5. Date:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 3 color = Black>Date:</font>\&nbsp\;\&nbsp\;\n";
 print "<input id=date name=date size=14 type=text value=$lmon\/$lmday\/$lyear>\&nbsp\;\&nbsp\;\n";
 
 # Time
-print "<FONT SIZE = 3 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 3 color = Black>Time:</font>\&nbsp\;\&nbsp\;\n";
 print "<input id=time name=time size=7 type=text value=$ftime><br>\n";
 print "</th></tr>\n";
 
@@ -641,10 +891,11 @@ print "</th></tr>\n";
 
 print "</table>";
 
-print "<br><input type=submit> \* <input type=reset><br><br><br><br><br><br>\n";
+print "<br><input type=submit> \* <input type=reset><br><br>\n";
+print "<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
 print "</form></center>";
 
-print "</body></html>\n";
+print "<br><br><br><br></body></html>\n";
 
 exit;
 
