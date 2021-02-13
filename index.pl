@@ -17,14 +17,14 @@ $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
 
-my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first);
+my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr);
 my $attached = " ATTACHED";
 
 ## FOLDER TO USE ACCORDING TO MACHINE IN USE
 
-my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
+#my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
 
-#my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
+my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
 
 #my $folder = "/home/dwayne/.wl2k/mailbox/N4MIO/out/";	  #using Linux
 
@@ -139,10 +139,10 @@ $mid .= $chars[rand @chars] for 1..12;
 $filename = "$mid.b2f";  
 	
 	
-my $bodyr = " ";
+#my $bodyr = " ";
 
  if ($reply) {
-     $bodyr = "$rmsg\n\n";
+     $bodyr = "$rmsg";
     }
 my $body0 = "GENERAL MESSAGE (ICS 213)";
 my $body1 = "1. Incident Name (Optional): $incident\n\n";
@@ -339,7 +339,8 @@ open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
 close HTM;
 
 #Body charater count
-my $fbody_len = length($body0) + length($attached) + length($bodyr) + 2;
+my $fbody_len = length($body0) + length($attached) + 2;
+	
 
 #CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
 
@@ -360,6 +361,10 @@ if ($cc) {
    print TMP "Cc: SMTP: $cc\n";
 	 }
 $htmchars = $htmchars + 46;
+	if ($bodyr){
+		$htmchars = $htmchars + length($bodyr);
+		$htmchars = $htmchars - 21;
+	}
 
 print TMP "File: $htmchars $htmfile\n";
 
@@ -432,10 +437,10 @@ $mid .= $chars[rand @chars] for 1..12;
 $filename = "$mid.b2f";  
 	
 	
-my $bodyr = " ";
+#my $bodyr = " ";
 
  if ($reply) {
-     $bodyr = "$rmsg\n\n";
+     $bodyr = "$rmsg";
     }
 my $body0 = "SIMPLE MESSAGE";
 my $body1 = "From (Name): $from\n";
@@ -605,7 +610,8 @@ open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
 close HTM;
 
 #Body charater count
-my $fbody_len = length($body0) + length($attached) + length($bodyr) + 2;
+my $fbody_len = length($body0) + length($attached) + 2;
+	
 
 #CREATE B2F SIMPLE MESSAGE FILE FOR SENDING VIA WINLINK
 
@@ -626,6 +632,10 @@ if ($cc) {
    print TMP "Cc: SMTP: $cc\n";
 	 }
 $htmchars = $htmchars + 33;
+if ($bodyr){
+		$htmchars = $htmchars + length($bodyr);
+		$htmchars = $htmchars - 21;
+	}
 
 print TMP "File: $htmchars $htmfile\n";
 
