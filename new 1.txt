@@ -1,0 +1,49 @@
+#Body charater count
+my $fbody_len = length($body0) + length($attached) + 2;
+
+#CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
+
+open TMP, '>>', $folder.$filename or die "Could not open file: $!";  
+
+#Header information
+print TMP "Mid: $mid\n";
+print TMP "Body: $fbody_len\n";
+print TMP "Content-Transfer-Encoding: 8bit\n";
+print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
+print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
+print TMP "From: N4MIO\n";
+print TMP "Mbo: N4MIO\n";
+print TMP "Subject: $subject\n";
+print TMP "To: SMTP: $email\n";
+
+if ($cc) {     
+   print TMP "Cc: SMTP: $cc\n";
+	 }
+	#if ($bodyr){
+		
+	#	$htmchars = $htmchars + length($bodyr);
+	#}
+	
+	open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
+		$htmchars = 0;
+	while (<HTM>) {	
+		$htmchars += length($_);
+	}
+	close HTM;
+
+print TMP "File: $htmchars $htmfile\n";
+
+print TMP "Type: Private\n\n";
+
+#Message Body
+print TMP $body0.$attached;
+print TMP "\n\n";
+
+print TMP $htmfile;
+open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
+	while (<HTM>) {
+		print TMP $_;
+	}
+close HTM;
+
+close TMP;

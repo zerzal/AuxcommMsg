@@ -17,7 +17,7 @@ $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
 
-my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr);
+my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr, @lines, $lines);
 my $attached = " ATTACHED";
 
 ## FOLDER TO USE ACCORDING TO MACHINE IN USE
@@ -127,7 +127,7 @@ my $approved = $FORM{'approved'};
 my $asig = $FORM{'asig'};
 my $atitle = $FORM{'atitle'};
 my $reply = $FORM{'reply'};
-my $rmsg = "*** THIS IS A REPLY ***";
+my $rmsg = "THIS IS A REPLY";
 
 #File name generator
 my @chars = ("A".."Z", "0".."9");
@@ -247,7 +247,8 @@ print "</center></body></html>\n";
 
 #BUILD HTM FILE TO ATTACH TO EMAIL
 
-$htmfile = $mid.'.htm';
+#$htmfile = $mid.'.htm';
+$htmfile = $ghour.$gmin."-$gmon-$gmday-$gyear.htm";
 
 open HTM, '>', $folder.$htmfile;
 
@@ -326,61 +327,17 @@ print HTM "</div>";
 
 print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
 
-print HTM "<br><br><br><br>";
-
 print HTM "</center></body></html>\n";
 
 close HTM;
 
-open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
-	while (<HTM>) {
-		$htmchars += length($_);
-	}
-close HTM;
 
-#Body charater count
-my $fbody_len = length($body0) + length($attached) + 2;
-	
+#BUILDING PAT SEND FILE GOES HERE
 
-#CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
 
-open TMP, '>', $folder.$filename or die "Could not open file: $!";  
 
-#Header information
-print TMP "Mid: $mid\n";
-print TMP "Body: $fbody_len\n";
-print TMP "Content-Transfer-Encoding: 8bit\n";
-print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
-print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
-print TMP "From: N4MIO\n";
-print TMP "Mbo: N4MIO\n";
-print TMP "Subject: $subject\n";
-print TMP "To: SMTP: $email\n";
 
-if ($cc) {     
-   print TMP "Cc: SMTP: $cc\n";
-	 }
-$htmchars = $htmchars + 46;
-	if ($bodyr){
-		$htmchars = $htmchars + length($bodyr);
-		$htmchars = $htmchars - 21;
-	}
 
-print TMP "File: $htmchars $htmfile\n";
-
-print TMP "Type: Private\n\n";
-
-#Message Body
-print TMP $body0.$attached;
-print TMP "\n\n";
-
-open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
-	while (<HTM>) {
-		print TMP $_;
-	}
-close HTM;
-
-close TMP;
 
 }
 
@@ -611,7 +568,7 @@ close HTM;
 
 #Body charater count
 my $fbody_len = length($body0) + length($attached) + 2;
-	
+#my $fbody_len = length($body0) + 2;	
 
 #CREATE B2F SIMPLE MESSAGE FILE FOR SENDING VIA WINLINK
 
@@ -643,6 +600,7 @@ print TMP "Type: Private\n\n";
 
 #Message Body
 print TMP $body0.$attached;
+#print TMP $body0;
 print TMP "\n\n";
 
 open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
@@ -820,24 +778,6 @@ exit;
 
 }
 
-#FORM ARRL RADIOGRAM
-sub radiogram {
-print "Content-type: text/html\n\n";
-print "<html><head><title>FORM ARRL RADIOGRAM</title></head>\n";
-print "<body><FONT SIZE = 5><b>FORM ARRL RADIOGRAM</b></FONT><br><br>\n";
-print "<FONT SIZE = 2 color = Black>ARRL RADIOGRAM GOES HERE</font>\&nbsp\;\&nbsp\;\n";
-
-print "<form method=POST action=$cgiurl>\n";
-
-print "<input id=rgram name=rgram type=hidden value=radiogram>\n";
-print "First name:<br><input type=text name=firstname><br>";
-
-print "<input type=submit> \* <input type=reset><br><br>\n";
-print "</form><br><br><br><br>\n";
-print "</body></html>\n";
-exit;
-}
-
 #FORM SIMPLE MESSAGE
 sub simple {
 print "Content-type: text/html\n\n";
@@ -899,6 +839,107 @@ print "<textarea name=msg cols=100 rows=10></textarea><br>";
 print "</th></tr>\n";
 
 
+print "</table>";
+
+print "<br><input type=submit> \* <input type=reset><br><br>\n";
+print "<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
+print "</form></center>";
+
+print "<br><br><br><br></body></html>\n";
+
+exit;
+
+}
+
+#FORM ARRL RADIOGRAM
+sub radiogram {
+print "Content-type: text/html\n\n";
+print "<html><head><title>ARRL RADIOGRAM FOR PAT WINLINK</title>";
+print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
+print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
+print "</head>\n";
+print "<body style=\"background-color:53b1e0;\"><center><FONT SIZE = 5><b><br><br>ARRL RADIOGRAM</b></FONT><br><br>\n";
+
+print "<form method=POST action=$cgiurl>\n";
+
+print "<input id=rgram name=rgram type=hidden value=radiogram>\n";
+
+# Reply checkbox
+print "<FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
+print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br><br>\n";
+
+#Table setup
+print "<table style=width:100\%>";
+print "<table class=\"center\">";
+
+#Fields of Radiogram form
+# Row 1
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>Number:</font><br>\&nbsp\;\&nbsp\;";
+print "<input id=rnum name=rnum size=10 type=text>\n";
+
+print "<FONT SIZE = 3 color = Black>Precedence:</font>\&nbsp\;\&nbsp\;";
+print "<input id=rpres name=rpres size=10 type=text>\n";
+print "</tr></th>\n";
+
+# 2
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>2. To (Name):\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=to name=to size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 3 color = Black>Position/Title:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=tpos name=tpos size=30 type=text><br><br>\n";
+
+print "<FONT SIZE = 3 color = Black>Email Address\&nbsp\;<b>(Required):</b></font>\n";
+print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=cc name=cc size=30 type=text><br>\n";
+print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
+print "</th></tr>\n";
+
+# 3
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>3. From (Name):</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=from name=from size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 3 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=title name=title size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "</th></tr>\n";
+
+# 4
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>4. Subject:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=subject name=subject size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+# 5
+print "<FONT SIZE = 3 color = Black>5. Date:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=date name=date size=14 type=text value=$lmon\/$lmday\/$lyear>\&nbsp\;\&nbsp\;\n";
+
+# 6
+print "<FONT SIZE = 3 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=time name=time size=7 type=text value=$ftime><br>\n";
+print "</th></tr>\n";
+
+# 7
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>7. Message: <b>(Required)</b></font><br>\n";
+print "<textarea name=msg cols=100 rows=10></textarea><br>";
+print "</th></tr>\n";
+
+# 8
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>8. Approved by (Name):</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=approved name=approved size=15 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 2 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=atitle name=atitle size=15 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 2 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=asig name=asig size=15 type=text><br>\n";
+print "</th></tr>\n";
 print "</table>";
 
 print "<br><input type=submit> \* <input type=reset><br><br>\n";
