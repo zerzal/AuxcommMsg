@@ -17,14 +17,14 @@ $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
 
-my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr, @lines, $lines);
+my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr, $htmfilepath);
 my $attached = " ATTACHED";
 
 ## FOLDER TO USE ACCORDING TO MACHINE IN USE
 
-#my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
+my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
 
-my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
+#my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
 
 #my $folder = "/home/dwayne/.wl2k/mailbox/N4MIO/out/";	  #using Linux
 
@@ -127,7 +127,7 @@ my $approved = $FORM{'approved'};
 my $asig = $FORM{'asig'};
 my $atitle = $FORM{'atitle'};
 my $reply = $FORM{'reply'};
-my $rmsg = "THIS IS A REPLY";
+my $rmsg = "*** THIS IS A REPLY ***";
 
 #File name generator
 my @chars = ("A".."Z", "0".."9");
@@ -142,7 +142,7 @@ $filename = "$mid.b2f";
 #my $bodyr = " ";
 
  if ($reply) {
-     $bodyr = "$rmsg";
+     $bodyr = "$rmsg\n\n";
     }
 my $body0 = "GENERAL MESSAGE (ICS 213)";
 my $body1 = "1. Incident Name (Optional): $incident\n\n";
@@ -218,14 +218,14 @@ print "</th></tr>\n";
 # 7
 print "<tr><th style=text-align:left>\n";
 my @body7_split = split / /, $body7;
-print "@body7_split[0..1]\<br><br>";
-print "@body7_split[2..12]<br>";
-print "@body7_split[13..22]<br>";
-print "@body7_split[23..32]<br>";
-print "@body7_split[33..42]<br>";
-print "@body7_split[43..52]<br>";
-print "@body7_split[53..62]<br>";
-print "@body7_split[63..72]<br>";
+print "$body7_split[0..1]\<br>";
+print "$body7_split[2..12]<br>";
+print "$body7_split[13..22]<br>";
+print "$body7_split[23..32]<br>";
+print "$body7_split[33..42]<br>";
+print "$body7_split[43..52]<br>";
+print "$body7_split[53..62]<br>";
+print "$body7_split[63..72]<br>";
 print "</th></tr>\n";
 
 # 8
@@ -247,8 +247,7 @@ print "</center></body></html>\n";
 
 #BUILD HTM FILE TO ATTACH TO EMAIL
 
-#$htmfile = $mid.'.htm';
-$htmfile = $ghour.$gmin."-$gmon-$gmday-$gyear.htm";
+$htmfile = $mid.'.htm';
 
 open HTM, '>', $folder.$htmfile;
 
@@ -305,14 +304,16 @@ print HTM "</th></tr>\n";
 
 # 7
 print HTM "<tr><th style=text-align:left>\n";
-print HTM "@body7_split[0..1]\<br><br>";
-print HTM "@body7_split[2..12]<br>";
-print HTM "@body7_split[13..22]<br>";
-print HTM "@body7_split[23..32]<br>";
-print HTM "@body7_split[33..42]<br>";
-print HTM "@body7_split[43..52]<br>";
-print HTM "@body7_split[53..62]<br>";
-print HTM "@body7_split[63..72]<br>";
+print HTM "$body7_split[0..1]\<br>";
+print HTM "$body7_split[2..12]<br>";
+print HTM "$body7_split[13..22]<br>";
+print HTM "$body7_split[23..32]<br>";
+print HTM "$body7_split[33..42]<br>";
+print HTM "$body7_split[43..52]<br>";
+print HTM "$body7_split[53..62]<br>";
+print HTM "$body7_split[63..72]<br>";
+
+#print HTM $body7;
 print HTM "</th></tr>\n";
 
 # 8
@@ -327,17 +328,55 @@ print HTM "</div>";
 
 print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
 
+print HTM "<br><br><br><br>";
+
 print HTM "</center></body></html>\n";
 
 close HTM;
 
+$htmfilepath = $folder.$htmfile;
+$htmchars = -s $htmfilepath;
 
-#BUILDING PAT SEND FILE GOES HERE
+#Body charater count
+#my $fbody_len = length($body0) + length($attached) + length($bodyr) + 2;
+
+my $fbody_len = length($body0) + length($attached) + 2;
 
 
+#CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
 
+open TMP, '>', $folder.$filename or die "Could not open file: $!";  
 
+#Header information
+print TMP "Mid: $mid\n";
+print TMP "Body: $fbody_len\n";
+print TMP "Content-Transfer-Encoding: 8bit\n";
+print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
+print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
+print TMP "From: N4MIO\n";
+print TMP "Mbo: N4MIO\n";
+print TMP "Subject: $subject\n";
+print TMP "To: SMTP: $email\n";
 
+if ($cc) {     
+   print TMP "Cc: SMTP: $cc\n";
+	 }
+
+print TMP "File: $htmchars $htmfile\n";
+
+print TMP "Type: Private\n\n";
+
+#Message Body
+print TMP $body0.$attached;
+print TMP "\n\n";
+
+open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
+	while (<HTM>) {
+		print TMP $_;
+	}
+close HTM;
+
+close TMP;
 
 }
 
@@ -397,7 +436,7 @@ $filename = "$mid.b2f";
 #my $bodyr = " ";
 
  if ($reply) {
-     $bodyr = "$rmsg";
+     $bodyr = "$rmsg\n\n";
     }
 my $body0 = "SIMPLE MESSAGE";
 my $body1 = "From (Name): $from\n";
@@ -460,14 +499,14 @@ print "</th></tr>\n";
 # Message
 print "<tr><th style=text-align:left>\n";
 my @body6_split = split / /, $body6;
-print "@body6_split[0..1]\<br><br>";
-print "@body6_split[2..12]<br>";
-print "@body6_split[13..22]<br>";
-print "@body6_split[23..32]<br>";
-print "@body6_split[33..42]<br>";
-print "@body6_split[43..52]<br>";
-print "@body6_split[53..62]<br>";
-print "@body6_split[63..72]<br>";
+print "$body6_split[0]\<br>";
+print "$body6_split[1..12]<br>";
+print "$body6_split[13..22]<br>";
+print "$body6_split[23..32]<br>";
+print "$body6_split[33..42]<br>";
+print "$body6_split[43..52]<br>";
+print "$body6_split[53..62]<br>";
+print "$body6_split[63..72]<br>";
 print "</th></tr>\n";
 
 print "</table><br>";
@@ -537,14 +576,14 @@ print HTM "</th></tr>\n";
 
 # Message
 print HTM "<tr><th style=text-align:left>\n";
-print HTM "@body6_split[0..1]\<br><br>";
-print HTM "@body6_split[2..12]<br>";
-print HTM "@body6_split[13..22]<br>";
-print HTM "@body6_split[23..32]<br>";
-print HTM "@body6_split[33..42]<br>";
-print HTM "@body6_split[43..52]<br>";
-print HTM "@body6_split[53..62]<br>";
-print HTM "@body6_split[63..72]<br>";
+print HTM "$body6_split[0]\<br>";
+print HTM "$body6_split[1..12]<br>";
+print HTM "$body6_split[13..22]<br>";
+print HTM "$body6_split[23..32]<br>";
+print HTM "$body6_split[33..42]<br>";
+print HTM "$body6_split[43..52]<br>";
+print HTM "$body6_split[53..62]<br>";
+print HTM "$body6_split[63..72]<br>";
 print HTM "</th></tr>\n";
 
 print HTM "</table><br>";
@@ -560,15 +599,11 @@ print HTM "</center></body></html>\n";
 
 close HTM;
 
-open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
-	while (<HTM>) {
-		$htmchars += length($_);
-	}
-close HTM;
+$htmfilepath = $folder.$htmfile;
+$htmchars = -s $htmfilepath;
 
 #Body charater count
 my $fbody_len = length($body0) + length($attached) + 2;
-#my $fbody_len = length($body0) + 2;	
 
 #CREATE B2F SIMPLE MESSAGE FILE FOR SENDING VIA WINLINK
 
@@ -588,11 +623,6 @@ print TMP "To: SMTP: $email\n";
 if ($cc) {     
    print TMP "Cc: SMTP: $cc\n";
 	 }
-$htmchars = $htmchars + 33;
-if ($bodyr){
-		$htmchars = $htmchars + length($bodyr);
-		$htmchars = $htmchars - 21;
-	}
 
 print TMP "File: $htmchars $htmfile\n";
 
@@ -600,7 +630,6 @@ print TMP "Type: Private\n\n";
 
 #Message Body
 print TMP $body0.$attached;
-#print TMP $body0;
 print TMP "\n\n";
 
 open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
@@ -670,7 +699,7 @@ print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
 print "<body style=\"background-color:db3033;\"><center><FONT SIZE = 6><b>AUXCOMM MESSAGING SERVER</b></FONT><FONT SIZE = 2 color = purple>\&nbsp\;\&nbsp\;<b>$ver</b><br>\n";
-print "<br><FONT SIZE = 5 COLOR = 1f1a1a><I>CREATE YOUR FORM</I></FONT><BR><BR><BR>";
+print "<br><FONT SIZE = 5 COLOR = 1f1a1a><I>CREATE YOUR MESSAGE</I></FONT><BR><BR><BR>";
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit  style=\"font-size:20px; background-color:black; color:FFCC33; border: 3pt ridge grey\" NAME=213 VALUE=\"GENERAL MESSAGE (ICS 213)\"><br><br><br>";
 print "<INPUT TYPE=submit style=\"font-size:20px; background-color:black; color:53b1e0; border: 3pt ridge grey\" NAME=simple VALUE=\"SIMPLE MESSAGE\"><br><br><br>";
