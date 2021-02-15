@@ -698,13 +698,14 @@ sub begin {
 print "Content-type: text/html\n\n";
 print "<html><head><title>AUXCOMM MESSAGING SERVER $ver</title></head>\n";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
-print "<body style=\"background-color:db3033;\"><center><FONT SIZE = 6><b>AUXCOMM MESSAGING SERVER</b></FONT><FONT SIZE = 2 color = purple>\&nbsp\;\&nbsp\;<b>$ver</b><br>\n";
+print "<body style=\"background-color:db3033;\"><center><FONT SIZE = 6><b>AUXCOMM MESSAGING SERVER</b></FONT><FONT SIZE = 2 color = purple>\&nbsp\;\&nbsp\;<b>$ver</b></font><br>\n";
 print "<br><FONT SIZE = 5 COLOR = 1f1a1a><I>CREATE YOUR MESSAGE</I></FONT><BR><BR><BR>";
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit  style=\"font-size:20px; background-color:black; color:FFCC33; border: 3pt ridge grey\" NAME=213 VALUE=\"GENERAL MESSAGE (ICS 213)\"><br><br><br>";
 print "<INPUT TYPE=submit style=\"font-size:20px; background-color:black; color:53b1e0; border: 3pt ridge grey\" NAME=simple VALUE=\"SIMPLE MESSAGE\"><br><br><br>";
-print "<INPUT TYPE=submit NAME=rg VALUE=\"ARRL RADIOGRAM\" style=\"font-size:20px; background-color:f2f268; color:395935; border: 3pt ridge grey\">";
+print "<INPUT TYPE=submit NAME=rg VALUE=\"RADIOGRAM\" style=\"font-size:20px; background-color:f2f268; color:395935; border: 3pt ridge grey\">";
 print "</form>\n";
+print "<font size=4><b>Radiogram Under Construction</font></b>";
 print "</center>";
 print "</body></html>\n";
 exit;
@@ -880,15 +881,36 @@ exit;
 
 }
 
-#FORM ARRL RADIOGRAM
+#FORM RADIOGRAM
 sub radiogram {
 print "Content-type: text/html\n\n";
-print "<html><head><title>ARRL RADIOGRAM FOR PAT WINLINK</title>";
+print "<html><head><title>RADIOGRAM FOR PAT WINLINK</title>";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
 print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
+print " <style type=text/css>
+            dummydeclaration { padding-left: 1em; } /* Firefox ignores first declaration for some reason */
+			tab0 { padding-left: 1em; }
+            tab1 { padding-left: 2em; }
+            tab2 { padding-left: 3em; }
+            tab3 { padding-left: 4em; }
+            tab4 { padding-left: 16em; }
+            tab5 { padding-left: 20em; }
+            tab6 { padding-left: 24em; }
+            tab7 { padding-left: 28em; }
+            tab8 { padding-left: 32em; }
+            tab9 { padding-left: 36em; }
+            tab10 { padding-left: 40em; }
+            tab11 { padding-left: 44em; }
+            tab12 { padding-left: 48em; }
+            tab13 { padding-left: 52em; }
+            tab14 { padding-left: 56em; }
+            tab15 { padding-left: 60em; }
+            tab16 { padding-left: 64em; }
+
+        </style>";
 print "</head>\n";
-print "<body style=\"background-color:53b1e0;\"><center><FONT SIZE = 5><b><br><br>ARRL RADIOGRAM</b></FONT><br><br>\n";
+print "<body style=\"background-color:6db070;\"><center><FONT SIZE = 5><b><br><br>RADIOGRAM</b></FONT><br><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
@@ -904,23 +926,38 @@ print "<table class=\"center\">";
 
 #Fields of Radiogram form
 # Row 1
+# Header Line
 print "<tr><th style=text-align:left>\n";
-print "<FONT SIZE = 3 color = Black>Number:</font><br>\&nbsp\;\&nbsp\;";
-print "<input id=rnum name=rnum size=10 type=text>\n";
+print "<FONT SIZE = 3 color = Black>Number</font>";
+print "<tab3><FONT SIZE = 3 color = Black>Precedence</tab3></font>";
+print "<tab1><FONT SIZE = 3 color = Black>HX</tab1></font>";
+print "<tab1><FONT SIZE = 3 color = Black>Station of Origin</tab1></font>";
+print "<tab0><FONT SIZE = 3 color = Black>Check</tab0></font>";
+print "<tab1><FONT SIZE = 3 color = Black>Place of Origin</tab1></font>";
+print "<tab0><FONT SIZE = 3 color = Black>Time Filed</tab0></font>";
+print "<tab0><FONT SIZE = 3 color = Black>Date</tab0></font>";
 
-print "<FONT SIZE = 3 color = Black>Precedence:</font>\&nbsp\;\&nbsp\;";
+# Input fields
+print "<br>";
+print "<input id=rnum name=rnum size=10 type=text>\n";
 print "<input id=rpres name=rpres size=10 type=text>\n";
+print "<input id=rhx name=rhx size=3 type=text>\n";
+print "<input id=rsoo name=rsoo size=13 type=text>\n";
+print "<input id=rck name=rck size=3 type=text>\n";
+print "<input id=rpoo name=poo size=13 type=text>\n";
+print "<input id=rtm name=rtim size=6 type=text value=$ftime>\n";
+print "<input id=rdt name=rdt size=6 type=text value=$lmon\/$lmday\/$lyear>\n";
 print "</tr></th>\n";
 
-# 2
+# Row 2
 print "<tr><th style=text-align:left>\n";
-print "<FONT SIZE = 3 color = Black>2. To (Name):\&nbsp\;\&nbsp\;</font>\n";
-print "<input id=to name=to size=30 type=text>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 3 color = Black>To</font><br>\n";
+print "<textarea name=rto cols=40 rows=6></textarea><br>";;
 
-print "<FONT SIZE = 3 color = Black>Position/Title:\&nbsp\;\&nbsp\;</font>\n";
-print "<input id=tpos name=tpos size=30 type=text><br><br>\n";
+print "<FONT SIZE = 3 color = Black>Telephone Number</font>\n";
+print "<input id=rtel name=rtel size=19 type=text><br>\n";
 
-print "<FONT SIZE = 3 color = Black>Email Address\&nbsp\;<b>(Required):</b></font>\n";
+print "<FONT SIZE = 3 color = Black>Email Address</b></font>\n";
 print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
 print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
