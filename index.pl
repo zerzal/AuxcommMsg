@@ -156,7 +156,7 @@ my $body3a = "\tPosition/Title: $pt\n";
 my $body4 = "4. Subject: $subject\n\n";
 my $body5 = "5. Date: $date\n";
 my $body6 = "6. Time: $time\n\n";
-my $body7 = "7. Message:\n $msg\n\n";
+my $body7 = "7. Message: $msg\n\n";
 my $body8 = "8. Approved by: $approved\n";
 my $body8a = "\tSignature: $asig\n";
 my $body8b = "\tPosition/Title: $atitle\n\n";
@@ -218,14 +218,14 @@ print "</th></tr>\n";
 # 7
 print "<tr><th style=text-align:left>\n";
 my @body7_split = split / /, $body7;
-print "$body7_split[0..1]\<br>";
-print "$body7_split[2..12]<br>";
-print "$body7_split[13..22]<br>";
-print "$body7_split[23..32]<br>";
-print "$body7_split[33..42]<br>";
-print "$body7_split[43..52]<br>";
-print "$body7_split[53..62]<br>";
-print "$body7_split[63..72]<br>";
+print "@body7_split[0..1]\<br>";
+print "@body7_split[2..12]<br>";
+print "@body7_split[13..22]<br>";
+print "@body7_split[23..32]<br>";
+print "@body7_split[33..42]<br>";
+print "@body7_split[43..52]<br>";
+print "@body7_split[53..62]<br>";
+print "@body7_split[63..72]<br>";
 print "</th></tr>\n";
 
 # 8
@@ -304,14 +304,14 @@ print HTM "</th></tr>\n";
 
 # 7
 print HTM "<tr><th style=text-align:left>\n";
-print HTM "$body7_split[0..1]\<br>";
-print HTM "$body7_split[2..12]<br>";
-print HTM "$body7_split[13..22]<br>";
-print HTM "$body7_split[23..32]<br>";
-print HTM "$body7_split[33..42]<br>";
-print HTM "$body7_split[43..52]<br>";
-print HTM "$body7_split[53..62]<br>";
-print HTM "$body7_split[63..72]<br>";
+print HTM "@body7_split[0..1]\<br>";
+print HTM "@body7_split[2..12]<br>";
+print HTM "@body7_split[13..22]<br>";
+print HTM "@body7_split[23..32]<br>";
+print HTM "@body7_split[33..42]<br>";
+print HTM "@body7_split[43..52]<br>";
+print HTM "@body7_split[53..62]<br>";
+print HTM "@body7_split[63..72]<br>";
 
 #print HTM $body7;
 print HTM "</th></tr>\n";
@@ -499,14 +499,14 @@ print "</th></tr>\n";
 # Message
 print "<tr><th style=text-align:left>\n";
 my @body6_split = split / /, $body6;
-print "$body6_split[0]\<br>";
-print "$body6_split[1..12]<br>";
-print "$body6_split[13..22]<br>";
-print "$body6_split[23..32]<br>";
-print "$body6_split[33..42]<br>";
-print "$body6_split[43..52]<br>";
-print "$body6_split[53..62]<br>";
-print "$body6_split[63..72]<br>";
+print "@body6_split[0]\<br>";
+print "@body6_split[1..12]<br>";
+print "@body6_split[13..22]<br>";
+print "@body6_split[23..32]<br>";
+print "@body6_split[33..42]<br>";
+print "@body6_split[43..52]<br>";
+print "@body6_split[53..62]<br>";
+print "@body6_split[63..72]<br>";
 print "</th></tr>\n";
 
 print "</table><br>";
@@ -576,14 +576,14 @@ print HTM "</th></tr>\n";
 
 # Message
 print HTM "<tr><th style=text-align:left>\n";
-print HTM "$body6_split[0]\<br>";
-print HTM "$body6_split[1..12]<br>";
-print HTM "$body6_split[13..22]<br>";
-print HTM "$body6_split[23..32]<br>";
-print HTM "$body6_split[33..42]<br>";
-print HTM "$body6_split[43..52]<br>";
-print HTM "$body6_split[53..62]<br>";
-print HTM "$body6_split[63..72]<br>";
+print HTM "@body6_split[0]\<br>";
+print HTM "@body6_split[1..12]<br>";
+print HTM "@body6_split[13..22]<br>";
+print HTM "@body6_split[23..32]<br>";
+print HTM "@body6_split[33..42]<br>";
+print HTM "@body6_split[43..52]<br>";
+print HTM "@body6_split[53..62]<br>";
+print HTM "@body6_split[63..72]<br>";
 print HTM "</th></tr>\n";
 
 print HTM "</table><br>";
@@ -925,7 +925,7 @@ print "<table style=width:100\%>";
 print "<table class=\"center\">";
 
 #Fields of Radiogram form
-# Row 1
+# TABLE 1
 # Header Line
 print "<tr><th style=text-align:left>\n";
 print "<FONT SIZE = 3 color = Black>Number</font>";
@@ -947,65 +947,53 @@ print "<input id=rck name=rck size=3 type=text>\n";
 print "<input id=rpoo name=poo size=13 type=text>\n";
 print "<input id=rtm name=rtim size=6 type=text value=$ftime>\n";
 print "<input id=rdt name=rdt size=6 type=text value=$lmon\/$lmday\/$lyear>\n";
-print "</tr></th>\n";
+print "</tr></th></table>\n";
 
-# Row 2
+# TABLE 2
+print "<br><table style=width:100\%>";
+print "<table class=\"center\">";
 print "<tr><th style=text-align:left>\n";
-print "<FONT SIZE = 3 color = Black>To</font><br>\n";
-print "<textarea name=rto cols=40 rows=6></textarea><br>";;
-
-print "<FONT SIZE = 3 color = Black>Telephone Number</font>\n";
+print "<FONT SIZE = 3 color = Black>To</font>\n";
+print "<br><textarea name=rto cols=50 rows=6></textarea><br>";
+print "<br><FONT SIZE = 3 color = Black>Telephone Number</font>\n";
 print "<input id=rtel name=rtel size=19 type=text><br>\n";
+print "<br><FONT SIZE = 3 color = Black>Email Address</b></font>\n";
+print "<input id=email name=email size=23 type=text><br><br>\n";
+print "<FONT SIZE = 2 color = red>*Email and Cc can be Winlink user alias</font><br>\n";
+print "<br><FONT SIZE = 3 color = Black>Cc:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=cc name=cc size=33 type=text><br>\n";
+print "</th>\n";
+print "<th style=text-align:left>\n";
+print "<center><font size = 2 color = Black>THIS RADIO MESSAGE WAS RECEIVED AT</font></center><br>\n";
+print "<font size = 2 color = Black>AMATEUR STATION</font>\n";
+print "<input id=ras name=ras size=25 type=text><br><br>\n";
+print "<font size = 2 color = Black>PHONE</font>\n";
+print "<input id=rph name=rph size=13 type=text><br><br>\n";
+print "<font size = 2 color = Black>NAME</font>\n";
+print "<input id=rnme name=rnme size=35 type=text><br><br>\n";
+print "<font size = 2 color = Black>STREET</font>\n";
+print "<input id=rstr name=rstr size=30 type=text><br><br>\n";
+print "<font size = 2 color = Black>CITY, STATE ZIP</font>\n";
+print "<input id=rcsz name=rcsz size=33 type=text><br>\n";
+print "</th></tr></table>\n";
 
-print "<FONT SIZE = 3 color = Black>Email Address</b></font>\n";
-print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
-print "<input id=cc name=cc size=30 type=text><br>\n";
-print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
-print "</th></tr>\n";
-
-# 3
+# TABLE 3
+print "<br><table style=width:100\%>";
+print "<table class=\"center\">";
 print "<tr><th style=text-align:left>\n";
-print "<FONT SIZE = 3 color = Black>3. From (Name):</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=from name=from size=30 type=text>\&nbsp\;\&nbsp\;\n";
+print "<FONT SIZE = 3 color = Black>MESSAGE</font>\n";
+print "<FONT SIZE = 2 color = red>*25 words or less</font>\n";
+print "<br><textarea name=rmsg cols=107 rows=5></textarea><br>";
 
-print "<FONT SIZE = 3 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=title name=title size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "</th></tr>\n";
 
-# 4
-print "<tr><th style=text-align:left>\n";
-print "<FONT SIZE = 3 color = Black>4. Subject:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=subject name=subject size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-# 5
-print "<FONT SIZE = 3 color = Black>5. Date:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=date name=date size=14 type=text value=$lmon\/$lmday\/$lyear>\&nbsp\;\&nbsp\;\n";
 
-# 6
-print "<FONT SIZE = 3 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=time name=time size=7 type=text value=$ftime><br>\n";
-print "</th></tr>\n";
 
-# 7
-print "<tr><th style=text-align:left>\n";
-print "<FONT SIZE = 3 color = Black>7. Message: <b>(Required)</b></font><br>\n";
-print "<textarea name=msg cols=100 rows=10></textarea><br>";
-print "</th></tr>\n";
 
-# 8
-print "<tr><th style=text-align:left>\n";
-print "<FONT SIZE = 3 color = Black>8. Approved by (Name):</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=approved name=approved size=15 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 2 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=atitle name=atitle size=15 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 2 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
-print "<input id=asig name=asig size=15 type=text><br>\n";
-print "</th></tr>\n";
 print "</table>";
 
 print "<br><input type=submit> \* <input type=reset><br><br>\n";
