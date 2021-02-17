@@ -894,11 +894,11 @@ print " <style type=text/css>
             tab1 { padding-left: 2em; }
             tab2 { padding-left: 3em; }
             tab3 { padding-left: 4em; }
-            tab4 { padding-left: 16em; }
-            tab5 { padding-left: 20em; }
-            tab6 { padding-left: 24em; }
-            tab7 { padding-left: 28em; }
-            tab8 { padding-left: 32em; }
+            tab4 { padding-left: 5em; }
+            tab5 { padding-left: 6em; }
+            tab6 { padding-left: 7em; }
+            tab7 { padding-left: 8em; }
+            tab8 { padding-left: 9em; }
             tab9 { padding-left: 36em; }
             tab10 { padding-left: 40em; }
             tab11 { padding-left: 44em; }
@@ -910,7 +910,7 @@ print " <style type=text/css>
 
         </style>";
 print "</head>\n";
-print "<body style=\"background-color:6db070;\"><center><FONT SIZE = 5><b><br><br>RADIOGRAM</b></FONT><br><br>\n";
+print "<body style=\"background-color:6db070;\"><center><FONT SIZE = 7><b><br><br>RADIOGRAM</b></FONT><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
@@ -959,7 +959,7 @@ print "<br><FONT SIZE = 3 color = Black>Telephone Number</font>\n";
 print "<input id=rtel name=rtel size=19 type=text><br>\n";
 print "<br><FONT SIZE = 3 color = Black>Email Address</b></font>\n";
 print "<input id=email name=email size=23 type=text><br><br>\n";
-print "<FONT SIZE = 2 color = red>*Email and Cc can be Winlink user alias</font><br>\n";
+print "<FONT SIZE = 2 color = #102547>*Email and Cc can be Winlink user alias</font><br>\n";
 print "<br><FONT SIZE = 3 color = Black>Cc:\&nbsp\;\&nbsp\;</font>\n";
 print "<input id=cc name=cc size=33 type=text><br>\n";
 print "</th>\n";
@@ -983,20 +983,31 @@ print "<br><table style=width:100\%>";
 print "<table class=\"center\">";
 print "<tr><th style=text-align:left>\n";
 print "<FONT SIZE = 3 color = Black>MESSAGE</font>\n";
-print "<FONT SIZE = 2 color = red>*25 words or less</font>\n";
+print "<FONT SIZE = 2 color = #102547>*25 words or less, no punctuation, use \"X\" in between words to signify punctuation (counts as a word)</font>\n";
 print "<br><textarea name=rmsg cols=107 rows=5></textarea><br>";
+print "</th></tr></table>\n";
 
+# TABLE 4
 
+print "<br><table style=width:100\%>";
+print "<table class=\"center\">";
+print "<tr><th style=text-align:left>\n";
+print "<Tab6><FONT SIZE = 2 color = Black>From</Tab6><Tab6>Date</Tab6><Tab4>Time</Tab4></font><br>\n";
+print "<FONT SIZE = 4 color = Black>REC'D</font><Tab0>\n";
+print "</Tab0><input id=rrfrm name=rrfrm size=12 type=text><Tab0>\n";
+print "<input id=rrdte name=rrdte size=5 type=text><Tab0>\n";
+print "<input id=rrtme name=rrtme size=5 type=text></Tab0>\n";
+print "</th>\n";
 
+print "<th style=text-align:left>\n";
+print "<Tab6><FONT SIZE = 2 color = Black>To</Tab6><Tab6>Date</Tab6><Tab4>Time</Tab4></font><br>\n";
+print "<font size = 4 color = Black>SENT</font><Tab0>\n";
+print "</Tab0><input id=rsto name=rsto size=11 type=text><Tab0>\n";
+print "<input id=rsdte name=rsdte size=5 type=text><Tab0>\n";
+print "<input id=rstme name=rstme size=5 type=text></Tab0>\n";
+print "</th></tr></table>\n";
 
-
-
-
-
-
-print "</table>";
-
-print "<br><input type=submit> \* <input type=reset><br><br>\n";
+print "<br><br><input type=submit> \* <input type=reset><br><br>\n";
 print "<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
 print "</form></center>";
 
