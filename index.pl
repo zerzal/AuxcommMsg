@@ -17,8 +17,11 @@ $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
 
-my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr, $htmfilepath);
+my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr, $htmfilepath, @month, %month, $srnum, $monabbrev);
 my $attached = " ATTACHED";
+@month = ('NA','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
+my $zee = "Z";
+my $zuludy = "$month[$gmon]\&nbsp\;$gyear";
 
 ## FOLDER TO USE ACCORDING TO MACHINE IN USE
 
@@ -691,6 +694,10 @@ if ($FORM{'text'}) {
 &text;
 }
 
+if ($FORM{'sp'}) {
+&spotrep;
+}
+
 #SUBROUTINES
 #######################
 #Main Menu
@@ -703,9 +710,11 @@ print "<br><FONT SIZE = 5 COLOR = 1f1a1a><I>CREATE YOUR MESSAGE</I></FONT><BR><B
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit  style=\"font-size:20px; background-color:black; color:FFCC33; border: 3pt ridge grey\" NAME=213 VALUE=\"GENERAL MESSAGE (ICS 213)\"><br><br><br>";
 print "<INPUT TYPE=submit style=\"font-size:20px; background-color:black; color:53b1e0; border: 3pt ridge grey\" NAME=simple VALUE=\"SIMPLE MESSAGE\"><br><br><br>";
-print "<INPUT TYPE=submit NAME=rg VALUE=\"RADIOGRAM\" style=\"font-size:20px; background-color:f2f268; color:395935; border: 3pt ridge grey\">";
+print "<INPUT TYPE=submit NAME=rg VALUE=\"RADIOGRAM\" style=\"font-size:20px; background-color:f2f268; color:395935; border: 3pt ridge grey\"><br>";
+print "<font size=4><b>Radiogram Under Construction</font></b><br><br><br>";
+print "<INPUT TYPE=submit NAME=sp VALUE=\"SPOTREP REPORT\" style=\"font-size:20px; background-color:f2f268; color:395935; border: 3pt ridge grey\">";
 print "</form>\n";
-print "<font size=4><b>Radiogram Under Construction</font></b>";
+
 print "</center>";
 print "</body></html>\n";
 exit;
@@ -1008,6 +1017,102 @@ print "<input id=rstme name=rstme size=5 type=text></Tab0>\n";
 print "</th></tr></table>\n";
 
 print "<br><br><input type=submit> \* <input type=reset><br><br>\n";
+print "<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
+print "</form></center>";
+
+print "<br><br><br><br></body></html>\n";
+
+exit;
+
+}
+
+sub spotrep {
+print "Content-type: text/html\n\n";
+print "<html><head><title>SPOTREP REPORT</title>";
+print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
+print "</head>\n";
+print "<body style=\"background-color:FFCC33;\"><center><FONT SIZE = 5><b><br><br>SPOTREP REPORT</b></FONT><br><br>\n";
+print "<form method=POST action=$cgiurl>\n";
+print "<input id=srep name=srep type=hidden value=spotrep>\n";
+
+#Fields of SPOTREP form
+# TABLE 1
+
+print "<table style=width:100\%>";
+print "<table class=\"center\">";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 4 color = Black>R:\&nbsp\;\&nbsp\;\&nbsp\;</font>";
+print "<input id=sprtmedte name=sprtmedte size=20 type=text value=$gmday$ghour$gmin$zee\&nbsp\;$zuludy><br><br>\n";
+print "<FONT SIZE = 4 color = Black>FROM:</font>\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;";
+print "<input id=sprfrm name=sprfrm size=20 type=text><br><br>\n";
+print "<FONT SIZE = 4 color = Black>TO:\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;</font>\n";
+print "<textarea id=sprto name=sprto cols=75 rows=2></textarea><br><br>";
+print "<FONT SIZE = 4 color = Black>INFO (CC):\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;</font>\n";
+print "<textarea id=sprcc name=sprcc cols=75 rows=2></textarea><br><br>";
+
+print "</th></tr>\n";
+
+# TABLE 2
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>To:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=to name=to size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 3 color = Black>Position/Title:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=tpos name=tpos size=30 type=text><br><br>\n";
+
+print "<FONT SIZE = 3 color = Black>Email Address\&nbsp\;<b>(Required):</b></font>\n";
+print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
+print "<input id=cc name=cc size=30 type=text><br>\n";
+print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
+print "</th></tr>\n";
+
+# 3
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>3. From (Name):</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=from name=from size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 3 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=title name=title size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "</th></tr>\n";
+
+# 4
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>4. Subject:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=subject name=subject size=30 type=text>\&nbsp\;\&nbsp\;\n";
+
+# 5
+print "<FONT SIZE = 3 color = Black>5. Date:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=date name=date size=14 type=text value=$lmon\/$lmday\/$lyear>\&nbsp\;\&nbsp\;\n";
+
+# 6
+print "<FONT SIZE = 3 color = Black>6. Time:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=time name=time size=7 type=text value=$ftime><br>\n";
+print "</th></tr>\n";
+
+# 7
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>7. Message: <b>(Required)</b></font><br>\n";
+print "<textarea name=msg cols=100 rows=10></textarea><br>";
+print "</th></tr>\n";
+
+# 8
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black>8. Approved by (Name):</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=approved name=approved size=15 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 2 color = Black>Position/Title:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=atitle name=atitle size=15 type=text>\&nbsp\;\&nbsp\;\n";
+
+print "<FONT SIZE = 2 color = Black>Signature:</font>\&nbsp\;\&nbsp\;\n";
+print "<input id=asig name=asig size=15 type=text><br>\n";
+print "</th></tr>\n";
+print "</table>";
+
+print "<br><input type=submit> \* <input type=reset><br><br>\n";
 print "<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
 print "</form></center>";
 
