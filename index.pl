@@ -18,16 +18,18 @@ $lyear += 1900;
 $lmon += 1;
 
 my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr, $htmfilepath, @month, %month, $srnum, $monabbrev);
-my $attached = " ATTACHED";
+my $attached = " HTM FILE ALSO ATTACHED";
 @month = ('NA','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
 my $zee = "Z";
 my $zuludy = "$month[$gmon]\&nbsp\;$gyear";
+my $bodfile = "/bodfile.txt";
+my $p2pmsg = "X-P2ponly: true";
 
 ## FOLDER TO USE ACCORDING TO MACHINE IN USE
 
-#my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
+my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
 
-my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
+#my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
 
 #my $folder = "/home/dwayne/.wl2k/mailbox/N4MIO/out/";	  #using Linux
 
@@ -131,6 +133,7 @@ my $asig = $FORM{'asig'};
 my $atitle = $FORM{'atitle'};
 my $reply = $FORM{'reply'};
 my $rmsg = "*** THIS IS A REPLY ***";
+my $p2p = $FORM{p2p};
 
 #File name generator
 my @chars = ("A".."Z", "0".."9");
@@ -152,7 +155,7 @@ my $body1 = "1. Incident Name (Optional): $incident\n\n";
 my $body2 = "2. To (Name): $to\n";
 my $body2a = "\tPosition/Title: $tpos\n";
 my $body2b = "\tEmail: $email\n\n";
-my $body2c = "\tCC: $cc\n\n";
+my $body2c = "\tCc: $cc\n\n";
 my $body3 = "3. From (Name): $from\n";
 my $body3a = "\tPosition/Title: $pt\n";
 #my $body3b = "\tSignature: $sig\n\n";
@@ -163,7 +166,9 @@ my $body7 = "7. Message: $msg\n\n";
 my $body8 = "8. Approved by: $approved\n";
 my $body8a = "\tSignature: $asig\n";
 my $body8b = "\tPosition/Title: $atitle\n\n";
-
+if ($p2p) {
+     my $p2pmsg = "X-P2ponly: true";
+    }
 
 #PRINT ICS 213 FORM TO WEB PAGE
 print "Content-type: text/html\n\n";
@@ -340,10 +345,20 @@ close HTM;
 $htmfilepath = $folder.$htmfile;
 $htmchars = -s $htmfilepath;
 
-#Body charater count
+my $bodyadd = "\n$bodyr\n$body0\n$body1$body2$body2a$body2b$body2c$body3$body3a\n$body4$body5\n$body6$body7$body8$body8a$body8b";
+
+open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
+	print BOD $body0;
+	print BOD $attached;
+	print BOD $bodyadd;
+close BOD;
+
+my $bodfilepath = $folder.$bodfile;
+my $fbody_len = -s $bodfilepath;
+
 #my $fbody_len = length($body0) + length($attached) + length($bodyr) + 2;
 
-my $fbody_len = length($body0) + length($attached) + 2;
+#my $fbody_len = length($body0) + length($attached) + 2;
 
 
 #CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
@@ -390,12 +405,22 @@ foreach my $i (@ccmail) {
 
 
 print TMP "File: $htmchars $htmfile\n";
-
+	if ($p2p) {
+		print TMP "$p2pmsg\n";
+	}
 print TMP "Type: Private\n\n";
 
 #Message Body
-print TMP $body0.$attached;
-print TMP "\n\n";
+
+open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
+	while (<BOD>) {
+		print TMP $_;
+	}
+close BOD;
+
+#print TMP $body0.$attached;
+
+print TMP "\n";
 
 open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
 	while (<HTM>) {
@@ -629,9 +654,18 @@ close HTM;
 
 $htmfilepath = $folder.$htmfile;
 $htmchars = -s $htmfilepath;
+my $bodyadd = "\n\n$bodyr\n$body0\nFROM: $from\nTO: $email\nCC: $cc\nSubject: $subject\nDate: $date\nTime: $time\nMessage:\n $msg\n";
 
-#Body charater count
-my $fbody_len = length($body0) + length($attached) + 2;
+open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
+	print BOD $body0;
+	print BOD $attached;
+	print BOD $bodyadd;
+close BOD;
+
+my $bodfilepath = $folder.$bodfile;
+my $fbody_len = -s $bodfilepath;
+
+#my $fbody_len = length($body0) + length($attached) + 2;
 
 #CREATE B2F SIMPLE MESSAGE FILE FOR SENDING VIA WINLINK
 
@@ -681,7 +715,15 @@ print TMP "File: $htmchars $htmfile\n";
 print TMP "Type: Private\n\n";
 
 #Message Body
-print TMP $body0.$attached;
+
+#print TMP $body0.$attached;
+
+open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
+	while (<BOD>) {
+		print TMP $_;
+	}
+close BOD;
+
 print TMP "\n\n";
 
 open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
@@ -1013,9 +1055,21 @@ close HTM;
 
 $htmfilepath = $folder.$htmfile;
 $htmchars = -s $htmfilepath;
+#my ($sprfrm, $sprtmedte, $sprfrm, $sprto, $sprcc, $sprcst, $choose2, $comm2, $choose3, $comm3,$comm4, $comm5, $comm6, $comm7, $choose8, $comm8, $comm9, $sprpoc);
+my $bodyadd = "\n\nSPOTREP - $sprfrm\nR: $sprtmedte\nFROM: $sprfrm\nTO: $sprto\nINFO (CC): $sprcc\n\n1. City/State/Territory: $sprcst\n2. LandLine works? $choose2\n - $comm2\n3. Cell Phone Works? $choose3\n - $comm3\n4. AM/FM Broadcast Stations Status\n - $comm4\n5. TV Stations Status\n - $comm5\n6. Public Water Works Status\n - $comm6\n7. Commercial Power Status\n - $comm7\n8. Internet Working? $choose8\n - $comm8\nAdditional Comments\n - $comm9\nPOC $sprpoc\n";
 
-my $fbody_len = length($body0) + length($attached) + 2;
+open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
+	print BOD $body0;
+	print BOD $attached;
+	print BOD $bodyadd;
+close BOD;
 
+my $bodfilepath = $folder.$bodfile;
+my $fbody_len = -s $bodfilepath;
+
+#my $fbody_len = length($body0) + length($attached) + length($bodyadd) + 2;
+
+#my $fbody_len = -s $body0 + -s $attached + -s $bodyadd;
 
 #CREATE B2F SPOTREP FILE FOR SENDING VIA WINLINK
 
@@ -1047,9 +1101,6 @@ print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
 print TMP "Subject: $body0 - $sprfrm\n";
 
-#my $newto = $body1b =~ s/;/,/g;
-#my $newcc = $body1c =~ s/;/,/g;
-
 my @tomail = split /;/, $sprto;
 
 
@@ -1065,9 +1116,16 @@ foreach my $i (@tomail) {
 print TMP "Type: Private\n\n";
 
 #Message Body
-print TMP $body0.$attached;
-print TMP "\n\n";
+#print TMP $body0.$attached;
+#print TMP $bodyadd;
 
+open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
+	while (<BOD>) {
+		print TMP $_;
+	}
+close BOD;
+
+print TMP "\n\n";
 open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
 	while (<HTM>) {
 		print TMP $_;
@@ -1079,14 +1137,14 @@ close TMP;
 }
 
 else {
-        $err = "DID YOU FORGET AN EMAIL/WINLINK ADDRESS?";
+        $err = "DID YOU FORGET A TO EMAIL/WINLINK ADDRESS?";
 		&error;
        }
 
 }
 
   else {
-        $err = "DID YOU FORGET YOUR MESSAGE BODY?";
+        $err = "DID YOU FORGET FROM?";
 		&error;
        }
 
@@ -1156,6 +1214,10 @@ print "<form method=POST action=$cgiurl>\n";
 
 print "<input id=tt name=tt type=hidden value=two13>\n";
 
+# P2P checkbox
+print "<FONT SIZE = 3 color = Black><b>P2P</font>\&nbsp\;</b>\n";
+print "<input id=p2p name=p2p type=checkbox value=1 class=largerCheckbox><br><br>\n";
+
 # Reply checkbox
 print "<FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
 print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br><br>\n";
@@ -1181,7 +1243,7 @@ print "<input id=tpos name=tpos size=30 type=text><br><br>\n";
 print "<FONT SIZE = 3 color = Black>Email Address\&nbsp\;<b>(Required):</b></font>\n";
 print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
-print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
+print "<FONT SIZE = 3 color = Black>Cc:\&nbsp\;\&nbsp\;</font>\n";
 print "<input id=cc name=cc size=30 type=text><br>\n";
 #print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
 print "<br><center><i><font size=2 color=#0c2b5c>Calls or E-mails entered into the Email or CC fields above, can be multiples separated by a semicolon</font></i></center>";
@@ -1457,6 +1519,7 @@ sub spotrep {
 print "Content-type: text/html\n\n";
 print "<html><head><title>SPOTREP</title>";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print "<!-- Style to set the size of checkbox --> <style> input.largerCheckbox { width: 20px; height: 20px; } </style>";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
 print "</head>\n";
 print "<body style=\"background-color:dbc3c1;\"><center><FONT SIZE = 7><b><br>SPOTREP</b></FONT><br><br>\n";
