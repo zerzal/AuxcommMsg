@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 #AUXCOMM MESSAGING FOR PAT WINLINK SERVER - see $ver below
 
- use strict;
- use warnings;
+use strict;
+use warnings;
   
 # SET VARIABLES
 #######################
@@ -25,9 +25,9 @@ my $zuludy = "$month[$gmon]\&nbsp\;$gyear";
 
 ## FOLDER TO USE ACCORDING TO MACHINE IN USE
 
-my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
+#my $folder = "C:/Users/dcayers/.wl2k/mailbox/N4MIO/out/"; #using work pc
 
-#my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
+my $folder = "C:/Users/n4mio/.wl2k/mailbox/N4MIO/out/";   #using home pc
 
 #my $folder = "/home/dwayne/.wl2k/mailbox/N4MIO/out/";	  #using Linux
 
@@ -96,8 +96,8 @@ foreach $pair (@pairs) {
   
 }
 
-#OUTPUT FOR FORM ICS 213
-########################
+												#OUTPUT FOR FORM ICS 213
+												########################
 if ($FORM{'tt'}) {
  if ($FORM{'msg'}) {
   if ($FORM{'email'}) {
@@ -107,18 +107,18 @@ my $to = $FORM{'to'};
 my $tpos = $FORM{'tpos'};
 my $email = $FORM{'email'};
 
-	if ($email !~ "@") {
-	    $email = $email ."\@winlink.org";
-	}
+#	if ($email !~ "@") {
+#	    $email = $email ."\@winlink.org";
+#	}
 
 my $cc = $FORM{'cc'};
 
-   if ($cc) {     
+#  if ($cc) {     
   
-      if ($cc !~ "@") {
-	  $cc = $cc ."\@winlink.org";
-	 }
-   }
+#     if ($cc !~ "@") {
+#	  $cc = $cc ."\@winlink.org";
+#	 }
+#  }
 
 my $from = $FORM{'from'};
 my $pt = $FORM{'title'};
@@ -359,11 +359,35 @@ print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
 print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
 print TMP "Subject: $subject\n";
-print TMP "To: SMTP: $email\n";
+#print TMP "To: SMTP: $email\n";
 
-if ($cc) {     
-   print TMP "Cc: SMTP: $cc\n";
-	 }
+#if ($cc) {     
+#  print TMP "Cc: SMTP: $cc\n";
+#	 }
+
+my @tomail = split /;/, $email;
+my @ccmail = split /;/, $cc;
+
+foreach my $i (@tomail) {
+	if ($i =~ m/@/) {
+		print TMP "To: SMTP: $i\n";
+	}
+	else {
+		$i = uc($i);
+		print TMP "To: $i\n";
+	}
+}
+foreach my $i (@ccmail) {
+	if ($i =~ m/@/) {
+		print TMP "Cc: SMTP: $i\n";
+	}
+	else {
+		$i = uc($i);
+		print TMP "Cc: $i\n";
+	}
+	 
+}
+
 
 print TMP "File: $htmchars $htmfile\n";
 
@@ -398,25 +422,26 @@ else {
 exit;
 }
 
-#OUTPUT FOR SIMPLE MESSAGE FORM
+												#OUTPUT FOR SIMPLE MESSAGE FORM
+												################################
 if ($FORM{'sim'}) {
  if ($FORM{'msg'}) {
   if ($FORM{'email'}) {
  
 my $email = $FORM{'email'};
 
-	if ($email !~ "@") {
-	    $email = $email ."\@winlink.org";
-	}
+#	if ($email !~ "@") {
+#	    $email = $email ."\@winlink.org";
+#	}
 
 my $cc = $FORM{'cc'};
 
-   if ($cc) {     
+#  if ($cc) {     
   
-      if ($cc !~ "@") {
-	  $cc = $cc ."\@winlink.org";
-	 }
-   }
+#     if ($cc !~ "@") {
+#	  $cc = $cc ."\@winlink.org";
+#	 }
+#  }
 
 my $from = $FORM{'from'};
 my $subject = $FORM{'subject'};
@@ -621,11 +646,35 @@ print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
 print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
 print TMP "Subject: $subject\n";
-print TMP "To: SMTP: $email\n";
 
-if ($cc) {     
-   print TMP "Cc: SMTP: $cc\n";
-	 }
+#print TMP "To: SMTP: $email\n";
+
+#if ($cc) {     
+#   print TMP "Cc: SMTP: $cc\n";
+#	 }
+
+my @tomail = split /;/, $email;
+my @ccmail = split /;/, $cc;
+
+foreach my $i (@tomail) {
+	if ($i =~ m/@/) {
+		print TMP "To: SMTP: $i\n";
+	}
+	else {
+		$i = uc($i);
+		print TMP "To: $i\n";
+	}
+}
+foreach my $i (@ccmail) {
+	if ($i =~ m/@/) {
+		print TMP "Cc: SMTP: $i\n";
+	}
+	else {
+		$i = uc($i);
+		print TMP "Cc: $i\n";
+	}
+	 
+}
 
 print TMP "File: $htmchars $htmfile\n";
 
@@ -660,8 +709,8 @@ else {
 exit;
 }
 
-#OUTPUT FOR FORM RADIOGRAM
-###########################
+										#OUTPUT FOR FORM RADIOGRAM
+										###########################
 if ($FORM{'rgram'}) {
 
  $first = $FORM{'firstname'};
@@ -676,8 +725,8 @@ print "</body></html>\n";
 exit;
 }
 
-#OUTPUT FOR FORM SPOTREP
-###########################
+                                      #OUTPUT FOR FORM SPOTREP
+                                     ###########################
 if ($FORM{'srep'}) {
  if ($FORM{'sprfrm'}) {
   if ($FORM{'sprto'}) {
@@ -706,14 +755,10 @@ my $sprcc = $FORM{'sprcc'};
 # 1
 my $sprcst = $FORM{'sprcst'};
 # 2
-my $spryes2 = $FORM{'spryes2'};
-my $sprno2 = $FORM{'sprno2'};
-my $sprna2 = $FORM{'sprna2'};
+my $choose2 = $FORM{'choose2'};
 my $comm2 = $FORM{'Comm2'};
 # 3
-my $spryes3 = $FORM{'spryes3'};
-my $sprno3 = $FORM{'sprno3'};
-my $sprna3 = $FORM{'sprna3'};
+my $choose3 = $FORM{'choose3'};
 my $comm3 = $FORM{'Comm3'};
 # 4
 my $comm4 = $FORM{'Comm4'};
@@ -724,9 +769,7 @@ my $comm6 = $FORM{'Comm6'};
 # 7
 my $comm7 = $FORM{'Comm7'};
 # 8
-my $spryes8 = $FORM{'spryes8'};
-my $sprno8 = $FORM{'sprno8'};
-my $sprna8 = $FORM{'sprna8'};
+my $choose8 = $FORM{'choose8'};
 my $comm8 = $FORM{'Comm8'};
 
 # TABLE 3
@@ -745,33 +788,49 @@ $mid .= $chars[rand @chars] for 1..12;
 
 $filename = "$mid.b2f";  
 	
-	
-#my $bodyr = " ";
+# TABLE 1	
+my $body0 = "SPOTREP";
+my $body1 = "\tR: \&nbsp\;$sprtmedte\n";
+my $body1a = "\tFROM: \&nbsp\;$sprfrm\n";
+my $body1b = "\tTO: \&nbsp\;$sprto\n";
+my $body1c = "\tINFO (CC): \&nbsp\;$sprcc\n\n";
 
- if ($reply) {
-     $bodyr = "$rmsg\n\n";
-    }
-my $body0 = "GENERAL MESSAGE (ICS 213)";
-my $body1 = "1. Incident Name (Optional): $incident\n\n";
-my $body2 = "2. To (Name): $to\n";
-my $body2a = "\tPosition/Title: $tpos\n";
-my $body2b = "\tEmail: $email\n\n";
-my $body2c = "\tCC: $cc\n\n";
-my $body3 = "3. From (Name): $from\n";
-my $body3a = "\tPosition/Title: $pt\n";
-#my $body3b = "\tSignature: $sig\n\n";
-my $body4 = "4. Subject: $subject\n\n";
-my $body5 = "5. Date: $date\n";
-my $body6 = "6. Time: $time\n\n";
-my $body7 = "7. Message: $msg\n\n";
-my $body8 = "8. Approved by: $approved\n";
-my $body8a = "\tSignature: $asig\n";
-my $body8b = "\tPosition/Title: $atitle\n\n";
+# TABLE 2
+# 1
+my $body2 = "\t1. City/State/Territory: \&nbsp\;$sprcst\n\n";
+# 2
+my $body2a = "\t2. LandLine works? \&nbsp\;$choose2\n";
+my $body2b = "\t\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;$comm2\n";
+# 3
+my $body2c = "\t3. Cell Phone Works? \&nbsp\;$choose3\n";
+my $body2d = "\t\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;$comm3\n";
+# 4
+my $body2e = "\t4. AM/FM Broadcast Stations Status\n";
+my $body2f = "\t\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;$comm4\n";
+# 5
+my $body2g = "\t5. TV Stations Status\n";
+my $body2h = "\t\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;$comm5\n";
+# 6
+my $body2i = "\t6. Public Water Works Status\n";
+my $body2j = "\t\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;$comm6\n";
+# 7
+my $body2k = "\t7. Commercial Power Status\n";
+my $body2l = "\t\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;$comm7\n";
+# 8
+my $body2m = "\t8. Internet Working? \&nbsp\;$choose8\n";
+my $body2n = "\t\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;$comm8\n";
 
+# TABLE 3
+my $body3 = "\tAdditional Comments\n";
+my $body3a = "\t\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;$comm9\n";
+
+# TABLE 4
+my $body4 = "\tPOC\n";
+my $body4a = "\t$sprpoc\n";
 
 #PRINT SPOTREP TO WEB PAGE
 print "Content-type: text/html\n\n";
-print "<html><head><title>FORM IC-213 QUEUED FOR DELIVERY</title>";
+print "<html><head><title>FORM SPOTREP QUEUED FOR DELIVERY</title>";
 print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
 print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style></head>\n";
 
@@ -790,57 +849,63 @@ print "<script>
 	</script>";
 
 
-print "<body style=\"background-color:powderblue;\"><FONT SIZE = 3 COLOR = BLUE><b><i>Thank you!<br>Your IC-213 message below has been queued<br>for delivery via Amateur Radio and the Winlink system.</i></b></font><br><br>";
+print "<body style=\"background-color:dbc3c1;\"><FONT SIZE = 3 COLOR = BLUE><b><i>Thank you!<br>SPOTREP message below has been queued<br>for delivery via Amateur Radio and the Winlink system.</i></b></font><br><br>";
 print "<center>";
 print "<div id='printMe'>";
-print "<br><FONT SIZE = 5><b>$body0</b></FONT>";
-print "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+print "<br><FONT SIZE = 6><b>$body0</b></FONT><br>";
 print "<table style=width:100\%>";
 print "<table class=\"center\">";
 
+# TABLE 1
+print "<tr><th style=text-align:left>\n";
+print "<font size = 4>";
+print "$body1\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\n";
+print "$body1a<br><br>";
+print "$body1b<br><br>";
+print "$body1c<br>";
+print "</th></tr>\n";
+
+# TABLE 2
 # 1
 print "<tr><th style=text-align:left>\n";
-print $body1;
+print "$body2<br><br>\n";
+#2
+print "$body2a\&nbsp\;\&nbsp\;\n";
+print "<br><br>$body2b<br><br>\n";
+#3
+print "$body2c\&nbsp\;\&nbsp\;\n";
+print "<br><br>$body2d<br><br>\n";
+#4
+print "$body2e<br><br>\n";
+print "$body2f<br><br>\n";
+#5
+print "$body2g<br><br>\n";
+print "$body2h<br><br>\n";
+#6
+print "$body2i<br><br>\n";
+print "$body2j<br><br>\n";
+#7
+print "$body2k<br><br>\n";
+print "$body2l<br><br>\n";
+#8
+print "$body2m\&nbsp\;\&nbsp\;\n";
+print "<br><br>$body2n\&nbsp\;\&nbsp\;\n";
 print "</th></tr>\n";
 
-# 2
+# TABLE 3
 print "<tr><th style=text-align:left>\n";
-print "$body2\&nbsp\;\&nbsp\;$body2a<br><br>\&nbsp\;\&nbsp\;\&nbsp\;$body2b";
-	my $body2c_len = length($body2c);
-	if ($body2c_len > 7) {
-		print "\&nbsp\;\&nbsp\;$body2c";
-	}
+print "$body3\n";
+print "<br><br>$body3a<br>\n";
 print "</th></tr>\n";
 
-# 3
+# TABLE 4
 print "<tr><th style=text-align:left>\n";
-print "$body3\&nbsp\;\&nbsp\;$body3a";
+print "$body4\&nbsp\;\&nbsp\;\n";
+print "$body4a\n";
 print "</th></tr>\n";
+print "</table>";
 
-# 4
-print "<tr><th style=text-align:left>\n";
-print "$body4\&nbsp\;\&nbsp\;$body5\&nbsp\;\&nbsp\;$body6";
-print "</th></tr>\n";
-
-# 7
-print "<tr><th style=text-align:left>\n";
-my @body7_split = split / /, $body7;
-print "@body7_split[0..1]\<br>";
-print "@body7_split[2..12]<br>";
-print "@body7_split[13..22]<br>";
-print "@body7_split[23..32]<br>";
-print "@body7_split[33..42]<br>";
-print "@body7_split[43..52]<br>";
-print "@body7_split[53..62]<br>";
-print "@body7_split[63..72]<br>";
-print "</th></tr>\n";
-
-# 8
-print "<tr><th style=text-align:left>\n";
-print "$body8\&nbsp\;\&nbsp\;$body8a\&nbsp\;\&nbsp\;$body8b";
-print "</th></tr>\n";
-print "</table><br>";
-print "</div>";
+print "</div></font><br>";
 
 #Add button to print web page
 
@@ -852,13 +917,14 @@ print "<br><br><br><br>";
 
 print "</center></body></html>\n";
 
-#BUILD HTM FILE TO ATTACH TO EMAIL
+
+#BUILD SPOTREP HTM FILE TO ATTACH TO EMAIL
 
 $htmfile = $mid.'.htm';
 
 open HTM, '>', $folder.$htmfile;
 
-print HTM "<html><head><title>ICS 213</title>";
+print HTM "<html><head><title>FORM SPOTREP QUEUED FOR DELIVERY</title>";
 print HTM "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
 print HTM "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style></head>\n";
 
@@ -877,63 +943,67 @@ print HTM "<script>
 	</script>";
 
 
-print HTM "<body style=\"background-color:white;\"><br><br>";
+print HTM "<body style=\"background-color:white;\">";
 print HTM "<center>";
 print HTM "<div id='printMe'>";
-print HTM "<br><FONT SIZE = 5><b>GENERAL MESSAGE (ICS 213)</b></FONT>";
-print HTM "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+print HTM "<br><FONT SIZE = 6><b>$body0</b></FONT><br>";
 print HTM "<table style=width:100\%>";
 print HTM "<table class=\"center\">";
 
+# TABLE 1
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "<font size = 4>";
+print HTM "$body1\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\n";
+print HTM "$body1a<br><br>";
+print HTM "$body1b<br><br>";
+print HTM "$body1c<br>";
+print HTM "</th></tr>\n";
+
+# TABLE 2
 # 1
 print HTM "<tr><th style=text-align:left>\n";
-print HTM $body1;
+print HTM "$body2<br><br>\n";
+#2
+print HTM "$body2a\&nbsp\;\&nbsp\;\n";
+print HTM "<br><br>$body2b<br><br>\n";
+#3
+print HTM "$body2c\&nbsp\;\&nbsp\;\n";
+print HTM "<br><br>$body2d<br><br>\n";
+#4
+print HTM "$body2e<br><br>\n";
+print HTM "$body2f<br><br>\n";
+#5
+print HTM "$body2g<br><br>\n";
+print HTM "$body2h<br><br>\n";
+#6
+print HTM "$body2i<br><br>\n";
+print HTM "$body2j<br><br>\n";
+#7
+print HTM "$body2k<br><br>\n";
+print HTM "$body2l<br><br>\n";
+#8
+print HTM "$body2m\&nbsp\;\&nbsp\;\n";
+print HTM "<br><br>$body2n\&nbsp\;\&nbsp\;\n";
 print HTM "</th></tr>\n";
 
-# 2
+# TABLE 3
 print HTM "<tr><th style=text-align:left>\n";
-print HTM "$body2\&nbsp\;\&nbsp\;$body2a<br><br>\&nbsp\;\&nbsp\;\&nbsp\;$body2b";
-		$body2c_len = length($body2c);
-	if ($body2c_len > 7) {
-		print HTM "\&nbsp\;\&nbsp\;$body2c";
-	}
+print HTM "$body3\n";
+print HTM "<br><br>$body3a<br>\n";
 print HTM "</th></tr>\n";
 
-# 3
+# TABLE 4
 print HTM "<tr><th style=text-align:left>\n";
-print HTM "$body3\&nbsp\;\&nbsp\;$body3a";
+print HTM "$body4\&nbsp\;\&nbsp\;\n";
+print HTM "$body4a\n";
 print HTM "</th></tr>\n";
+print HTM "</table>";
 
-# 4
-print HTM "<tr><th style=text-align:left>\n";
-print HTM "$body4\&nbsp\;\&nbsp\;$body5\&nbsp\;\&nbsp\;$body6";
-print HTM "</th></tr>\n";
+print HTM "</div></font><br>";
 
-# 7
-print HTM "<tr><th style=text-align:left>\n";
-print HTM "@body7_split[0..1]\<br>";
-print HTM "@body7_split[2..12]<br>";
-print HTM "@body7_split[13..22]<br>";
-print HTM "@body7_split[23..32]<br>";
-print HTM "@body7_split[33..42]<br>";
-print HTM "@body7_split[43..52]<br>";
-print HTM "@body7_split[53..62]<br>";
-print HTM "@body7_split[63..72]<br>";
+#Add button to print web page
 
-#print HTM $body7;
-print HTM "</th></tr>\n";
-
-# 8
-print HTM "<tr><th style=text-align:left>\n";
-print HTM "$body8\&nbsp\;\&nbsp\;$body8a\&nbsp\;\&nbsp\;$body8b";
-print HTM "</th></tr>\n";
-
-print HTM "</table><br>";
-print HTM "</div>";
-
-#Add button to print HTM web page
-
-print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
+print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT REPORT\" onClick=printDiv('printMe')>";
 
 print HTM "<br><br><br><br>";
 
@@ -954,20 +1024,44 @@ open TMP, '>', $folder.$filename or die "Could not open file: $!";
 #Header information
 print TMP "Mid: $mid\n";
 print TMP "Body: $fbody_len\n";
+
+my @ccmail = split /;/, $sprcc;
+
+foreach my $i (@ccmail) {
+	if ($i =~ m/@/) {
+		print TMP "Cc: SMTP: $i\n";
+	}
+	else {
+		$i = uc($i);
+		print TMP "Cc: $i\n";
+	}
+	 
+}
+
+
 print TMP "Content-Transfer-Encoding: 8bit\n";
 print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
 print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
+print TMP "File: $htmchars $htmfile\n";
 print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
-print TMP "Subject: $subject\n";
-print TMP "To: SMTP: $email\n";
+print TMP "Subject: $body0 - $sprfrm\n";
 
-if ($cc) {     
-   print TMP "Cc: SMTP: $cc\n";
-	 }
+#my $newto = $body1b =~ s/;/,/g;
+#my $newcc = $body1c =~ s/;/,/g;
 
-print TMP "File: $htmchars $htmfile\n";
+my @tomail = split /;/, $sprto;
 
+
+foreach my $i (@tomail) {
+	if ($i =~ m/@/) {
+		print TMP "To: SMTP: $i\n";
+	}
+	else {
+		$i = uc($i);
+		print TMP "To: $i\n";
+	}
+}
 print TMP "Type: Private\n\n";
 
 #Message Body
@@ -1040,7 +1134,7 @@ print "<INPUT TYPE=submit style=\"font-size:20px; background-color:53b1e0; color
 print "<INPUT TYPE=submit NAME=rg VALUE=\"RADIOGRAM\" style=\"font-size:20px; background-color:395935; color:Black; border: 3pt ridge grey\"><br>";
 print "<font size=4><b>Radiogram Under Construction</font></b><br><br><br>";
 print "<INPUT TYPE=submit NAME=sp VALUE=\"SPOTREP\" style=\"font-size:20px; background-color:dbc3c1; color:Black; border: 3pt ridge grey\">";
-print "<br><font size=4><b>Spotrep Under Construction</font></b>";
+#print "<br><font size=4><b>Spotrep Under Construction</font></b>";
 print "</form>\n";
 
 print "</center>";
@@ -1089,7 +1183,8 @@ print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
 
 print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
 print "<input id=cc name=cc size=30 type=text><br>\n";
-print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
+#print "<FONT SIZE = 2 color = red>[Can be Winlink user alias]</font><br>\n";
+print "<br><center><i><font size=2 color=#0c2b5c>Calls or E-mails entered into the Email or CC fields above, can be multiples separated by a semicolon</font></i></center>";
 print "</th></tr>\n";
 
 # 3
@@ -1183,7 +1278,8 @@ print "<input id=email name=email size=30 type=text>\&nbsp\;\&nbsp\;\n";
 # CC
 print "<FONT SIZE = 3 color = Black>CC:\&nbsp\;\&nbsp\;</font>\n";
 print "<input id=cc name=cc size=30 type=text><br>\n";
-print "<FONT SIZE = 2 color = purple>[Can be Winlink user alias]</font><br>\n";
+print "<br><center><i><font size=2 color=#0c2b5c>Calls or E-mails entered into the TO or INFO fields above, can be multiples separated by a semicolon</font></i></center>";
+#print "<FONT SIZE = 2 color = purple>[Can be Winlink user alias]</font><br>\n";
 print "</th></tr>\n";
 
 # Subject
@@ -1391,13 +1487,13 @@ print "<FONT SIZE = 3 color = Black>1. City/State/Territory:\&nbsp\;\&nbsp\;\n";
 print "<input id=sprcst name=sprcst size=60 type=text><br><br>\n";
 #2
 print "2. LandLine works?\&nbsp\;\&nbsp\;\n";
-print "<input type=radio id=spryes2 name=spyes2 value=YES><label for=spryes2>YES</label><input type=radio id=sprno2 name=sprno2 value=NO>
-	   <label for=sprno2>NO</label><input type=radio id=sprna2 name=sprna2 value=-- checked=checked><label for=other>Unknown - N/A</label>\&nbsp\;\&nbsp\;\n";
+print "<input type=radio id=spryes2 name=choose2 value=YES><label for=spryes2>YES</label><input type=radio id=sprno2 name=choose2 value=NO>
+	   <label for=sprno2>NO</label><input type=radio id=sprna2 name=choose2 value=NA><label for=sprna2>Unknown - N/A</label>\&nbsp\;\&nbsp\;\n";
 print "<br><textarea placeholder=Comments name=Comm2 cols=90 rows=1 id=Comm2 onkeyup=\"AutoGrowTextArea(this)\"></textarea><br><br>\n";
 #3
 print "3. Cell Phone Works?\&nbsp\;\&nbsp\;\n";
-print "<input type=radio id=spryes3 name=spyes3 value=YES><label for=spryes3>YES</label><input type=radio id=sprno3 name=sprno3 value=NO>
-	   <label for=sprno3>NO</label><input type=radio id=sprna3 name=sprna3 value=-- checked=checked><label for=sprna3>Unknown - N/A</label>\&nbsp\;\&nbsp\;\n";
+print "<input type=radio id=spryes3 name=choose3 value=YES><label for=spryes3>YES</label><input type=radio id=sprno3 name=choose3 value=NO>
+	   <label for=sprno3>NO</label><input type=radio id=sprna3 name=choose3 value=NA><label for=sprna3>Unknown - N/A</label>\&nbsp\;\&nbsp\;\n";
 print "<br><textarea placeholder=Comments name=Comm3 cols=90 rows=1 id=Comm3 onkeyup=\"AutoGrowTextArea(this)\"></textarea><br><br>\n";
 #4
 print "4. AM/FM Broadcast Stations Status<br>\n";
@@ -1413,8 +1509,8 @@ print "7. Commercial Power Status<br>\n";
 print "<textarea placeholder=Comments name=Comm7 cols=90 rows=1 id=Comm7 onkeyup=\"AutoGrowTextArea(this)\"></textarea><br><br>\n";
 #8
 print " 8. Internet Working?\&nbsp\;\&nbsp\;\n";
-print "<input type=radio id=spryes8 name=spyes8 value=YES><label for=spryes8>YES</label><input type=radio id=sprno8 name=sprno8 value=NO>
-	   <label for=sprno8>NO</label><input type=radio id=sprna8 name=sprna8 value=-- checked=checked><label for=sprna8>Unknown - N/A</label>\&nbsp\;\&nbsp\;\n";
+print "<input type=radio id=spryes8 name=choose8 value=YES><label for=spryes8>YES</label><input type=radio id=sprno8 name=choose8 value=NO>
+	   <label for=sprno8>NO</label><input type=radio id=sprna8 name=choose8 value=NA><label for=sprna8>Unknown - N/A</label>\&nbsp\;\&nbsp\;\n";
 print "<br><textarea placeholder=Comments name=Comm8 cols=90 rows=1 id=Comm8 onkeyup=\"AutoGrowTextArea(this)\"></textarea><br><br>\n";
 print "</font>";
 print "</th></tr>\n";
@@ -1428,7 +1524,7 @@ print "</th></tr>\n";
 # TABLE 4
 print "<tr><th style=text-align:left>\n";
 print "<FONT SIZE = 3 color = Black>POC</font>\&nbsp\;\&nbsp\;\n";
-print "<input placeholder=Point_of_Contact id=sprpoc name=sprpoc size=75 type=text><br>\n";
+print "<input placeholder=Point_of_Contact id=sprpoc name=sprpoc size=75 type=text>\n";
 print "</th></tr>\n";
 print "</table>";
 
