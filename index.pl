@@ -21,9 +21,10 @@ my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $
 my $attached = " HTM FILE ALSO ATTACHED";
 @month = ('NA','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
 my $zee = "Z";
-my $zuludy = "$month[$gmon]\&nbsp\;$gyear";
+my $zuludy = "$month[$gmon]-$gyear";
 my $bodfile = "/bodfile.txt";
 my $p2pmsg = "X-P2ponly: true";
+my $rmsg = "*** THIS IS A REPLY ***";
 
 ## FOLDER TO USE ACCORDING TO MACHINE IN USE
 
@@ -104,35 +105,21 @@ if ($FORM{'tt'}) {
  if ($FORM{'msg'}) {
   if ($FORM{'email'}) {
  
-my $incident = $FORM{'incident'};
-my $to = $FORM{'to'};
-my $tpos = $FORM{'tpos'};
+my $incident = uc($FORM{'incident'});
+my $to = uc($FORM{'to'});
+my $tpos = uc($FORM{'tpos'});
 my $email = $FORM{'email'};
-
-#	if ($email !~ "@") {
-#	    $email = $email ."\@winlink.org";
-#	}
-
 my $cc = $FORM{'cc'};
-
-#  if ($cc) {     
-  
-#     if ($cc !~ "@") {
-#	  $cc = $cc ."\@winlink.org";
-#	 }
-#  }
-
-my $from = $FORM{'from'};
-my $pt = $FORM{'title'};
-my $subject = $FORM{'subject'};
+my $from = uc($FORM{'from'});
+my $pt = uc($FORM{'title'});
+my $subject = uc($FORM{'subject'});
 my $date = $FORM{'date'};
 my $time = $FORM{'time'};
-my $msg = $FORM{'msg'};
-my $approved = $FORM{'approved'};
-my $asig = $FORM{'asig'};
-my $atitle = $FORM{'atitle'};
+my $msg = uc($FORM{'msg'});
+my $approved = uc($FORM{'approved'});
+my $asig = uc($FORM{'asig'});
+my $atitle = uc($FORM{'atitle'});
 my $reply = $FORM{'reply'};
-my $rmsg = "*** THIS IS A REPLY ***";
 my $p2p = $FORM{p2p};
 
 #File name generator
@@ -158,7 +145,6 @@ my $body2b = "\tEmail: $email\n\n";
 my $body2c = "\tCc: $cc\n\n";
 my $body3 = "3. From (Name): $from\n";
 my $body3a = "\tPosition/Title: $pt\n";
-#my $body3b = "\tSignature: $sig\n\n";
 my $body4 = "4. Subject: $subject\n\n";
 my $body5 = "5. Date: $date\n";
 my $body6 = "6. Time: $time\n\n";
@@ -166,9 +152,6 @@ my $body7 = "7. Message: $msg\n\n";
 my $body8 = "8. Approved by: $approved\n";
 my $body8a = "\tSignature: $asig\n";
 my $body8b = "\tPosition/Title: $atitle\n\n";
-if ($p2p) {
-     my $p2pmsg = "X-P2ponly: true";
-    }
 
 #PRINT ICS 213 FORM TO WEB PAGE
 print "Content-type: text/html\n\n";
@@ -356,11 +339,6 @@ close BOD;
 my $bodfilepath = $folder.$bodfile;
 my $fbody_len = -s $bodfilepath;
 
-#my $fbody_len = length($body0) + length($attached) + length($bodyr) + 2;
-
-#my $fbody_len = length($body0) + length($attached) + 2;
-
-
 #CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
 
 open TMP, '>', $folder.$filename or die "Could not open file: $!";  
@@ -454,27 +432,14 @@ if ($FORM{'sim'}) {
   if ($FORM{'email'}) {
  
 my $email = $FORM{'email'};
-
-#	if ($email !~ "@") {
-#	    $email = $email ."\@winlink.org";
-#	}
-
 my $cc = $FORM{'cc'};
-
-#  if ($cc) {     
-  
-#     if ($cc !~ "@") {
-#	  $cc = $cc ."\@winlink.org";
-#	 }
-#  }
-
-my $from = $FORM{'from'};
-my $subject = $FORM{'subject'};
+my $from = uc($FORM{'from'});
+my $subject = uc($FORM{'subject'});
 my $date = $FORM{'date'};
 my $time = $FORM{'time'};
-my $msg = $FORM{'msg'};
+my $msg = uc($FORM{'msg'});
 my $reply = $FORM{'reply'};
-my $rmsg = "*** THIS IS A REPLY ***";
+my $p2p = $FORM{p2p};
 
 #File name generator
 my @chars = ("A".."Z", "0".."9");
@@ -654,7 +619,7 @@ close HTM;
 
 $htmfilepath = $folder.$htmfile;
 $htmchars = -s $htmfilepath;
-my $bodyadd = "\n\n$bodyr\n$body0\nFROM: $from\nTO: $email\nCC: $cc\nSubject: $subject\nDate: $date\nTime: $time\nMessage:\n $msg\n";
+my $bodyadd = "\n$bodyr$body0\nFROM: $from\nTO: $email\nCC: $cc\nSubject: $subject\nDate: $date\nTime: $time\nMessage:\n $msg\n";
 
 open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
 	print BOD $body0;
@@ -664,8 +629,6 @@ close BOD;
 
 my $bodfilepath = $folder.$bodfile;
 my $fbody_len = -s $bodfilepath;
-
-#my $fbody_len = length($body0) + length($attached) + 2;
 
 #CREATE B2F SIMPLE MESSAGE FILE FOR SENDING VIA WINLINK
 
@@ -680,12 +643,6 @@ print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
 print TMP "From: N4MIO\n";
 print TMP "Mbo: N4MIO\n";
 print TMP "Subject: $subject\n";
-
-#print TMP "To: SMTP: $email\n";
-
-#if ($cc) {     
-#   print TMP "Cc: SMTP: $cc\n";
-#	 }
 
 my @tomail = split /;/, $email;
 my @ccmail = split /;/, $cc;
@@ -711,12 +668,13 @@ foreach my $i (@ccmail) {
 }
 
 print TMP "File: $htmchars $htmfile\n";
+	if ($p2p) {
+		print TMP "$p2pmsg\n";
+	}
 
 print TMP "Type: Private\n\n";
 
 #Message Body
-
-#print TMP $body0.$attached;
 
 open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
 	while (<BOD>) {
@@ -751,22 +709,6 @@ else {
 exit;
 }
 
-										#OUTPUT FOR FORM RADIOGRAM
-										###########################
-if ($FORM{'rgram'}) {
-
- $first = $FORM{'firstname'};
-print "Content-type: text/html\n\n";
-print "<html><head><title>$first</title></head>\n";
-print "<body><FONT SIZE = 5>$first</FONT><br><br>\n";
-
-print "<FONT SIZE = 10>OUTPUT OF FORM RADIOGRAM</FONT>\n";
-
-print "</body></html>\n";
-
-exit;
-}
-
                                       #OUTPUT FOR FORM SPOTREP
                                      ###########################
 if ($FORM{'srep'}) {
@@ -776,50 +718,38 @@ if ($FORM{'srep'}) {
 
 # TABLE 1
 my $sprtmedte = $FORM{'sprtmedte'};
-my $sprfrm = $FORM{'sprfrm'};
+my $sprfrm = uc($FORM{'sprfrm'});
 my $sprto = $FORM{'sprto'};
 my $sprcc = $FORM{'sprcc'};
 
-#	if ($email !~ "@") {
-#	    $email = $email ."\@winlink.org";
-#	}
-#
-#my $cc = $FORM{'cc'};
-#
-#  if ($cc) {     
-# 
-#     if ($cc !~ "@") {
-#	  $cc = $cc ."\@winlink.org";
-#	 }
-#  }
-
 # TABLE 2
 # 1
-my $sprcst = $FORM{'sprcst'};
+my $sprcst = uc($FORM{'sprcst'});
 # 2
 my $choose2 = $FORM{'choose2'};
-my $comm2 = $FORM{'Comm2'};
+my $comm2 = uc($FORM{'Comm2'});
 # 3
 my $choose3 = $FORM{'choose3'};
-my $comm3 = $FORM{'Comm3'};
+my $comm3 = uc($FORM{'Comm3'});
 # 4
-my $comm4 = $FORM{'Comm4'};
+my $comm4 = uc($FORM{'Comm4'});
 # 5
-my $comm5 = $FORM{'Comm5'};
+my $comm5 = uc($FORM{'Comm5'});
 # 6
-my $comm6 = $FORM{'Comm6'};
+my $comm6 = uc($FORM{'Comm6'});
 # 7
-my $comm7 = $FORM{'Comm7'};
+my $comm7 = uc($FORM{'Comm7'});
 # 8
 my $choose8 = $FORM{'choose8'};
-my $comm8 = $FORM{'Comm8'};
+my $comm8 = uc($FORM{'Comm8'});
 
 # TABLE 3
-my $comm9 = $FORM{'Comm9'};
+my $comm9 = uc($FORM{'Comm9'});
 
 # TABLE 4
-my $sprpoc = $FORM{'sprpoc'};
+my $sprpoc = uc($FORM{'sprpoc'});
 
+my $p2p = $FORM{p2p};
 
 #File name generator
 my @chars = ("A".."Z", "0".."9");
@@ -832,7 +762,7 @@ $filename = "$mid.b2f";
 	
 # TABLE 1	
 my $body0 = "SPOTREP";
-my $body1 = "\tR: \&nbsp\;$sprtmedte\n";
+my $body1 = "\tR: \&nbsp\;$sprtmedte";
 my $body1a = "\tFROM: \&nbsp\;$sprfrm\n";
 my $body1b = "\tTO: \&nbsp\;$sprto\n";
 my $body1c = "\tINFO (CC): \&nbsp\;$sprcc\n\n";
@@ -1056,7 +986,7 @@ close HTM;
 $htmfilepath = $folder.$htmfile;
 $htmchars = -s $htmfilepath;
 #my ($sprfrm, $sprtmedte, $sprfrm, $sprto, $sprcc, $sprcst, $choose2, $comm2, $choose3, $comm3,$comm4, $comm5, $comm6, $comm7, $choose8, $comm8, $comm9, $sprpoc);
-my $bodyadd = "\n\nSPOTREP - $sprfrm\nR: $sprtmedte\nFROM: $sprfrm\nTO: $sprto\nINFO (CC): $sprcc\n\n1. City/State/Territory: $sprcst\n2. LandLine works? $choose2\n - $comm2\n3. Cell Phone Works? $choose3\n - $comm3\n4. AM/FM Broadcast Stations Status\n - $comm4\n5. TV Stations Status\n - $comm5\n6. Public Water Works Status\n - $comm6\n7. Commercial Power Status\n - $comm7\n8. Internet Working? $choose8\n - $comm8\nAdditional Comments\n - $comm9\nPOC $sprpoc\n";
+my $bodyadd = "\n\nSPOTREP - $sprfrm\nR: $sprtmedte\nFROM: $sprfrm\nTO: $sprto\nINFO (CC): $sprcc\n\n1. City/State/Territory: $sprcst\n2. LandLine works? $choose2\n - $comm2\n3. Cell Phone Works? $choose3\n - $comm3\n4. AM/FM Broadcast Stations Status\n - $comm4\n5. TV Stations Status\n - $comm5\n6. Public Water Works Status\n - $comm6\n7. Commercial Power Status\n - $comm7\n8. Internet Working? $choose8\n - $comm8\nAdditional Comments\n - $comm9\n\nPOC $sprpoc\n";
 
 open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
 	print BOD $body0;
@@ -1066,10 +996,6 @@ close BOD;
 
 my $bodfilepath = $folder.$bodfile;
 my $fbody_len = -s $bodfilepath;
-
-#my $fbody_len = length($body0) + length($attached) + length($bodyadd) + 2;
-
-#my $fbody_len = -s $body0 + -s $attached + -s $bodyadd;
 
 #CREATE B2F SPOTREP FILE FOR SENDING VIA WINLINK
 
@@ -1113,11 +1039,11 @@ foreach my $i (@tomail) {
 		print TMP "To: $i\n";
 	}
 }
-print TMP "Type: Private\n\n";
 
-#Message Body
-#print TMP $body0.$attached;
-#print TMP $bodyadd;
+if ($p2p) {
+		print TMP "$p2pmsg\n";
+	}
+print TMP "Type: Private\n\n";
 
 open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
 	while (<BOD>) {
@@ -1151,7 +1077,489 @@ else {
 exit;
 }
 
+												#OUTPUT FOR FORM RADIOGRAM
+												##########################
+if ($FORM{'rgram'}) {
+ if ($FORM{'rgmsg'}) {
+  if ($FORM{'email'}) {
+ 
+my $rnum = $FORM{'rnum'};
+my $rpres = $FORM{'rpres'};
+my $rhx = $FORM{'rhx'};
+	if (!$rhx) {
+		$rhx = "NONE";
+	}
+my $rsoo = uc($FORM{'rsoo'});
+my $rck = $FORM{'rck'};
+my $rpoo = uc($FORM{'rpoo'});
+my $rtim = $FORM{'rtim'};
+my $rdt = $FORM{'rdt'};
+my $rto = uc($FORM{'rto'});
+my $rto1 = uc($FORM{'rto1'});
+my $rto2 = uc($FORM{'rto2'});
+my $rtel = $FORM{'rtel'};
+my $email = $FORM{'email'};
+my $cc = $FORM{'cc'};
+my $ras = uc($FORM{'ras'});
+my $rph = $FORM{'rph'};
+my $rnme = uc($FORM{'rnme'});
+my $rstr = uc($FORM{'rstr'});
+my $rcsz = uc($FORM{'rcsz'});
+my $rgmsg = uc($FORM{'rgmsg'});
+my $rrfrm = uc($FORM{'rrfrm'});
+my $rrdte = $FORM{'rrdte'};
+my $rrtme = $FORM{'rrtme'};
+my $rsto = uc($FORM{'rsto'});
+my $rsdte = $FORM{'rsdte'};
+my $rstme = $FORM{'rstme'};
+my $reply = $FORM{'reply'};
+my $p2p = $FORM{'p2p'};
+ 
+$rck += $rgmsg =~ s/((^|\s)\S)/$1/g;
 
+#File name generator
+my @chars = ("A".."Z", "0".."9");
+my $mid;
+$mid .= $chars[rand @chars] for 1..12;
+
+#Build body of message file
+
+$filename = "$mid.b2f";  
+
+ if ($reply) {
+     $bodyr = "$rmsg\n\n";
+    }
+
+my $body0 = "RADIOGRAM";
+# Table 1
+my $body1 = "Number: $rnum\n";
+my $body1a = "Precedence: $rpres\n";
+my $body1b = "HX: $rhx\n";
+my $body1c = "Station of Origin: $rsoo\n";
+my $body1d = "Check: $rck\n";
+my $body1e = "Place of Origin: $rpoo\n";
+my $body1f = "Time Filed: $rtim\n";
+my $body1g = "Date: $rdt\n\n";
+# Table 2 section 1
+my $body2 = "To: $rto\n";
+my $body2a = "To: $rto1\n";
+my $body2b = "To: $rto2\n";
+my $body2c = "Telephone Number: $rtel\n";
+my $body2d = "Email Address: $email\n";
+my $body2e = "Cc: $cc\n\n";
+# Table 2 section 2
+my $body2k = "This radio message was received at";
+my $body2f = "Amateur Staion: $ras\n";
+my $body2g = "Phone: $rph\n";
+my $body2h = "Name: $rnme\n";
+my $body2i = "Street: $rstr\n";
+my $body2j = "City State Zip: $rcsz\n\n";
+# Table 3
+my $body3 = "Message: $rgmsg\n\n";
+# Table 4 Section 1
+my $body4 = "REC'D\n";
+my $body4a = "From: $rrfrm\n";
+my $body4b = "Date: $rrdte\n";
+my $body4c = "Time: $rrtme\n\n";
+# Table 4 Section 2
+my $body4d = "SENT\n";
+my $body4e = "To: $rsto\n";
+my $body4f = "Date: $rsdte\n";
+my $body4g = "Time: $rstme\n\n\n";
+
+# PRINT RADIOGRAM FORM TO WEB PAGE
+print "Content-type: text/html\n\n";
+print "<html><head><title>RADIOGRAM</title>";
+print "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
+print " <style type=text/css>
+            dummydeclaration { padding-left: 1em; } /* Firefox ignores first declaration for some reason */
+			tab0 { padding-left: 1em; }
+            tab1 { padding-left: 2em; }
+            tab2 { padding-left: 3em; }
+            tab3 { padding-left: 4em; }
+            tab4 { padding-left: 5em; }
+            tab5 { padding-left: 6em; }
+            tab6 { padding-left: 7em; }
+            tab7 { padding-left: 8em; }
+            tab8 { padding-left: 9em; }
+            tab9 { padding-left: 36em; }
+            tab10 { padding-left: 40em; }
+            tab11 { padding-left: 44em; }
+            tab12 { padding-left: 48em; }
+            tab13 { padding-left: 52em; }
+            tab14 { padding-left: 56em; }
+            tab15 { padding-left: 60em; }
+            tab16 { padding-left: 64em; }
+
+        </style>";
+print "</head>\n";
+
+print "<script>
+		function printDiv(divName){
+			var printContents = document.getElementById(divName).innerHTML;
+			var originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+
+		}
+	</script>";
+
+print "<body style=\"background-color:6db070;\"><FONT SIZE = 3 COLOR = BLUE><b><i>Thank you!<br>Your RADIOGRAM Message below has been queued<br>for delivery via Amateur Radio and the Winlink system.</i></b></font><br><br>";
+print "<center>";
+print "<div id='printMe'>";
+print "<br><FONT SIZE = 7><b>$body0</b></FONT>";
+print "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+
+#Table setup
+print "<table style=width:100\%>";
+print "<table class=\"center\">";
+
+#Fields of Radiogram form
+# TABLE 1
+# Header Line
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 2 color = Black><i>Number";
+print "<tab1>Precedence</tab1>";
+print "<tab2>HX</tab2>";
+print "<tab1>Station of Origin</tab1>";
+print "<tab0>Check</tab0>";
+print "<tab1>Place of Origin</tab1>";
+print "<tab5>Time Filed</tab5>";
+print "<tab0>Date</tab0></font></i>";
+
+# Table 1
+print "<br><br>";
+print "<FONT SIZE = 2 color = Black>$rnum\n";
+print "<tab3>$rpres</tab3>";
+print "<tab0>$rhx</tab0>";
+print "<tab1>$rsoo</tab1>";
+print "<tab4>$rck</tab4>";
+print "<tab1>$rpoo</tab1>";
+print "<tab3>$rtim</tab3>";
+print "<tab0>$rdt</tab0>";
+print "</tr></th></table>\n";
+
+# TABLE 2
+print "<br><table style=width:100\%>";
+print "<table class=\"center\">";
+print "<tr><th style=text-align:left>\n";
+print "<i><FONT SIZE = 3 color = Black>TO:</font></i><br>\n";
+print "<FONT SIZE = 2 color = Black><tab1>$rto</tab1><br>";
+print "<tab1>$rto1</tab1><br>";
+print "<tab1>$rto2</tab1><br>";
+#print "<br><br><i>Telephone Number:</i><br>\n";
+print "<tab1>$rtel</tab1><br>\n";
+#print "<i>Email Address:</i><br>\n";
+print "<tab1>$email</tab1><br>\n";
+print "<i>Cc:</i><br>\n";
+print "<tab1>$cc</tab1><br></font>\n";
+print "</th>\n";
+print "<th style=text-align:left>\n";
+print "<center><font size = 1 color = Black><i>THIS RADIO MESSAGE<br>WAS RECEIVED AT<br><br></i></font>\n";
+print "<font size = 2 color = Black>AMATEUR STATION:</center><br>\n";
+print "<tab1>$ras</tab1>\n";
+print "<tab1>$rph</tab1><br>\n";
+print "<tab1>$rnme</tab1><br>\n";
+print "<tab1>$rstr</tab1><br>\n";
+print "<tab1>$rcsz</tab1><br>\n";
+print "</font></th></tr></table>\n";
+
+
+# TABLE 3
+print "<br><table style=width:100\%>";
+print "<table class=\"center\">";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 3 color = Black><i>MESSAGE:</i></font><br>\n";
+print "<FONT SIZE = 2 color = Black>";
+my @rmsg_split = split / /, $rgmsg;
+print "<tab5>@rmsg_split[0..7]</tab5><br>";
+print "<tab5>@rmsg_split[8..16]</tab5><br>";
+print "<tab5>@rmsg_split[17..24]</tab5><br>";
+print "</font>";
+print "</th></tr></table>\n";
+
+# TABLE 4
+
+print "<br><table style=width:100\%>";
+print "<table class=\"center\">";
+print "<tr><th style=text-align:left>\n";
+print "<FONT SIZE = 2 color = Black><i><Tab5>From</Tab5><Tab2>Date</Tab2><Tab4>Time</Tab4></i></font><br>\n";
+print "<FONT SIZE = 3 color = Black>REC'D</font>\n";
+print "<font size = 2 color = black><Tab1>$rrfrm</Tab1>\n";
+print "<Tab1>$rrdte</Tab1>\n";
+print "<Tab2>$rrtme</Tab2>\n";
+print "</font></th>\n";
+
+print "<th style=text-align:left>\n";
+print "<FONT SIZE = 2 color = Black><Tab5><i>To</Tab5><Tab3>Date</Tab3><Tab4>Time</Tab4></i></font><br>\n";
+print "<font size = 3 color = Black>SENT</font>\n";
+print "<font size = 2 color = black><tab1>$rsto</Tab1>\n";
+print "<tab1>$rsdte</Tab1>\n";
+print "<tab2>$rstme</Tab2>\n";
+print "</th></tr></table>\n";
+
+print "</div></font><br>";
+
+#Add button to print web page
+
+print "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
+
+print "\&nbsp\;\&nbsp\;<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
+
+print "<br><br><br><br>";
+
+print "</center></body></html>\n";
+
+
+
+#BUILD HTM FILE TO ATTACH TO EMAIL
+
+$htmfile = $mid.'.htm';
+
+open HTM, '>', $folder.$htmfile;
+
+print HTM "<html><head><title>RADIOGRAM FOR PAT WINLINK</title>";
+print HTM "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">";
+print HTM "<style>table, th, td {border: 2px solid black;border-collapse: collapse;padding: 10px;}</style>";
+print HTM " <style type=text/css>
+            dummydeclaration { padding-left: 1em; } /* Firefox ignores first declaration for some reason */
+			tab0 { padding-left: 1em; }
+            tab1 { padding-left: 2em; }
+            tab2 { padding-left: 3em; }
+            tab3 { padding-left: 4em; }
+            tab4 { padding-left: 5em; }
+            tab5 { padding-left: 6em; }
+            tab6 { padding-left: 7em; }
+            tab7 { padding-left: 8em; }
+            tab8 { padding-left: 9em; }
+            tab9 { padding-left: 36em; }
+            tab10 { padding-left: 40em; }
+            tab11 { padding-left: 44em; }
+            tab12 { padding-left: 48em; }
+            tab13 { padding-left: 52em; }
+            tab14 { padding-left: 56em; }
+            tab15 { padding-left: 60em; }
+            tab16 { padding-left: 64em; }
+
+        </style>";
+print HTM "</head>\n";
+
+print HTM "<script>
+		function printDiv(divName){
+			var printContents = document.getElementById(divName).innerHTML;
+			var originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+
+		}
+	</script>";
+
+print HTM "<center>";
+print HTM "<div id='printMe'>";
+print HTM "<br><FONT SIZE = 7><b>$body0</b></FONT>";
+print HTM "<br><FONT SIZE = 3 COLOR = RED>$bodyr</FONT><br>";
+
+#Table setup
+print HTM "<table style=width:100\%>";
+print HTM "<table class=\"center\">";
+
+#Fields of Radiogram form
+# TABLE 1
+# Header Line
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "<FONT SIZE = 2 color = Black><i>Number";
+print HTM "<tab0>Precedence</tab0>";
+print HTM "<tab2>HX</tab2>";
+print HTM "<tab1>Station of Origin</tab1>";
+print HTM "<tab0>Check</tab0>";
+print HTM "<tab1>Place of Origin</tab1>";
+print HTM "<tab5>Time Filed</tab5>";
+print HTM "<tab0>Date</tab0></font></i>";
+
+# Table 1
+print HTM "<br><br>";
+print HTM "<FONT SIZE = 2 color = Black>$rnum\n";
+print HTM "<tab3>$rpres</tab3>";
+print HTM "<tab0>$rhx</tab0>";
+print HTM "<tab1>$rsoo</tab1>";
+print HTM "<tab4>$rck</tab4>";
+print HTM "<tab1>$rpoo</tab1>";
+print HTM "<tab3>$rtim</tab3>";
+print HTM "<tab0>$rdt</tab0>";
+print HTM "</tr></th></table>\n";
+
+# TABLE 2
+print HTM "<br><table style=width:100\%>";
+print HTM "<table class=\"center\">";
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "<i><FONT SIZE = 3 color = Black>TO:</font></i><br>\n";
+print HTM "<FONT SIZE = 2 color = Black><tab1>$rto</tab1><br>";
+print HTM "<tab1>$rto1</tab1><br>";
+print HTM "<tab1>$rto2</tab1><br>";
+print HTM "<tab1>$rtel</tab1><br>\n";
+print HTM "<tab1>$email</tab1><br>\n";
+print HTM "<i>Cc:</i><br>\n";
+print HTM "<tab1>$cc</tab1><br></font>\n";
+print HTM "</th>\n";
+print HTM "<th style=text-align:left>\n";
+print HTM "<center><font size = 1 color = Black><i>THIS RADIO MESSAGE<br>WAS RECEIVED AT<br><br></i></font>\n";
+print HTM "<font size = 2 color = Black>AMATEUR STATION:</center><br>\n";
+print HTM "<tab1>$ras</tab1>\n";
+print HTM "<tab1>$rph</tab1><br>\n";
+print HTM "<tab1>$rnme</tab1><br>\n";
+print HTM "<tab1>$rstr</tab1><br>\n";
+print HTM "<tab1>$rcsz</tab1><br>\n";
+print HTM "</font></th></tr></table>\n";
+
+
+# TABLE 3
+print HTM "<br><table style=width:100\%>";
+print HTM "<table class=\"center\">";
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "<FONT SIZE = 3 color = Black><i>MESSAGE:</i></font><br>\n";
+print HTM "<FONT SIZE = 2 color = Black>";
+my @rmsg_split = split / /, $rgmsg;
+print HTM "<tab5>@rmsg_split[0..7]</tab5><br>";
+print HTM "<tab5>@rmsg_split[8..16]</tab5><br>";
+print HTM "<tab5>@rmsg_split[17..24]</tab5><br>";
+print HTM "</font>";
+print HTM "</th></tr></table>\n";
+
+# TABLE 4
+
+print HTM "<br><table style=width:100\%>";
+print HTM "<table class=\"center\">";
+print HTM "<tr><th style=text-align:left>\n";
+print HTM "<FONT SIZE = 2 color = Black><i><Tab5>From</Tab5><Tab2>Date</Tab2><Tab4>Time</Tab4></i></font><br>\n";
+print HTM "<FONT SIZE = 3 color = Black>REC'D</font>\n";
+print HTM "<font size = 2 color = black><Tab1>$rrfrm</Tab1>\n";
+print HTM "<Tab1>$rrdte</Tab1>\n";
+print HTM "<Tab2>$rrtme</Tab2>\n";
+print HTM "</font></th>\n";
+
+print HTM "<th style=text-align:left>\n";
+print HTM "<FONT SIZE = 2 color = Black><Tab5><i>To</Tab5><Tab3>Date</Tab3><Tab4>Time</Tab4></i></font><br>\n";
+print HTM "<font size = 3 color = Black>SENT</font>\n";
+print HTM "<font size = 2 color = black><tab1>$rsto</Tab1>\n";
+print HTM "<tab1>$rsdte</Tab1>\n";
+print HTM "<tab2>$rstme</Tab2>\n";
+print HTM "</th></tr></table>\n";
+
+print HTM "</div></font><br>";
+
+#Add button to print web page
+
+print HTM "<b><input type=button name=print style=background-color:#C42F47 value=\"PRINT MESSAGE\" onClick=printDiv('printMe')>";
+
+print HTM "\&nbsp\;\&nbsp\;<input type=button style=background-color:#FFCC33 onClick=\"location.href=\'index.pl\'\" value=\'Main Menu\'></b>";
+
+print HTM "<br><br><br><br>";
+
+print HTM "</center></body></html>\n";
+
+close HTM;
+
+$htmfilepath = $folder.$htmfile;
+$htmchars = -s $htmfilepath;
+
+my $bodyadd = "\n$bodyr\n$body0\n$body1$body1a$body1b$body1c$body1d$body1e$body1f$body1g$body2$body2a$body2b$body2c$body2d$body2e$body2f$body2g$body2h$body2i$body2j$body3$body4$body4a$body4b$body4c$body4d$body4e$body4f$body4g";
+
+open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
+	print BOD $body0;
+	print BOD $attached;
+	print BOD $bodyadd;
+close BOD;
+
+my $bodfilepath = $folder.$bodfile;
+my $fbody_len = -s $bodfilepath;
+
+#CREATE B2F RADIOGRAM FILE FOR SENDING VIA WINLINK
+
+open TMP, '>', $folder.$filename or die "Could not open file: $!";  
+
+#Header information
+print TMP "Mid: $mid\n";
+print TMP "Body: $fbody_len\n";
+print TMP "Content-Transfer-Encoding: 8bit\n";
+print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
+print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
+print TMP "From: N4MIO\n";
+print TMP "Mbo: N4MIO\n";
+print TMP "Subject: RADIOGRAM\n";
+
+my @tomail = split /;/, $email;
+my @ccmail = split /;/, $cc;
+
+foreach my $i (@tomail) {
+	if ($i =~ m/@/) {
+		print TMP "To: SMTP: $i\n";
+	}
+	else {
+		$i = uc($i);
+		print TMP "To: $i\n";
+	}
+}
+foreach my $i (@ccmail) {
+	if ($i =~ m/@/) {
+		print TMP "Cc: SMTP: $i\n";
+	}
+	else {
+		$i = uc($i);
+		print TMP "Cc: $i\n";
+	}
+	 
+}
+
+
+print TMP "File: $htmchars $htmfile\n";
+	if ($p2p) {
+		print TMP "$p2pmsg\n";
+	}
+print TMP "Type: Private\n\n";
+
+#Message Body
+
+open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
+	while (<BOD>) {
+		print TMP $_;
+	}
+close BOD;
+
+print TMP "\n";
+
+open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
+	while (<HTM>) {
+		print TMP $_;
+	}
+close HTM;
+
+close TMP;
+
+}
+
+else {
+        $err = "DID YOU FORGET AN EMAIL/WINLINK ADDRESS?";
+		&error;
+       }
+
+}
+
+  else {
+        $err = "DID YOU FORGET YOUR MESSAGE BODY?";
+		&error;
+       }
+
+exit;
+}
 
 
 
@@ -1189,10 +1597,8 @@ print "<br><FONT SIZE = 5 COLOR = 1f1a1a><I>CREATE YOUR MESSAGE</I></FONT><BR><B
 print "<FORM ACTION=$cgiurl METHOD=POST>";
 print "<INPUT TYPE=submit  style=\"font-size:20px; background-color:FFCC33; color:Black; border: 3pt ridge grey\" NAME=213 VALUE=\"GENERAL MESSAGE (ICS 213)\"><br><br><br>";
 print "<INPUT TYPE=submit style=\"font-size:20px; background-color:53b1e0; color:Black; border: 3pt ridge grey\" NAME=simple VALUE=\"SIMPLE MESSAGE\"><br><br><br>";
-print "<INPUT TYPE=submit NAME=rg VALUE=\"RADIOGRAM\" style=\"font-size:20px; background-color:395935; color:Black; border: 3pt ridge grey\"><br>";
-print "<font size=4><b>Radiogram Under Construction</font></b><br><br><br>";
+print "<INPUT TYPE=submit NAME=rg VALUE=\"RADIOGRAM\" style=\"font-size:20px; background-color:395935; color:d6bc47; border: 3pt ridge grey\"><br><br><br>";
 print "<INPUT TYPE=submit NAME=sp VALUE=\"SPOTREP\" style=\"font-size:20px; background-color:dbc3c1; color:Black; border: 3pt ridge grey\">";
-#print "<br><font size=4><b>Spotrep Under Construction</font></b>";
 print "</form>\n";
 
 print "</center>";
@@ -1317,6 +1723,10 @@ print "<form method=POST action=$cgiurl>\n";
 
 print "<input id=sim name=sim type=hidden value=simple>\n";
 
+# P2P checkbox
+print "<FONT SIZE = 3 color = Black><b>P2P</font>\&nbsp\;</b>\n";
+print "<input id=p2p name=p2p type=checkbox value=1 class=largerCheckbox><br><br>\n";
+
 # Reply checkbox
 print "<FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
 print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br><br>\n";
@@ -1407,14 +1817,16 @@ print " <style type=text/css>
 
         </style>";
 print "</head>\n";
-print "<body style=\"background-color:6db070;\"><center><FONT SIZE = 7><b><br>RADIOGRAM</b></FONT><br>\n";
+print "<body style=\"background-color:6db070;\"><center><FONT SIZE = 7><b><br>RADIOGRAM</b></FONT><br><br>\n";
 
 print "<form method=POST action=$cgiurl>\n";
 
 print "<input id=rgram name=rgram type=hidden value=radiogram>\n";
-
+# P2P checkbox
+print "<FONT SIZE = 3 color = Black><b>P2P</font>\&nbsp\;</b>\n";
+print "<input id=p2p name=p2p type=checkbox value=1 class=largerCheckbox><tab3>\n";
 # Reply checkbox
-print "<FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
+print "</tab3><FONT SIZE = 3 color = Black><b>CHECK HERE IF REPLY</font>\&nbsp\;</b>\n";
 print "<input id=reply name=reply type=checkbox value=1 class=largerCheckbox><br><br>\n";
 
 #Table setup
@@ -1436,13 +1848,29 @@ print "<tab0><FONT SIZE = 3 color = Black>Date</tab0></font>";
 
 # Input fields
 print "<br>";
-print "<input id=rnum name=rnum size=10 type=text>\n";
-print "<input id=rpres name=rpres size=10 type=text>\n";
-print "<input id=rhx name=rhx size=3 type=text>\n";
+print "<input id=rnum name=rnum size=4 type=text>\n";
+print  "<input list=rpres name=rpres size=16>\n";
+print  "<datalist id=rpres>\n";
+print  "<option value=EMERGENCY>\n";
+print  "<option value=PRIORITY (P)>\n";
+print  "<option value=WELFARE (W)>\n";
+print  "<option value=ROUTINE (R)>\n";
+print  "<option value=TEST EMERGENCY>\n";
+print  "</datalist>\n";
+print  "<input list=rhx name=rhx size=3>\n";
+print  "<datalist id=rhx>\n";
+print  "<option value=NONE>\n";
+print  "<option value=HXA>\n";
+print  "<option value=HXB>\n";
+print  "<option value=HXC>\n";
+print  "<option value=HXD>\n";
+print  "<option value=HXE>\n";
+print  "<option value=HXG>\n";
+print  "</datalist>\n";
 print "<input id=rsoo name=rsoo size=13 type=text>\n";
-print "<input id=rck name=rck size=3 type=text>\n";
-print "<input id=rpoo name=poo size=13 type=text>\n";
-print "<input id=rtm name=rtim size=6 type=text value=$ftime>\n";
+print "<input id=rck name=rck size=3 type=text disabled=disabled>\n";
+print "<input id=rpoo name=rpoo size=13 type=text>\n";
+print "<input id=rtim name=rtim size=6 type=text value=$ftime>\n";
 print "<input id=rdt name=rdt size=6 type=text value=$lmon\/$lmday\/$lyear>\n";
 print "</tr></th></table>\n";
 
@@ -1450,13 +1878,17 @@ print "</tr></th></table>\n";
 print "<br><table style=width:100\%>";
 print "<table class=\"center\">";
 print "<tr><th style=text-align:left>\n";
-print "<FONT SIZE = 3 color = Black>To</font>\n";
-print "<br><textarea name=rto cols=50 rows=6></textarea><br>";
+print "<FONT SIZE = 3 color = Black>TO</font>\n";
+print "<center><input id=rto name=rto size=48 type=text><br><br>\n";
+print "<input id=rto1 name=rto1 size=48 type=text><br><br>\n";
+print "<input id=rto2 name=rto2 size=48 type=text></center>\n";
+#print "<br><textarea name=rto cols=50 rows=6></textarea><br>";
 print "<br><FONT SIZE = 3 color = Black>Telephone Number</font>\n";
 print "<input id=rtel name=rtel size=19 type=text><br>\n";
 print "<br><FONT SIZE = 3 color = Black>Email Address</b></font>\n";
 print "<input id=email name=email size=23 type=text><br><br>\n";
-print "<FONT SIZE = 2 color = #102547>*Email and Cc can be Winlink user alias</font><br>\n";
+#print "<FONT SIZE = 2 color = #102547>*Email and Cc can be Winlink user alias</font><br>\n";
+print "<center><i><font size=2 color=102547>Calls or E-mails entered into the Email Address or Cc fields<br> can be multiples separated by a semicolon</font></i></center>";
 print "<br><FONT SIZE = 3 color = Black>Cc:\&nbsp\;\&nbsp\;</font>\n";
 print "<input id=cc name=cc size=33 type=text><br>\n";
 print "</th>\n";
@@ -1481,7 +1913,7 @@ print "<table class=\"center\">";
 print "<tr><th style=text-align:left>\n";
 print "<FONT SIZE = 3 color = Black>MESSAGE</font>\n";
 print "<FONT SIZE = 2 color = #102547>*25 words or less, no punctuation, use \"X\" in between words to signify punctuation (counts as a word)</font>\n";
-print "<br><textarea name=rmsg cols=107 rows=5></textarea><br>";
+print "<br><textarea name=rgmsg cols=107 rows=5></textarea><br>";
 print "</th></tr></table>\n";
 
 # TABLE 4
@@ -1514,7 +1946,7 @@ print "<br><br><br><br></body></html>\n";
 exit;
 
 }
-
+# SPOTREP FORM BUILDER
 sub spotrep {
 print "Content-type: text/html\n\n";
 print "<html><head><title>SPOTREP</title>";
@@ -1526,6 +1958,10 @@ print "<body style=\"background-color:dbc3c1;\"><center><FONT SIZE = 7><b><br>SP
 print "<form method=POST action=$cgiurl>\n";
 print "<input id=srep name=srep type=hidden value=spotrep>\n";
 
+# P2P checkbox
+print "<FONT SIZE = 3 color = Black><b>P2P</font>\&nbsp\;</b>\n";
+print "<input id=p2p name=p2p type=checkbox value=1 class=largerCheckbox><br><br>\n";
+
 #Fields of SPOTREP form
 # TABLE 1
 
@@ -1533,7 +1969,7 @@ print "<table style=width:100\%>";
 print "<table class=\"center\">";
 print "<tr><th style=text-align:left>\n";
 print "<FONT SIZE = 4 color = Black>R:\&nbsp\;\&nbsp\;\&nbsp\;</font>";
-print "<input id=sprtmedte name=sprtmedte size=20 type=text value=$gmday$ghour$gmin$zee\&nbsp\;$zuludy>\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\n";
+print "<input id=sprtmedte name=sprtmedte size=20 type=text value=$gmday$ghour$gmin$zee\-$zuludy>\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;\n";
 print "<FONT SIZE = 4 color = Black>FROM:</font>\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;";
 print "<input id=sprfrm name=sprfrm size=20 type=text><br><br>\n";
 print "<FONT SIZE = 4 color = Black>TO:\&nbsp\;\&nbsp\;\&nbsp\;\&nbsp\;</font>\n";
