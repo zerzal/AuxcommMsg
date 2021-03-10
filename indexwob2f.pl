@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use File::stat;
+#use File::stat;
   
 # SET VARIABLES
 #######################
@@ -18,7 +18,7 @@ $gmon += 1;
 $lyear += 1900;
 $lmon += 1;
 
-my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr, $htmfilepath, @month, %month, $srnum, $monabbrev);
+my (@pairs, $name, $value, %FORM, $filename, $pair, $htmfile, $htmchars, $err, $first, $bodyr, $htmfilepath, @month, %month, $srnum, $monabbrev, $mid);
 my $attached = " HTM FILE ALSO ATTACHED";
 @month = ('NA','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC');
 my $zee = "Z";
@@ -72,7 +72,7 @@ if ($gmday < "10") {
 
 my $ftime = "$lhour:$lmin\n";
 
-my $cgiurl = "index.pl";
+my $cgiurl = "indexwob2f.pl";
 
 my $ver = "1.1";
 
@@ -124,16 +124,15 @@ my $reply = $FORM{'reply'};
 my $p2p = $FORM{p2p};
 
 #File name generator
-my @chars = ("A".."Z", "0".."9");
-my $mid;
-$mid .= $chars[rand @chars] for 1..12;
+#my @chars = ("A".."Z", "0".."9");
+#my $mid .= $chars[rand @chars] for 1..12;
 
 #Build body of message file
 
-$filename = "$mid.b2f";  
+#$filename = "$mid.b2f";  
 	
 	
-#my $bodyr = " ";
+my $bodyr = " ";
 
  if ($reply) {
      $bodyr = "$rmsg\n\n";
@@ -239,6 +238,7 @@ print "</center></body></html>\n";
 
 #BUILD HTM FILE TO ATTACH TO EMAIL
 
+my $mid = "ICS-213_$from";
 $htmfile = $mid.'.htm';
 
 open HTM, '>', $folder.$htmfile;
@@ -322,101 +322,9 @@ print HTM "<b><input type=button name=print style=background-color:#C42F47 value
 
 print HTM "<br><br><br><br>";
 
-print HTM "</center></body></html>\n\n";
+print HTM "</center></body></html>\n";
 
 close HTM;
-
-$htmfilepath = $folder.$htmfile;
-#$htmchars = -s $htmfilepath;
-
-$htmchars = stat $htmfilepath;
-
-$htmchars = $htmchars->size;
-
-my $bodyadd = "\n$bodyr\n$body0\n$body1$body2$body2a$body2b$body2c$body3$body3a\n$body4$body5\n$body6$body7$body8$body8a$body8b";
-
-open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
-	print BOD $body0;
-	print BOD $attached;
-	print BOD $bodyadd;
-close BOD;
-
-my $bodfilepath = $folder.$bodfile;
-#my $fbody_len = -s $bodfilepath;
-
-my $fbody_len = stat $bodfilepath;
-
-$fbody_len = $fbody_len->size;
-
-
-#CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
-
-open TMP, '>', $folder.$filename or die "Could not open file: $!";  
-
-#Header information
-print TMP "Mid: $mid\n";
-print TMP "Body: $fbody_len\n";
-print TMP "Content-Transfer-Encoding: 8bit\n";
-print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
-print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
-print TMP "From: N4MIO\n";
-print TMP "Mbo: N4MIO\n";
-print TMP "Subject: $subject\n";
-#print TMP "To: SMTP: $email\n";
-
-#if ($cc) {     
-#  print TMP "Cc: SMTP: $cc\n";
-#	 }
-
-my @tomail = split /;/, $email;
-my @ccmail = split /;/, $cc;
-
-foreach my $i (@tomail) {
-	if ($i =~ m/@/) {
-		print TMP "To: SMTP: $i\n";
-	}
-	else {
-		$i = uc($i);
-		print TMP "To: $i\n";
-	}
-}
-foreach my $i (@ccmail) {
-	if ($i =~ m/@/) {
-		print TMP "Cc: SMTP: $i\n";
-	}
-	else {
-		$i = uc($i);
-		print TMP "Cc: $i\n";
-	}
-	 
-}
-
-
-print TMP "File: $htmchars $htmfile\n";
-	if ($p2p) {
-		print TMP "$p2pmsg\n";
-	}
-print TMP "Type: Private\n\n";
-
-#Message Body
-
-open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
-	while (<BOD>) {
-		print TMP $_;
-	}
-close BOD;
-
-#print TMP $body0.$attached;
-
-print TMP "\n";
-
-open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
-	while (<HTM>) {
-		print TMP $_;
-	}
-close HTM;
-
-close TMP;
 
 }
 
@@ -452,13 +360,13 @@ my $reply = $FORM{'reply'};
 my $p2p = $FORM{p2p};
 
 #File name generator
-my @chars = ("A".."Z", "0".."9");
-my $mid;
-$mid .= $chars[rand @chars] for 1..12;
+#my @chars = ("A".."Z", "0".."9");
+#my $mid;
+#$mid .= $chars[rand @chars] for 1..12;
 
 #Build body of message file
 
-$filename = "$mid.b2f";  
+#$filename = "$mid.b2f";  
 	
 	
 #my $bodyr = " ";
@@ -551,7 +459,7 @@ print "<br><br><br><br>";
 print "</center></body></html>\n";
 
 #BUILD HTM FILE TO ATTACH TO EMAIL
-
+$mid = "SIMPLEEMAIL_$from";
 $htmfile = $mid.'.htm';
 
 open HTM, '>', $folder.$htmfile;  
@@ -627,86 +535,6 @@ print HTM "</center></body></html>\n";
 
 close HTM;
 
-$htmfilepath = $folder.$htmfile;
-#$htmchars = -s $htmfilepath;
-
-$htmchars = stat $htmfilepath;
-
-my $bodyadd = "\n$bodyr$body0\nFROM: $from\nTO: $email\nCC: $cc\nSubject: $subject\nDate: $date\nTime: $time\nMessage:\n $msg\n";
-
-open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
-	print BOD $body0;
-	print BOD $attached;
-	print BOD $bodyadd;
-close BOD;
-
-my $bodfilepath = $folder.$bodfile;
-#my $fbody_len = -s $bodfilepath;
-
-my $fbody_len = stat $bodfilepath;
-
-#CREATE B2F SIMPLE MESSAGE FILE FOR SENDING VIA WINLINK
-
-open TMP, '>', $folder.$filename or die "Could not open file: $!";  
-
-#Header information
-print TMP "Mid: $mid\n";
-print TMP "Body: $fbody_len\n";
-print TMP "Content-Transfer-Encoding: 8bit\n";
-print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
-print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
-print TMP "From: N4MIO\n";
-print TMP "Mbo: N4MIO\n";
-print TMP "Subject: $subject\n";
-
-my @tomail = split /;/, $email;
-my @ccmail = split /;/, $cc;
-
-foreach my $i (@tomail) {
-	if ($i =~ m/@/) {
-		print TMP "To: SMTP: $i\n";
-	}
-	else {
-		$i = uc($i);
-		print TMP "To: $i\n";
-	}
-}
-foreach my $i (@ccmail) {
-	if ($i =~ m/@/) {
-		print TMP "Cc: SMTP: $i\n";
-	}
-	else {
-		$i = uc($i);
-		print TMP "Cc: $i\n";
-	}
-	 
-}
-
-print TMP "File: $htmchars $htmfile\n";
-	if ($p2p) {
-		print TMP "$p2pmsg\n";
-	}
-
-print TMP "Type: Private\n\n";
-
-#Message Body
-
-open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
-	while (<BOD>) {
-		print TMP $_;
-	}
-close BOD;
-
-print TMP "\n\n";
-
-open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
-	while (<HTM>) {
-		print TMP $_;
-	}
-close HTM;
-
-close TMP;
-
 }
 
 else {
@@ -767,13 +595,13 @@ my $sprpoc = uc($FORM{'sprpoc'});
 my $p2p = $FORM{p2p};
 
 #File name generator
-my @chars = ("A".."Z", "0".."9");
-my $mid;
-$mid .= $chars[rand @chars] for 1..12;
+#my @chars = ("A".."Z", "0".."9");
+#my $mid;
+#$mid .= $chars[rand @chars] for 1..12;
 
 #Build body of message file
 
-$filename = "$mid.b2f";  
+#$filename = "$mid.b2f";  
 	
 # TABLE 1	
 my $body0 = "SPOTREP";
@@ -907,6 +735,7 @@ print "</center></body></html>\n";
 
 #BUILD SPOTREP HTM FILE TO ATTACH TO EMAIL
 
+$mid = "SPOTREP_$sprfrm";
 $htmfile = $mid.'.htm';
 
 open HTM, '>', $folder.$htmfile;
@@ -998,88 +827,6 @@ print HTM "</center></body></html>\n";
 
 close HTM;
 
-$htmfilepath = $folder.$htmfile;
-#$htmchars = -s $htmfilepath;
-
-$htmchars = stat $htmfilepath;
-
-#my ($sprfrm, $sprtmedte, $sprfrm, $sprto, $sprcc, $sprcst, $choose2, $comm2, $choose3, $comm3,$comm4, $comm5, $comm6, $comm7, $choose8, $comm8, $comm9, $sprpoc);
-my $bodyadd = "\n\nSPOTREP - $sprfrm\nR: $sprtmedte\nFROM: $sprfrm\nTO: $sprto\nINFO (CC): $sprcc\n\n1. City/State/Territory: $sprcst\n2. LandLine works? $choose2\n - $comm2\n3. Cell Phone Works? $choose3\n - $comm3\n4. AM/FM Broadcast Stations Status\n - $comm4\n5. TV Stations Status\n - $comm5\n6. Public Water Works Status\n - $comm6\n7. Commercial Power Status\n - $comm7\n8. Internet Working? $choose8\n - $comm8\nAdditional Comments\n - $comm9\n\nPOC $sprpoc\n";
-
-open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
-	print BOD $body0;
-	print BOD $attached;
-	print BOD $bodyadd;
-close BOD;
-
-my $bodfilepath = $folder.$bodfile;
-#my $fbody_len = -s $bodfilepath;
-
-my $fbody_len = stat $bodfilepath;
-
-#CREATE B2F SPOTREP FILE FOR SENDING VIA WINLINK
-
-open TMP, '>', $folder.$filename or die "Could not open file: $!";  
-
-#Header information
-print TMP "Mid: $mid\n";
-print TMP "Body: $fbody_len\n";
-
-my @ccmail = split /;/, $sprcc;
-
-foreach my $i (@ccmail) {
-	if ($i =~ m/@/) {
-		print TMP "Cc: SMTP: $i\n";
-	}
-	else {
-		$i = uc($i);
-		print TMP "Cc: $i\n";
-	}
-	 
-}
-
-
-print TMP "Content-Transfer-Encoding: 8bit\n";
-print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
-print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
-print TMP "File: $htmchars $htmfile\n";
-print TMP "From: N4MIO\n";
-print TMP "Mbo: N4MIO\n";
-print TMP "Subject: $body0 - $sprfrm\n";
-
-my @tomail = split /;/, $sprto;
-
-
-foreach my $i (@tomail) {
-	if ($i =~ m/@/) {
-		print TMP "To: SMTP: $i\n";
-	}
-	else {
-		$i = uc($i);
-		print TMP "To: $i\n";
-	}
-}
-
-if ($p2p) {
-		print TMP "$p2pmsg\n";
-	}
-print TMP "Type: Private\n\n";
-
-open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
-	while (<BOD>) {
-		print TMP $_;
-	}
-close BOD;
-
-print TMP "\n\n";
-open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
-	while (<HTM>) {
-		print TMP $_;
-	}
-close HTM;
-
-close TMP;
-
 }
 
 else {
@@ -1138,13 +885,13 @@ my $p2p = $FORM{'p2p'};
 $rck += $rgmsg =~ s/((^|\s)\S)/$1/g;
 
 #File name generator
-my @chars = ("A".."Z", "0".."9");
-my $mid;
-$mid .= $chars[rand @chars] for 1..12;
+#my @chars = ("A".."Z", "0".."9");
+#my $mid;
+#$mid .= $chars[rand @chars] for 1..12;
 
 #Build body of message file
 
-$filename = "$mid.b2f";  
+#$filename = "$mid.b2f";  
 
  if ($reply) {
      $bodyr = "$rmsg\n\n";
@@ -1339,6 +1086,7 @@ print "</center></body></html>\n";
 
 #BUILD HTM FILE TO ATTACH TO EMAIL
 
+$mid = "RADIOGRAM_$rnum";
 $htmfile = $mid.'.htm';
 
 open HTM, '>', $folder.$htmfile;
@@ -1487,86 +1235,6 @@ print HTM "<br><br><br><br>";
 print HTM "</center></body></html>\n";
 
 close HTM;
-
-$htmfilepath = $folder.$htmfile;
-#$htmchars = -s $htmfilepath;
-
-$htmchars =  stat $htmfilepath;
-
-my $bodyadd = "\n$bodyr\n$body0\n$body1$body1a$body1b$body1c$body1d$body1e$body1f$body1g$body2$body2a$body2b$body2c$body2d$body2e$body2f$body2g$body2h$body2i$body2j$body3$body4$body4a$body4b$body4c$body4d$body4e$body4f$body4g";
-
-open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
-	print BOD $body0;
-	print BOD $attached;
-	print BOD $bodyadd;
-close BOD;
-
-my $bodfilepath = $folder.$bodfile;
-#my $fbody_len = -s $bodfilepath;
-
-my $fbody_len = stat $bodfilepath;
-
-#CREATE B2F RADIOGRAM FILE FOR SENDING VIA WINLINK
-
-open TMP, '>', $folder.$filename or die "Could not open file: $!";  
-
-#Header information
-print TMP "Mid: $mid\n";
-print TMP "Body: $fbody_len\n";
-print TMP "Content-Transfer-Encoding: 8bit\n";
-print TMP "Content-Type: text/plain; charset=ISO-8859-1\n";
-print TMP "Date: $gyear\/$gmon\/$gmday $ghour\:$gmin\n";      #2019/07/19 12:37
-print TMP "From: N4MIO\n";
-print TMP "Mbo: N4MIO\n";
-print TMP "Subject: RADIOGRAM\n";
-
-my @tomail = split /;/, $email;
-my @ccmail = split /;/, $cc;
-
-foreach my $i (@tomail) {
-	if ($i =~ m/@/) {
-		print TMP "To: SMTP: $i\n";
-	}
-	else {
-		$i = uc($i);
-		print TMP "To: $i\n";
-	}
-}
-foreach my $i (@ccmail) {
-	if ($i =~ m/@/) {
-		print TMP "Cc: SMTP: $i\n";
-	}
-	else {
-		$i = uc($i);
-		print TMP "Cc: $i\n";
-	}
-	 
-}
-
-
-print TMP "File: $htmchars $htmfile\n";
-	if ($p2p) {
-		print TMP "$p2pmsg\n";
-	}
-print TMP "Type: Private\n\n";
-
-#Message Body
-
-open BOD, '<', $folder.$bodfile or die "Could not open file: $!";
-	while (<BOD>) {
-		print TMP $_;
-	}
-close BOD;
-
-print TMP "\n";
-
-open HTM, '<', $folder.$htmfile or die "Could not open file: $!";
-	while (<HTM>) {
-		print TMP $_;
-	}
-close HTM;
-
-close TMP;
 
 }
 
