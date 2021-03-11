@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use File::stat;
+#use File::stat;
   
 # SET VARIABLES
 #######################
@@ -327,11 +327,11 @@ print HTM "</center></body></html>\n\n";
 close HTM;
 
 $htmfilepath = $folder.$htmfile;
-#$htmchars = -s $htmfilepath;
+$htmchars = -s $htmfilepath;
 
-$htmchars = stat $htmfilepath;
+#$htmchars = stat $htmfilepath;
 
-$htmchars = $htmchars->size;
+#$htmchars = $htmchars->size;
 
 my $bodyadd = "\n$bodyr\n$body0\n$body1$body2$body2a$body2b$body2c$body3$body3a\n$body4$body5\n$body6$body7$body8$body8a$body8b";
 
@@ -342,11 +342,11 @@ open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
 close BOD;
 
 my $bodfilepath = $folder.$bodfile;
-#my $fbody_len = -s $bodfilepath;
+my $fbody_len = -s $bodfilepath;
 
-my $fbody_len = stat $bodfilepath;
+#my $fbody_len = stat $bodfilepath;
 
-$fbody_len = $fbody_len->size;
+#$fbody_len = $fbody_len->size;
 
 
 #CREATE B2F ICS 213 FILE FOR SENDING VIA WINLINK
@@ -630,7 +630,12 @@ close HTM;
 $htmfilepath = $folder.$htmfile;
 #$htmchars = -s $htmfilepath;
 
-$htmchars = stat $htmfilepath;
+open HTM, '>', $folder.$htmfile or die "Could not open file: $!";
+	while (<HTM>) {
+		$htmchars = $htmchars + length($_);
+	}
+
+#$htmchars = stat $htmfilepath;
 
 my $bodyadd = "\n$bodyr$body0\nFROM: $from\nTO: $email\nCC: $cc\nSubject: $subject\nDate: $date\nTime: $time\nMessage:\n $msg\n";
 
@@ -641,9 +646,9 @@ open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
 close BOD;
 
 my $bodfilepath = $folder.$bodfile;
-#my $fbody_len = -s $bodfilepath;
+my $fbody_len = -s $bodfilepath;
 
-my $fbody_len = stat $bodfilepath;
+#my $fbody_len = stat $bodfilepath;
 
 #CREATE B2F SIMPLE MESSAGE FILE FOR SENDING VIA WINLINK
 
@@ -999,9 +1004,9 @@ print HTM "</center></body></html>\n";
 close HTM;
 
 $htmfilepath = $folder.$htmfile;
-#$htmchars = -s $htmfilepath;
+$htmchars = -s $htmfilepath;
 
-$htmchars = stat $htmfilepath;
+#$htmchars = stat $htmfilepath;
 
 #my ($sprfrm, $sprtmedte, $sprfrm, $sprto, $sprcc, $sprcst, $choose2, $comm2, $choose3, $comm3,$comm4, $comm5, $comm6, $comm7, $choose8, $comm8, $comm9, $sprpoc);
 my $bodyadd = "\n\nSPOTREP - $sprfrm\nR: $sprtmedte\nFROM: $sprfrm\nTO: $sprto\nINFO (CC): $sprcc\n\n1. City/State/Territory: $sprcst\n2. LandLine works? $choose2\n - $comm2\n3. Cell Phone Works? $choose3\n - $comm3\n4. AM/FM Broadcast Stations Status\n - $comm4\n5. TV Stations Status\n - $comm5\n6. Public Water Works Status\n - $comm6\n7. Commercial Power Status\n - $comm7\n8. Internet Working? $choose8\n - $comm8\nAdditional Comments\n - $comm9\n\nPOC $sprpoc\n";
@@ -1013,9 +1018,9 @@ open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
 close BOD;
 
 my $bodfilepath = $folder.$bodfile;
-#my $fbody_len = -s $bodfilepath;
+my $fbody_len = -s $bodfilepath;
 
-my $fbody_len = stat $bodfilepath;
+#my $fbody_len = stat $bodfilepath;
 
 #CREATE B2F SPOTREP FILE FOR SENDING VIA WINLINK
 
@@ -1489,9 +1494,9 @@ print HTM "</center></body></html>\n";
 close HTM;
 
 $htmfilepath = $folder.$htmfile;
-#$htmchars = -s $htmfilepath;
+$htmchars = -s $htmfilepath;
 
-$htmchars =  stat $htmfilepath;
+#$htmchars =  stat $htmfilepath;
 
 my $bodyadd = "\n$bodyr\n$body0\n$body1$body1a$body1b$body1c$body1d$body1e$body1f$body1g$body2$body2a$body2b$body2c$body2d$body2e$body2f$body2g$body2h$body2i$body2j$body3$body4$body4a$body4b$body4c$body4d$body4e$body4f$body4g";
 
@@ -1502,9 +1507,9 @@ open BOD, '>', $folder.$bodfile or die "Could not open file: $!";
 close BOD;
 
 my $bodfilepath = $folder.$bodfile;
-#my $fbody_len = -s $bodfilepath;
+my $fbody_len = -s $bodfilepath;
 
-my $fbody_len = stat $bodfilepath;
+#my $fbody_len = stat $bodfilepath;
 
 #CREATE B2F RADIOGRAM FILE FOR SENDING VIA WINLINK
 
